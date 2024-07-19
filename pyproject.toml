@@ -272,7 +272,7 @@ url = "https://nexus.qa.whoop.com/repository/pypi-group/simple"
 default = true
 
 [tool.poetry.dependencies]
-python = "~3.8.12"
+python = ">=3.8.12"
 
 typing-extensions = ">=4.6.1"
 annotated-types = ">=0.4.0"
