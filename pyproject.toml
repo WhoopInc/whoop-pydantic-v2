@@ -3,7 +3,7 @@ requires = ['hatchling', 'hatch-fancy-pypi-readme>=22.5.0']
 build-backend = 'hatchling.build'
 
 [project]
-name = 'pydantic'
+name = 'whoop-pydantic-v2'
 description = 'Data validation using Python type hints'
 authors = [
     {name = 'Samuel Colvin', email = 's@muelcolvin.com'},
