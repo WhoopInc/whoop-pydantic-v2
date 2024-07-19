@@ -1,7 +1,3 @@
-[build-system]
-requires = ['hatchling', 'hatch-fancy-pypi-readme>=22.5.0']
-build-backend = 'hatchling.build'
-
 [project]
 name = 'whoop-pydantic-v2'
 description = 'Data validation using Python type hints'
@@ -254,3 +250,36 @@ tests-root = "tests"
 test-framework = "pytest"
 ignore-paths = []
 formatter-cmd = ["ruff check --exit-zero --fix $file", "ruff format $file"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "whoop-ds-sleep"
+version = "0.1.0"
+description = "Package with data science algorithms for analyzing sleep."
+authors = [
+    "Ryan Beauchamp <ryan.beauchamp@whoop.com>",
+    "Zarana Bhadricha <zarana.bhadricha@whoop.com>",
+    "Justin Tunis <justin.tunis@whoop.com>",
+    "Chen Liang <chen.liang@whoop.com>",
+    "Peter Belanger <peter.belanger@whoop.com>",
+    "Davide Valeriani <davide.valeriani@whoop.com>",
+    "Will Lamond <will.lamond@whoop.com>",
+    "Louis Garber <louis.garber@whoop.com>",
+    "Torey Lee <torey@whoop.com>",
+    "Jack Sampiere <jack.sampiere@whoop.com>",
+]
+
+[[tool.poetry.source]]
+name = "whoop-nexus"
+url = "https://nexus.qa.whoop.com/repository/pypi-group/simple"
+default = true
+
+[tool.poetry.dependencies]
+python = "~3.8.12"
+
+typing-extensions = ">=4.6.1"
+annotated-types = ">=0.4.0"
+pydantic-core = "2.20.1"
