@@ -263,7 +263,7 @@ authors = [
     "Justin Tunis <justin.tunis@whoop.com>",
 ]
 packages = [
-    { include = "poetry" }
+    { include = "pydantic" }
 ]
 
 [[tool.poetry.source]]
