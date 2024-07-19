@@ -31,9 +31,6 @@ jobs:
       - checkout
       - install-dependencies
       - run:
-          name: Build Package Directory
-          command: poetry run python .circleci/scripts/build_package_dir.py
-      - run:
           name: Set Package Version
           command: |
             if [ "$CIRCLE_BRANCH" != "master" ]; then

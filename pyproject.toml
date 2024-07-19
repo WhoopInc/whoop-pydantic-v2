@@ -256,20 +256,14 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "whoop-ds-sleep"
+name = "whoop-pydantic-v2"
 version = "0.1.0"
-description = "Package with data science algorithms for analyzing sleep."
+description = "Fork of Pydantic V2"
 authors = [
-    "Ryan Beauchamp <ryan.beauchamp@whoop.com>",
-    "Zarana Bhadricha <zarana.bhadricha@whoop.com>",
     "Justin Tunis <justin.tunis@whoop.com>",
-    "Chen Liang <chen.liang@whoop.com>",
-    "Peter Belanger <peter.belanger@whoop.com>",
-    "Davide Valeriani <davide.valeriani@whoop.com>",
-    "Will Lamond <will.lamond@whoop.com>",
-    "Louis Garber <louis.garber@whoop.com>",
-    "Torey Lee <torey@whoop.com>",
-    "Jack Sampiere <jack.sampiere@whoop.com>",
+]
+packages = [
+    { include = "poetry" }
 ]
 
 [[tool.poetry.source]]
