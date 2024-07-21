@@ -262,9 +262,6 @@ description = "Fork of Pydantic V2"
 authors = [
     "Justin Tunis <justin.tunis@whoop.com>",
 ]
-packages = [
-    { include = "pydantic" }
-]
 
 [[tool.poetry.source]]
 name = "whoop-nexus"
