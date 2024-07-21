@@ -9,10 +9,10 @@ from annotated_types import BaseMetadata, GroupedMetadata, Gt, Lt, Predicate
 from pydantic_core import CoreSchema, PydanticUndefined, core_schema
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, Field, GetCoreSchemaHandler, PydanticUserError, TypeAdapter, ValidationError
-from pydantic.errors import PydanticSchemaGenerationError
-from pydantic.fields import PrivateAttr
-from pydantic.functional_validators import AfterValidator
+from whoop_pydantic_v2 import BaseModel, Field, GetCoreSchemaHandler, PydanticUserError, TypeAdapter, ValidationError
+from whoop_pydantic_v2.errors import PydanticSchemaGenerationError
+from whoop_pydantic_v2.fields import PrivateAttr
+from whoop_pydantic_v2.functional_validators import AfterValidator
 
 NO_VALUE = object()
 
@@ -371,7 +371,7 @@ def test_validate_float_inf_nan_python() -> None:
         ta.validate_python(1.0)
 
     # insert_assert(exc_info.value.errors(include_url=False))
-    # TODO: input should be float('nan'), this seems like a subtle bug in pydantic-core
+    # TODO: input should be float('nan'), this seems like a subtle bug in whoop_pydantic_v2-core
     assert exc_info.value.errors(include_url=False) == [
         {'type': 'finite_number', 'loc': (), 'msg': 'Input should be a finite number', 'input': 1.0}
     ]
@@ -395,7 +395,7 @@ def test_predicate_error_python() -> None:
 
 
 def test_annotated_field_info_not_lost_from_forwardref():
-    from pydantic import BaseModel
+    from whoop_pydantic_v2 import BaseModel
 
     class ForwardRefAnnotatedFieldModel(BaseModel):
         foo: 'Annotated[Integer, Field(alias="bar", default=1)]' = 2

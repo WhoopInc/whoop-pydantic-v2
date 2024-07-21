@@ -2,8 +2,8 @@ import importlib
 
 import pytest
 
-from pydantic._migration import DEPRECATED_MOVED_IN_V2, MOVED_IN_V2, REDIRECT_TO_V1, REMOVED_IN_V2, getattr_migration
-from pydantic.errors import PydanticImportError
+from whoop_pydantic_v2._migration import DEPRECATED_MOVED_IN_V2, MOVED_IN_V2, REDIRECT_TO_V1, REMOVED_IN_V2, getattr_migration
+from whoop_pydantic_v2.errors import PydanticImportError
 
 
 def import_from(dotted_path: str):
@@ -40,9 +40,9 @@ def test_removed_on_v2(module: str):
 
 
 def test_base_settings_removed():
-    with pytest.raises(PydanticImportError, match='`BaseSettings` has been moved to the `pydantic-settings` package. '):
-        import_from('pydantic:BaseSettings')
-        assert False, 'pydantic:BaseSettings should not be importable'
+    with pytest.raises(PydanticImportError, match='`BaseSettings` has been moved to the `whoop_pydantic_v2-settings` package. '):
+        import_from('whoop_pydantic_v2:BaseSettings')
+        assert False, 'whoop_pydantic_v2:BaseSettings should not be importable'
 
 
 def test_getattr_migration():

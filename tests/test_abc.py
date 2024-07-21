@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 def test_model_subclassing_abstract_base_classes():

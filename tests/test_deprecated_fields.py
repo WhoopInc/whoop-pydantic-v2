@@ -4,7 +4,7 @@ import pytest
 from packaging.version import Version
 from typing_extensions import Annotated, Self, deprecated
 
-from pydantic import BaseModel, Field, computed_field, field_validator, model_validator
+from whoop_pydantic_v2 import BaseModel, Field, computed_field, field_validator, model_validator
 
 
 def test_deprecated_fields():

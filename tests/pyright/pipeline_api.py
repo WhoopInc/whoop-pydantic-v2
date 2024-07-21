@@ -1,7 +1,7 @@
 import datetime
 from typing import Annotated
 
-from pydantic.experimental.pipeline import validate_as
+from whoop_pydantic_v2.experimental.pipeline import validate_as
 
 # this test works by adding type ignores and having pyright fail with
 # an unused type ignore error if the type checking isn't working

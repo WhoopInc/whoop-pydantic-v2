@@ -1,6 +1,6 @@
 from typing import List
 
-from pydantic import RootModel
+from whoop_pydantic_v2 import RootModel
 
 
 class Pets1(RootModel[List[str]]):
@@ -24,4 +24,4 @@ pets3 = Pets3(['dog', 'cat'])
 
 class Pets4(RootModel[List[str]]):
     pets: List[str]
-# MYPY: error: Only `root` is allowed as a field of a `RootModel`  [pydantic-field]
+# MYPY: error: Only `root` is allowed as a field of a `RootModel`  [whoop_pydantic_v2-field]

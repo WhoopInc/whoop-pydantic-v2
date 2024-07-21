@@ -22,7 +22,7 @@ def main():
     if args.preview:
         new_version = args.preview
     else:
-        version_file = root_dir / 'pydantic' / 'version.py'
+        version_file = root_dir / 'whoop_pydantic_v2' / 'version.py'
         new_version = re.search(r"VERSION = '(.*)'", version_file.read_text()).group(1)
 
     history_path = root_dir / 'HISTORY.md'

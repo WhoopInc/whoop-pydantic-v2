@@ -12,7 +12,7 @@ from annotated_types import Lt
 from pydantic_core import CoreSchema, core_schema
 from typing_extensions import Annotated, TypedDict
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     BaseModel,
     ConfigDict,
     Field,
@@ -23,10 +23,10 @@ from pydantic import (
     ValidationError,
     with_config,
 )
-from pydantic._internal._decorators import get_attribute_from_bases
-from pydantic.functional_serializers import field_serializer, model_serializer
-from pydantic.functional_validators import field_validator, model_validator
-from pydantic.type_adapter import TypeAdapter
+from whoop_pydantic_v2._internal._decorators import get_attribute_from_bases
+from whoop_pydantic_v2.functional_serializers import field_serializer, model_serializer
+from whoop_pydantic_v2.functional_validators import field_validator, model_validator
+from whoop_pydantic_v2.type_adapter import TypeAdapter
 
 from .conftest import Err
 
@@ -51,7 +51,7 @@ def fixture_typed_dict(TypedDictAll):
         foo: str
 
     if sys.version_info < (3, 12) and TypedDictAll.__module__ == 'typing':
-        pytest.skip('typing.TypedDict does not support all pydantic features in Python < 3.12')
+        pytest.skip('typing.TypedDict does not support all whoop_pydantic_v2 features in Python < 3.12')
 
     if hasattr(TestTypedDict, '__required_keys__'):
         return TypedDictAll
@@ -502,7 +502,7 @@ def test_recursive_typeddict():
 
     from typing_extensions import TypedDict
 
-    from pydantic import BaseModel
+    from whoop_pydantic_v2 import BaseModel
 
     class RecursiveTypedDict(TypedDict):
         foo: Optional['RecursiveTypedDict']
@@ -577,7 +577,7 @@ def test_recursive_generic_typeddict_in_module(create_module):
 
         from typing_extensions import TypedDict
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         T = TypeVar('T')
 

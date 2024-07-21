@@ -1,5 +1,5 @@
 """
-Test pydantic model type hints (annotations) and that they can be
+Test whoop_pydantic_v2 model type hints (annotations) and that they can be
 queried by :py:meth:`typing.get_type_hints`.
 """
 
@@ -17,11 +17,11 @@ from typing import (
 import pytest
 import typing_extensions
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     BaseModel,
     RootModel,
 )
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2.dataclasses import dataclass
 
 DEPRECATED_MODEL_MEMBERS = {
     'construct',
@@ -35,7 +35,7 @@ DEPRECATED_MODEL_MEMBERS = {
 }
 
 # Disable deprecation warnings, as we enumerate members that may be
-# i.e. pydantic.warnings.PydanticDeprecatedSince20: The `__fields__` attribute is deprecated,
+# i.e. whoop_pydantic_v2.warnings.PydanticDeprecatedSince20: The `__fields__` attribute is deprecated,
 #      use `model_fields` instead.
 # Additionally, only run these tests for 3.10+
 pytestmark = [

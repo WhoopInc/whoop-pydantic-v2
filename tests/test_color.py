@@ -3,8 +3,8 @@ from datetime import datetime
 import pytest
 from pydantic_core import PydanticCustomError
 
-from pydantic import BaseModel, ValidationError
-from pydantic.color import Color
+from whoop_pydantic_v2 import BaseModel, ValidationError
+from whoop_pydantic_v2.color import Color
 
 pytestmark = pytest.mark.filterwarnings(
     'ignore:The `Color` class is deprecated, use `pydantic_extra_types` instead.*:DeprecationWarning'

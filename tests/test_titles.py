@@ -5,10 +5,10 @@ from typing import Any, Callable, List
 import pytest
 import typing_extensions
 
-import pydantic
-from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, computed_field
-from pydantic.fields import FieldInfo
-from pydantic.json_schema import model_json_schema
+import whoop_pydantic_v2
+from whoop_pydantic_v2 import BaseModel, ConfigDict, Field, TypeAdapter, computed_field
+from whoop_pydantic_v2.fields import FieldInfo
+from whoop_pydantic_v2.json_schema import model_json_schema
 
 from .test_types_typeddict import fixture_typed_dict, fixture_typed_dict_all  # noqa
 
@@ -138,7 +138,7 @@ def test_model_config_field_title_generator(field_title_generator):
 
 @pytest.mark.parametrize('model_title_generator', MODEL_TITLE_GENERATORS)
 def test_dataclass_model_title_generator(model_title_generator):
-    @pydantic.dataclasses.dataclass(config=ConfigDict(model_title_generator=model_title_generator))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(model_title_generator=model_title_generator))
     class MyDataclass:
         field_a: int
 
@@ -152,7 +152,7 @@ def test_dataclass_model_title_generator(model_title_generator):
 
 @pytest.mark.parametrize('field_title_generator', FIELD_TITLE_GENERATORS)
 def test_field_title_generator_in_dataclass_fields(field_title_generator):
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         field_a: str = Field(field_title_generator=field_title_generator)
         field_b: int = Field(field_title_generator=field_title_generator)
@@ -176,7 +176,7 @@ def test_field_title_generator_in_dataclass_fields(field_title_generator):
 
 @pytest.mark.parametrize('field_title_generator', FIELD_TITLE_GENERATORS)
 def test_dataclass_config_field_title_generator(field_title_generator):
-    @pydantic.dataclasses.dataclass(config=ConfigDict(field_title_generator=field_title_generator))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(field_title_generator=field_title_generator))
     class MyDataclass:
         field_a: str
         field_b: int
@@ -301,7 +301,7 @@ def test_field_level_field_title_generator_precedence_over_config_level(
         'type': 'object',
     }
 
-    @pydantic.dataclasses.dataclass(config=ConfigDict(field_title_generator=field_level_title_generator))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(field_title_generator=field_level_title_generator))
     class MyDataclass:
         field_a: str = Field(field_title_generator=field_level_title_generator)
 
@@ -356,7 +356,7 @@ def test_field_title_precedence_over_generators(TypedDict, Annotated):
         'type': 'object',
     }
 
-    @pydantic.dataclasses.dataclass(config=ConfigDict(field_title_generator=lambda f, _: f.upper()))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(field_title_generator=lambda f, _: f.upper()))
     class MyDataclass:
         field_a: str = Field(title='MyTitle', field_title_generator=lambda f, _: f.upper())
 
@@ -389,7 +389,7 @@ def test_class_title_precedence_over_generator():
         'type': 'object',
     }
 
-    @pydantic.dataclasses.dataclass(
+    @whoop_pydantic_v2.dataclasses.dataclass(
         config=ConfigDict(title='MyTitle', model_title_generator=lambda m: m.__name__.upper())
     )
     class MyDataclass:
@@ -415,7 +415,7 @@ def test_model_title_generator_returns_invalid_type(invalid_return_value, TypedD
         TypeError, match=f'model_title_generator .* must return str, not {invalid_return_value.__class__}'
     ):
 
-        @pydantic.dataclasses.dataclass(config=ConfigDict(model_title_generator=lambda m: invalid_return_value))
+        @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(model_title_generator=lambda m: invalid_return_value))
         class MyDataclass:
             pass
 
@@ -445,7 +445,7 @@ def test_config_field_title_generator_returns_invalid_type(invalid_return_value,
         TypeError, match=f'field_title_generator .* must return str, not {invalid_return_value.__class__}'
     ):
 
-        @pydantic.dataclasses.dataclass(config=ConfigDict(field_title_generator=lambda f, _: invalid_return_value))
+        @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(field_title_generator=lambda f, _: invalid_return_value))
         class MyDataclass:
             field_a: str
 
@@ -475,7 +475,7 @@ def test_field_title_generator_returns_invalid_type(invalid_return_value, TypedD
         TypeError, match=f'field_title_generator .* must return str, not {invalid_return_value.__class__}'
     ):
 
-        @pydantic.dataclasses.dataclass
+        @whoop_pydantic_v2.dataclasses.dataclass
         class MyDataclass:
             field_a: Any = Field(field_title_generator=lambda f, _: invalid_return_value)
 

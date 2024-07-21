@@ -3,7 +3,7 @@ Test mypy failure with invalid types.
 """
 from typing import Generic, List, TypeVar
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 T = TypeVar('T')
 

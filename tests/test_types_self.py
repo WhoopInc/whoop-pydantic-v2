@@ -6,7 +6,7 @@ import pytest
 import typing_extensions
 from typing_extensions import NamedTuple, TypedDict
 
-from pydantic import BaseModel, Field, TypeAdapter, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, TypeAdapter, ValidationError
 
 
 @pytest.fixture(

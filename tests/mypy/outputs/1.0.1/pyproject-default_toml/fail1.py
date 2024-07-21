@@ -4,8 +4,8 @@ Test mypy failure with missing attribute
 from datetime import datetime
 from typing import List, Optional
 
-from pydantic import BaseModel
-from pydantic.types import Json
+from whoop_pydantic_v2 import BaseModel
+from whoop_pydantic_v2.types import Json
 
 
 class Model(BaseModel):

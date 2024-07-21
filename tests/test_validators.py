@@ -15,7 +15,7 @@ from dirty_equals import HasRepr, IsInstance
 from pydantic_core import core_schema
 from typing_extensions import Annotated, Literal, TypedDict
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     BaseModel,
     ConfigDict,
     Field,
@@ -34,8 +34,8 @@ from pydantic import (
     validate_call,
     validator,
 )
-from pydantic.dataclasses import dataclass as pydantic_dataclass
-from pydantic.functional_validators import AfterValidator, BeforeValidator, PlainValidator, WrapValidator
+from whoop_pydantic_v2.dataclasses import dataclass as pydantic_dataclass
+from whoop_pydantic_v2.functional_validators import AfterValidator, BeforeValidator, PlainValidator, WrapValidator
 
 V1_VALIDATOR_DEPRECATION_MATCH = r'Pydantic V1 style `@validator` validators are deprecated'
 
@@ -2550,7 +2550,7 @@ def test_validator_allow_reuse_different_field_4():
 
 
 @pytest.mark.filterwarnings(
-    'ignore:Pydantic V1 style `@root_validator` validators are deprecated.*:pydantic.warnings.PydanticDeprecatedSince20'
+    'ignore:Pydantic V1 style `@root_validator` validators are deprecated.*:whoop_pydantic_v2.warnings.PydanticDeprecatedSince20'
 )
 def test_root_validator_allow_reuse_same_field():
     with pytest.warns(UserWarning, match='`root_val` overrides an existing Pydantic `@root_validator` decorator'):

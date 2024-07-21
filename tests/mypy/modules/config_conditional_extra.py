@@ -1,4 +1,4 @@
-from pydantic import BaseModel, ConfigDict
+from whoop_pydantic_v2 import BaseModel, ConfigDict
 
 
 def condition() -> bool:

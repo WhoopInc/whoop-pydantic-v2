@@ -3,9 +3,9 @@ from typing import List, Tuple
 import pytest
 from pydantic_core import CoreSchema
 
-from pydantic import BaseModel, GetJsonSchemaHandler, ValidationError, model_validator, parse_obj_as
-from pydantic.functional_serializers import model_serializer
-from pydantic.json_schema import JsonSchemaValue
+from whoop_pydantic_v2 import BaseModel, GetJsonSchemaHandler, ValidationError, model_validator, parse_obj_as
+from whoop_pydantic_v2.functional_serializers import model_serializer
+from whoop_pydantic_v2.json_schema import JsonSchemaValue
 
 
 class Model(BaseModel):
@@ -62,7 +62,7 @@ def test_model_validate_wrong_model():
 
 def test_root_model_error():
     with pytest.raises(
-        TypeError, match="To define root models, use `pydantic.RootModel` rather than a field called '__root__'"
+        TypeError, match="To define root models, use `whoop_pydantic_v2.RootModel` rather than a field called '__root__'"
     ):
 
         class MyModel(BaseModel):

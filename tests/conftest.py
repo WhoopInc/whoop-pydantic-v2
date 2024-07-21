@@ -14,7 +14,7 @@ from typing import Any, Optional
 import pytest
 from _pytest.assertion.rewrite import AssertionRewritingHook
 
-from pydantic import GenerateSchema
+from whoop_pydantic_v2 import GenerateSchema
 
 
 def pytest_addoption(parser: pytest.Parser):

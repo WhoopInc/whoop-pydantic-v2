@@ -1,7 +1,7 @@
 Installation is as simple as:
 
 ```bash
-pip install pydantic
+pip install whoop_pydantic_v2
 ```
 
 Pydantic has a few dependencies:
@@ -16,7 +16,7 @@ Pydantic is also available on [conda](https://www.anaconda.com) under the [conda
 channel:
 
 ```bash
-conda install pydantic -c conda-forge
+conda install whoop_pydantic_v2 -c conda-forge
 ```
 
 ## Optional dependencies
@@ -28,7 +28,7 @@ Pydantic has the following optional dependencies:
 To install optional dependencies along with Pydantic:
 
 ```bash
-pip install pydantic[email]
+pip install whoop_pydantic_v2[email]
 ```
 
 Of course, you can also install requirements manually with `pip install email-validator`.
@@ -38,7 +38,7 @@ Of course, you can also install requirements manually with `pip install email-va
 And if you prefer to install Pydantic directly from the repository:
 
 ```bash
-pip install git+https://github.com/pydantic/pydantic@main#egg=pydantic
+pip install git+https://github.com/pydantic/pydantic@main#egg=whoop_pydantic_v2
 # or with extras
-pip install git+https://github.com/pydantic/pydantic@main#egg=pydantic[email]
+pip install git+https://github.com/pydantic/pydantic@main#egg=whoop_pydantic_v2[email]
 ```

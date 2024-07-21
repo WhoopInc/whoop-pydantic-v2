@@ -1,7 +1,7 @@
 import pytest
 
-from pydantic import PydanticUserError
-from pydantic._internal._decorators import inspect_annotated_serializer, inspect_validator
+from whoop_pydantic_v2 import PydanticUserError
+from whoop_pydantic_v2._internal._decorators import inspect_annotated_serializer, inspect_validator
 
 
 def _two_pos_required_args(a, b):

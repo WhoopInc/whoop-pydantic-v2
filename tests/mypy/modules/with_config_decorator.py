@@ -1,6 +1,6 @@
 from typing import TypedDict
 
-from pydantic import ConfigDict, with_config
+from whoop_pydantic_v2 import ConfigDict, with_config
 
 
 @with_config(ConfigDict(str_to_lower=True))

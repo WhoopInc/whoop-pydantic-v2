@@ -27,7 +27,7 @@ from dirty_equals import HasRepr, IsStr
 from pydantic_core import ErrorDetails, InitErrorDetails, PydanticSerializationError, core_schema
 from typing_extensions import Annotated, Literal, TypedDict, get_args
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     BaseModel,
     ConfigDict,
     GetCoreSchemaHandler,
@@ -44,8 +44,8 @@ from pydantic import (
     root_validator,
     validator,
 )
-from pydantic.fields import Field, computed_field
-from pydantic.functional_serializers import (
+from whoop_pydantic_v2.fields import Field, computed_field
+from whoop_pydantic_v2.functional_serializers import (
     field_serializer,
     model_serializer,
 )
@@ -1014,7 +1014,7 @@ def test_invalid_type():
         class Model(BaseModel):
             x: 43 = 123
 
-    assert 'Unable to generate pydantic-core schema for 43' in exc_info.value.args[0]
+    assert 'Unable to generate whoop_pydantic_v2-core schema for 43' in exc_info.value.args[0]
 
 
 class CustomStr(str):
@@ -1726,9 +1726,9 @@ def test_exclude_none_with_extra():
 
 
 def test_str_method_inheritance():
-    import pydantic
+    import whoop_pydantic_v2
 
-    class Foo(pydantic.BaseModel):
+    class Foo(whoop_pydantic_v2.BaseModel):
         x: int = 3
         y: int = 4
 
@@ -1743,9 +1743,9 @@ def test_str_method_inheritance():
 
 
 def test_repr_method_inheritance():
-    import pydantic
+    import whoop_pydantic_v2
 
-    class Foo(pydantic.BaseModel):
+    class Foo(whoop_pydantic_v2.BaseModel):
         x: int = 3
         y: int = 4
 
@@ -2027,7 +2027,7 @@ def test_custom_generic_disallowed():
             self.t2 = t2
 
     match = (
-        r'Unable to generate pydantic-core schema for (.*)MyGen\[str, bool\](.*). '
+        r'Unable to generate whoop_pydantic_v2-core schema for (.*)MyGen\[str, bool\](.*). '
         r'Set `arbitrary_types_allowed=True` in the model_config to ignore this error'
     )
     with pytest.raises(TypeError, match=match):
@@ -2144,7 +2144,7 @@ def test_resolve_annotations_module_missing(tmp_path):
     # language=Python
     file_path.write_text(
         """
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 class User(BaseModel):
     id: int
     name: str = 'Jane Doe'
@@ -2239,7 +2239,7 @@ def test_int_subclass():
             return self
 
     m = MyModel(my_int=IntSubclass(123))
-    # This is expected behavior in `V2` because in pydantic-core we cast the value to a rust i64,
+    # This is expected behavior in `V2` because in whoop_pydantic_v2-core we cast the value to a rust i64,
     # so the sub-type information is lost."
     # (more detail about how to handle this in: https://github.com/pydantic/pydantic/pull/5151#discussion_r1130691036)
     assert m.my_int.__class__ != IntSubclass
@@ -2583,7 +2583,7 @@ def test_model_repr_before_validation():
 def test_custom_exception_handler():
     from traceback import TracebackException
 
-    from pydantic import BaseModel
+    from whoop_pydantic_v2 import BaseModel
 
     traceback_exceptions = []
 
@@ -2712,7 +2712,7 @@ def test_eq_with_cached_property():
     Test BaseModel.__eq__ compatibility with functools.cached_property
 
     See GH-7444: https://github.com/pydantic/pydantic/issues/7444
-    Previously, pydantic BaseModel.__eq__ compared the full __dict__ of
+    Previously, whoop_pydantic_v2 BaseModel.__eq__ compared the full __dict__ of
     model instances. This is not compatible with e.g. functools.cached_property,
     which caches the computed values in the instance's __dict__
     """

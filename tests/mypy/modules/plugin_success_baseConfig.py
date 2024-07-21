@@ -1,7 +1,7 @@
 from typing import ClassVar, Generic, List, Optional, TypeVar, Union
 
-from pydantic import BaseModel, Field, create_model, field_validator
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import BaseModel, Field, create_model, field_validator
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 class Model(BaseModel):

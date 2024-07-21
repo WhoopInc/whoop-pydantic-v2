@@ -1,7 +1,7 @@
 from typing import Generic, List, Optional, Set, TypeVar, Union
 
-from pydantic import BaseModel, ConfigDict, Extra, Field, field_validator
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import BaseModel, ConfigDict, Extra, Field, field_validator
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 class Model(BaseModel):
@@ -20,7 +20,7 @@ model = Model(x=1)
 model.y = 'a'
 # MYPY: error: Property "y" defined in "Model" is read-only  [misc]
 Model.from_orm({})
-# MYPY: error: "Model" does not have from_attributes=True  [pydantic-orm]
+# MYPY: error: "Model" does not have from_attributes=True  [whoop_pydantic_v2-orm]
 
 
 class KwargsModel(BaseModel, alias_generator=None, frozen=True, extra=Extra.forbid):
@@ -38,7 +38,7 @@ kwargs_model = KwargsModel(x=1)
 kwargs_model.y = 'a'
 # MYPY: error: Property "y" defined in "KwargsModel" is read-only  [misc]
 KwargsModel.from_orm({})
-# MYPY: error: "KwargsModel" does not have from_attributes=True  [pydantic-orm]
+# MYPY: error: "KwargsModel" does not have from_attributes=True  [whoop_pydantic_v2-orm]
 
 
 class ForbidExtraModel(BaseModel):
@@ -62,29 +62,29 @@ class BadExtraModel(BaseModel):
 
 
 class KwargsBadExtraModel(BaseModel, extra=1):
-# MYPY: error: Invalid value for "Config.extra"  [pydantic-config]
+# MYPY: error: Invalid value for "Config.extra"  [whoop_pydantic_v2-config]
     pass
 
 
 class BadConfig1(BaseModel):
     model_config = ConfigDict(from_attributes={})  # type: ignore[typeddict-item]
-# MYPY: error: Invalid value for "Config.from_attributes"  [pydantic-config]
-# MYPY: note: Error code "pydantic-config" not covered by "type: ignore" comment
+# MYPY: error: Invalid value for "Config.from_attributes"  [whoop_pydantic_v2-config]
+# MYPY: note: Error code "whoop_pydantic_v2-config" not covered by "type: ignore" comment
 
 
 class KwargsBadConfig1(BaseModel, from_attributes={}):
-# MYPY: error: Invalid value for "Config.from_attributes"  [pydantic-config]
+# MYPY: error: Invalid value for "Config.from_attributes"  [whoop_pydantic_v2-config]
     pass
 
 
 class BadConfig2(BaseModel):
     model_config = ConfigDict(from_attributes=list)  # type: ignore[typeddict-item]
-# MYPY: error: Invalid value for "Config.from_attributes"  [pydantic-config]
-# MYPY: note: Error code "pydantic-config" not covered by "type: ignore" comment
+# MYPY: error: Invalid value for "Config.from_attributes"  [whoop_pydantic_v2-config]
+# MYPY: note: Error code "whoop_pydantic_v2-config" not covered by "type: ignore" comment
 
 
 class KwargsBadConfig2(BaseModel, from_attributes=list):
-# MYPY: error: Invalid value for "Config.from_attributes"  [pydantic-config]
+# MYPY: error: Invalid value for "Config.from_attributes"  [whoop_pydantic_v2-config]
     pass
 
 
@@ -104,7 +104,7 @@ class DefaultTestingModel(BaseModel):
     c: int = Field(...)
     d: Union[int, str]
     e = ...
-# MYPY: error: Untyped fields disallowed  [pydantic-field]
+# MYPY: error: Untyped fields disallowed  [whoop_pydantic_v2-field]
 
     # Not required
     f: Optional[int]
@@ -113,7 +113,7 @@ class DefaultTestingModel(BaseModel):
     i: int = Field(None)
 # MYPY: error: Incompatible types in assignment (expression has type "None", variable has type "int")  [assignment]
     j = 1
-# MYPY: error: Untyped fields disallowed  [pydantic-field]
+# MYPY: error: Untyped fields disallowed  [whoop_pydantic_v2-field]
 
 
 DefaultTestingModel()
@@ -215,15 +215,15 @@ AliasGeneratorModel(z=1)
 class AliasGeneratorModel2(BaseModel):
     x: int = Field(..., alias='y')
 
-    model_config = ConfigDict(alias_generator=lambda x: x + '_')  # type: ignore[pydantic-alias]
+    model_config = ConfigDict(alias_generator=lambda x: x + '_')  # type: ignore[whoop_pydantic_v2-alias]
 # MYPY: error: Unused "type: ignore" comment  [unused-ignore]
 
 
 class UntypedFieldModel(BaseModel):
     x: int = 1
     y = 2
-# MYPY: error: Untyped fields disallowed  [pydantic-field]
-    z = 2  # type: ignore[pydantic-field]
+# MYPY: error: Untyped fields disallowed  [whoop_pydantic_v2-field]
+    z = 2  # type: ignore[whoop_pydantic_v2-field]
 
 
 AliasGeneratorModel2(x=1)
@@ -312,7 +312,7 @@ class FieldDefaultTestingModel(BaseModel):
 
     # Default and default factory
     m: int = Field(default=1, default_factory=list)
-# MYPY: error: Field default and default_factory cannot be specified together  [pydantic-field]
+# MYPY: error: Field default and default_factory cannot be specified together  [whoop_pydantic_v2-field]
 
 
 class ModelWithAnnotatedValidator(BaseModel):

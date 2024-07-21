@@ -6,7 +6,7 @@ from typing import Any, Optional, Tuple
 
 import pytest
 
-from pydantic import BaseModel, PydanticUserError, ValidationError
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, ValidationError
 
 
 def test_postponed_annotations(create_module):
@@ -14,7 +14,7 @@ def test_postponed_annotations(create_module):
         # language=Python
         """
 from __future__ import annotations
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class Model(BaseModel):
     a: int
@@ -29,7 +29,7 @@ def test_postponed_annotations_auto_model_rebuild(create_module):
         # language=Python
         """
 from __future__ import annotations
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class Model(BaseModel):
     a: Model
@@ -45,7 +45,7 @@ def test_forward_ref_auto_update_no_model(create_module):
 
         import pytest
 
-        from pydantic import BaseModel, PydanticUserError
+        from whoop_pydantic_v2 import BaseModel, PydanticUserError
 
         class Foo(BaseModel):
             a: Optional['Bar'] = None
@@ -78,7 +78,7 @@ def test_forward_ref_auto_update_no_model(create_module):
 def test_forward_ref_one_of_fields_not_defined(create_module):
     @create_module
     def module():
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         class Foo(BaseModel):
             foo: 'Foo'
@@ -95,7 +95,7 @@ def test_basic_forward_ref(create_module):
     def module():
         from typing import ForwardRef, Optional
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         class Foo(BaseModel):
             a: int
@@ -114,7 +114,7 @@ def test_self_forward_ref_module(create_module):
     def module():
         from typing import ForwardRef, Optional
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         FooRef = ForwardRef('Foo')
 
@@ -131,7 +131,7 @@ def test_self_forward_ref_collection(create_module):
     def module():
         from typing import Dict, List
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         class Foo(BaseModel):
             a: int = 123
@@ -173,7 +173,7 @@ def test_self_forward_ref_local(create_module):
     def module():
         from typing import ForwardRef
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         def main():
             Foo = ForwardRef('Foo')
@@ -194,7 +194,7 @@ def test_forward_ref_dataclass(create_module):
     def module():
         from typing import Optional
 
-        from pydantic.dataclasses import dataclass
+        from whoop_pydantic_v2.dataclasses import dataclass
 
         @dataclass
         class MyDataclass:
@@ -210,7 +210,7 @@ def test_forward_ref_sub_types(create_module):
     def module():
         from typing import ForwardRef, Union
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         class Leaf(BaseModel):
             a: str
@@ -236,7 +236,7 @@ def test_forward_ref_nested_sub_types(create_module):
     def module():
         from typing import ForwardRef, Tuple, Union
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         class Leaf(BaseModel):
             a: str
@@ -266,7 +266,7 @@ def test_self_reference_json_schema(create_module):
     def module():
         from typing import List
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         class Account(BaseModel):
             name: str
@@ -299,7 +299,7 @@ def test_self_reference_json_schema_with_future_annotations(create_module):
         # language=Python
         """
 from __future__ import annotations
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class Account(BaseModel):
   name: str
@@ -333,7 +333,7 @@ def test_circular_reference_json_schema(create_module):
     def module():
         from typing import List
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         class Owner(BaseModel):
             account: 'Account'
@@ -377,7 +377,7 @@ def test_circular_reference_json_schema_with_future_annotations(create_module):
         # language=Python
         """
 from __future__ import annotations
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class Owner(BaseModel):
   account: Account
@@ -425,7 +425,7 @@ def test_forward_ref_with_field(create_module):
 
         import pytest
 
-        from pydantic import BaseModel, Field
+        from whoop_pydantic_v2 import BaseModel, Field
 
         Foo = ForwardRef('Foo')
 
@@ -440,7 +440,7 @@ def test_forward_ref_optional(create_module):
         # language=Python
         """
 from __future__ import annotations
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Spec(BaseModel):
@@ -470,11 +470,11 @@ class Filter(BaseModel):
 def test_forward_ref_with_create_model(create_module):
     @create_module
     def module():
-        import pydantic
+        import whoop_pydantic_v2
 
-        Sub = pydantic.create_model('Sub', foo=(str, 'bar'), __module__=__name__)
+        Sub = whoop_pydantic_v2.create_model('Sub', foo=(str, 'bar'), __module__=__name__)
         assert Sub  # get rid of "local variable 'Sub' is assigned to but never used"
-        Main = pydantic.create_model('Main', sub=('Sub', ...), __module__=__name__)
+        Main = whoop_pydantic_v2.create_model('Main', sub=('Sub', ...), __module__=__name__)
         instance = Main(sub={})
         assert instance.sub.model_dump() == {'foo': 'bar'}
 
@@ -487,7 +487,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 from typing_extensions import Literal
 
 @dataclass
@@ -518,7 +518,7 @@ def test_discriminated_union_forward_ref(create_module):
 
         from typing_extensions import Literal
 
-        from pydantic import BaseModel, Field
+        from whoop_pydantic_v2 import BaseModel, Field
 
         class Pet(BaseModel):
             pet: Union['Cat', 'Dog'] = Field(discriminator='type')
@@ -575,7 +575,7 @@ def test_class_var_as_string(create_module):
         """
 from __future__ import annotations
 from typing import ClassVar
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class Model(BaseModel):
     a: ClassVar[int]
@@ -589,7 +589,7 @@ def test_json_encoder_str(create_module):
     module = create_module(
         # language=Python
         """
-from pydantic import BaseModel, ConfigDict, field_serializer
+from whoop_pydantic_v2 import BaseModel, ConfigDict, field_serializer
 
 
 class User(BaseModel):
@@ -630,7 +630,7 @@ def test_pep585_self_referencing_generics(create_module):
         # language=Python
         """
 from __future__ import annotations
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class SelfReferencing(BaseModel):
     names: list[SelfReferencing]  # noqa: F821
@@ -654,7 +654,7 @@ def test_pep585_recursive_generics(create_module):
     def module():
         from typing import ForwardRef
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         HeroRef = ForwardRef('Hero')
 
@@ -683,7 +683,7 @@ def test_class_var_forward_ref(create_module):
         """
 from __future__ import annotations
 from typing import ClassVar
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class WithClassVar(BaseModel):
     Instances: ClassVar[dict[str, WithClassVar]] = {}
@@ -697,7 +697,7 @@ def test_recursive_model(create_module):
         """
 from __future__ import annotations
 from typing import Optional
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class Foobar(BaseModel):
     x: int
@@ -722,7 +722,7 @@ def test_recursive_models_union(create_module):
             """
 from __future__ import annotations
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 from typing import TypeVar, Generic
 
 T = TypeVar("T")
@@ -749,7 +749,7 @@ def test_recursive_models_union_backport(create_module):
         """
 from __future__ import annotations
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 from typing import TypeVar, Generic
 
 T = TypeVar("T")
@@ -800,7 +800,7 @@ def test_nested_annotation(create_module):
         # language=Python
         """
 from __future__ import annotations
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 def nested():
     class Foo(BaseModel):
@@ -821,7 +821,7 @@ def nested():
 def test_nested_more_annotation(create_module):
     @create_module
     def module():
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         def nested():
             class Foo(BaseModel):
@@ -846,7 +846,7 @@ def test_nested_annotation_priority(create_module):
         from annotated_types import Gt
         from typing_extensions import Annotated
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         Foobar = Annotated[int, Gt(0)]  # noqa: F841
 
@@ -868,7 +868,7 @@ def test_nested_annotation_priority(create_module):
 def test_nested_model_rebuild(create_module):
     @create_module
     def module():
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         def nested():
             class Bar(BaseModel):
@@ -920,7 +920,7 @@ def test_undefined_types_warning_1a_raised_by_default_2a_future_annotations(crea
             # language=Python
             """
 from __future__ import annotations
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class Foobar(BaseModel):
     a: UndefinedType
@@ -938,7 +938,7 @@ def test_undefined_types_warning_1a_raised_by_default_2b_forward_ref(create_modu
         def module():
             from typing import ForwardRef
 
-            from pydantic import BaseModel
+            from whoop_pydantic_v2 import BaseModel
 
             UndefinedType = ForwardRef('UndefinedType')
 
@@ -954,14 +954,14 @@ def test_undefined_types_warning_1b_suppressed_via_config_2a_future_annotations(
         # language=Python
         """
 from __future__ import annotations
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 # Because we don't instantiate the type, no error for an undefined type is raised
 class Foobar(BaseModel):
     a: UndefinedType
 """
     )
-    # Since we're testing the absence of an error, it's important to confirm pydantic was actually run.
+    # Since we're testing the absence of an error, it's important to confirm whoop_pydantic_v2 was actually run.
     # The presence of the `__pydantic_complete__` is a good indicator of this.
     assert module.Foobar.__pydantic_complete__ is False
 
@@ -971,7 +971,7 @@ def test_undefined_types_warning_1b_suppressed_via_config_2b_forward_ref(create_
     def module():
         from typing import ForwardRef
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         UndefinedType = ForwardRef('UndefinedType')
 
@@ -979,7 +979,7 @@ def test_undefined_types_warning_1b_suppressed_via_config_2b_forward_ref(create_
         class Foobar(BaseModel):
             a: UndefinedType
 
-    # Since we're testing the absence of a warning, it's important to confirm pydantic was actually run.
+    # Since we're testing the absence of a warning, it's important to confirm whoop_pydantic_v2 was actually run.
     # The presence of the `__pydantic_complete__` is a good indicator of this.
     assert module.Foobar.__pydantic_complete__ is False
 
@@ -991,7 +991,7 @@ def test_undefined_types_warning_raised_by_usage(create_module):
         def module():
             from typing import ForwardRef
 
-            from pydantic import BaseModel
+            from whoop_pydantic_v2 import BaseModel
 
             UndefinedType = ForwardRef('UndefinedType')
 
@@ -1042,7 +1042,7 @@ def test_forward_ref_in_generic(create_module: Any) -> None:
     def module():
         import typing as tp
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         class Foo(BaseModel):
             x: tp.Dict['tp.Type[Bar]', tp.Type['Bar']]
@@ -1063,14 +1063,14 @@ def test_forward_ref_in_generic_separate_modules(create_module: Any) -> None:
     def module_1():
         import typing as tp
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         class Foo(BaseModel):
             x: tp.Dict['tp.Type[Bar]', tp.Type['Bar']]
 
     @create_module
     def module_2():
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         class Bar(BaseModel):
             pass

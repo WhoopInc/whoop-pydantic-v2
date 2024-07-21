@@ -25,16 +25,17 @@ Pydantic provides two special types for convenience when using `validation_alias
 The `AliasPath` is used to specify a path to a field using aliases. For example:
 
 ```py lint="skip"
-from pydantic import BaseModel, Field, AliasPath
+from whoop_pydantic_v2 import BaseModel, Field, AliasPath
 
 
 class User(BaseModel):
     first_name: str = Field(validation_alias=AliasPath('names', 0))
     last_name: str = Field(validation_alias=AliasPath('names', 1))
 
+
 user = User.model_validate({'names': ['John', 'Doe']})  # (1)!
 print(user)
-#> first_name='John' last_name='Doe'
+# > first_name='John' last_name='Doe'
 ```
 
 1. We are using `model_validate` to validate a dictionary using the field aliases.
@@ -47,19 +48,20 @@ In the `'last_name'` field, we are using the alias `'names'` and the index `1` t
 `AliasChoices` is used to specify a choice of aliases. For example:
 
 ```py lint="skip"
-from pydantic import BaseModel, Field, AliasChoices
+from whoop_pydantic_v2 import BaseModel, Field, AliasChoices
 
 
 class User(BaseModel):
     first_name: str = Field(validation_alias=AliasChoices('first_name', 'fname'))
     last_name: str = Field(validation_alias=AliasChoices('last_name', 'lname'))
 
+
 user = User.model_validate({'fname': 'John', 'lname': 'Doe'})  # (1)!
 print(user)
-#> first_name='John' last_name='Doe'
+# > first_name='John' last_name='Doe'
 user = User.model_validate({'first_name': 'John', 'lname': 'Doe'})  # (2)!
 print(user)
-#> first_name='John' last_name='Doe'
+# > first_name='John' last_name='Doe'
 ```
 
 1. We are using the second alias choice for both fields.
@@ -69,7 +71,7 @@ print(user)
 You can also use `AliasChoices` with `AliasPath`:
 
 ```py lint="skip"
-from pydantic import BaseModel, Field, AliasPath, AliasChoices
+from whoop_pydantic_v2 import BaseModel, Field, AliasPath, AliasChoices
 
 
 class User(BaseModel):
@@ -79,13 +81,13 @@ class User(BaseModel):
 
 user = User.model_validate({'first_name': 'John', 'last_name': 'Doe'})
 print(user)
-#> first_name='John' last_name='Doe'
+# > first_name='John' last_name='Doe'
 user = User.model_validate({'names': ['John', 'Doe']})
 print(user)
-#> first_name='John' last_name='Doe'
+# > first_name='John' last_name='Doe'
 user = User.model_validate({'names': ['John'], 'last_name': 'Doe'})
 print(user)
-#> first_name='John' last_name='Doe'
+# > first_name='John' last_name='Doe'
 ```
 
 ## Using alias generators
@@ -108,7 +110,7 @@ want to specify the alias for each field individually.
 Here's a basic example using a callable:
 
 ```py
-from pydantic import BaseModel, ConfigDict
+from whoop_pydantic_v2 import BaseModel, ConfigDict
 
 
 class Tree(BaseModel):
@@ -142,7 +144,7 @@ but you don't want to specify the validation and serialization aliases for each 
 For example:
 
 ```py
-from pydantic import AliasGenerator, BaseModel, ConfigDict
+from whoop_pydantic_v2 import AliasGenerator, BaseModel, ConfigDict
 
 
 class Tree(BaseModel):
@@ -168,7 +170,7 @@ print(t.model_dump(by_alias=True))
 If you specify an `alias` on the [`Field`][pydantic.fields.Field], it will take precedence over the generated alias by default:
 
 ```py
-from pydantic import BaseModel, ConfigDict, Field
+from whoop_pydantic_v2 import BaseModel, ConfigDict, Field
 
 
 def to_camel(string: str) -> str:

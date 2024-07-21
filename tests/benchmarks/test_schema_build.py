@@ -3,8 +3,8 @@ from typing import Literal, Union
 import pytest
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, Discriminator
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import BaseModel, Discriminator
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass(frozen=True, kw_only=True)

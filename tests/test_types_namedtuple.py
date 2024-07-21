@@ -4,8 +4,8 @@ from typing import Generic, NamedTuple, Optional, Tuple, TypeVar
 import pytest
 from typing_extensions import NamedTuple as TypingExtensionsNamedTuple
 
-from pydantic import BaseModel, ConfigDict, PositiveInt, TypeAdapter, ValidationError
-from pydantic.errors import PydanticSchemaGenerationError
+from whoop_pydantic_v2 import BaseModel, ConfigDict, PositiveInt, TypeAdapter, ValidationError
+from whoop_pydantic_v2.errors import PydanticSchemaGenerationError
 
 
 def test_namedtuple_simple():

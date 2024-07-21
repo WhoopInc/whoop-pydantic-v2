@@ -5,7 +5,7 @@ from typing import Generic, Optional, Tuple, TypeVar
 import pytest
 from typing_extensions import Annotated
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     BaseModel,
     ConfigDict,
     Field,
@@ -18,7 +18,7 @@ from pydantic import (
     field_validator,
     validator,
 )
-from pydantic.fields import ModelPrivateAttr
+from whoop_pydantic_v2.fields import ModelPrivateAttr
 
 
 def test_create_model():
@@ -57,7 +57,7 @@ def test_create_model_pickle(create_module):
     def module():
         import pickle
 
-        from pydantic import create_model
+        from whoop_pydantic_v2 import create_model
 
         FooModel = create_model('FooModel', foo=(str, ...), bar=(int, 123), __module__=__name__)
 
@@ -618,7 +618,7 @@ def test_resolving_forward_refs_across_modules(create_module):
         """\
 from __future__ import annotations
 from dataclasses import dataclass
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class X(BaseModel):
     pass

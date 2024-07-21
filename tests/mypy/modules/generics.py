@@ -1,6 +1,6 @@
 from typing import Any, Dict, Generic, Optional, TypeVar
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 Tbody = TypeVar('Tbody')
 

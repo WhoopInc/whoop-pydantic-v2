@@ -17,7 +17,7 @@ from typing import List
 
 from typing_extensions import TypedDict
 
-from pydantic import TypeAdapter, ValidationError
+from whoop_pydantic_v2 import TypeAdapter, ValidationError
 
 
 class User(TypedDict):
@@ -28,7 +28,7 @@ class User(TypedDict):
 user_list_adapter = TypeAdapter(List[User])
 user_list = user_list_adapter.validate_python([{'name': 'Fred', 'id': '3'}])
 print(repr(user_list))
-#> [{'name': 'Fred', 'id': 3}]
+# > [{'name': 'Fred', 'id': 3}]
 
 try:
     user_list_adapter.validate_python(
@@ -43,7 +43,7 @@ except ValidationError as e:
     """
 
 print(repr(user_list_adapter.dump_json(user_list)))
-#> b'[{"name":"Fred","id":3}]'
+# > b'[{"name":"Fred","id":3}]'
 ```
 
 !!! info "`dump_json` returns `bytes`"
@@ -70,7 +70,7 @@ This is especially useful when you want to parse results into a type that is not
 ```py
 from typing import List
 
-from pydantic import BaseModel, TypeAdapter
+from whoop_pydantic_v2 import BaseModel, TypeAdapter
 
 
 class Item(BaseModel):
@@ -84,7 +84,7 @@ item_data = [{'id': 1, 'name': 'My Item'}]
 
 items = TypeAdapter(List[Item]).validate_python(item_data)
 print(items)
-#> [Item(id=1, name='My Item')]
+# > [Item(id=1, name='My Item')]
 ```
 
 [`TypeAdapter`][pydantic.type_adapter.TypeAdapter] is capable of parsing data into any of the types Pydantic can

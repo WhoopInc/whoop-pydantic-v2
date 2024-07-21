@@ -5,7 +5,7 @@ from typing import Literal, Union
 import pytest
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, Field, TypeAdapter
+from whoop_pydantic_v2 import BaseModel, Field, TypeAdapter
 
 
 class NestedState(BaseModel):

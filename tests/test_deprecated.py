@@ -9,7 +9,7 @@ import pytest
 from pydantic_core import CoreSchema, core_schema
 from typing_extensions import Literal
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     BaseModel,
     ConfigDict,
     Field,
@@ -21,14 +21,14 @@ from pydantic import (
     conlist,
     root_validator,
 )
-from pydantic.config import Extra
-from pydantic.deprecated.decorator import validate_arguments
-from pydantic.deprecated.json import custom_pydantic_encoder, pydantic_encoder, timedelta_isoformat
-from pydantic.deprecated.parse import load_file, load_str_bytes
-from pydantic.deprecated.tools import parse_obj_as, schema_json_of, schema_of
-from pydantic.functional_serializers import model_serializer
-from pydantic.json_schema import JsonSchemaValue
-from pydantic.type_adapter import TypeAdapter
+from whoop_pydantic_v2.config import Extra
+from whoop_pydantic_v2.deprecated.decorator import validate_arguments
+from whoop_pydantic_v2.deprecated.json import custom_pydantic_encoder, pydantic_encoder, timedelta_isoformat
+from whoop_pydantic_v2.deprecated.parse import load_file, load_str_bytes
+from whoop_pydantic_v2.deprecated.tools import parse_obj_as, schema_json_of, schema_of
+from whoop_pydantic_v2.functional_serializers import model_serializer
+from whoop_pydantic_v2.json_schema import JsonSchemaValue
+from whoop_pydantic_v2.type_adapter import TypeAdapter
 
 
 def deprecated_from_orm(model_type: Type[BaseModel], obj: Any) -> Any:
@@ -353,7 +353,7 @@ def test_extra_used_as_enum(
 ) -> None:
     with pytest.warns(
         PydanticDeprecatedSince20,
-        match=re.escape("`pydantic.config.Extra` is deprecated, use literal values instead (e.g. `extra='allow'`)"),
+        match=re.escape("`whoop_pydantic_v2.config.Extra` is deprecated, use literal values instead (e.g. `extra='allow'`)"),
     ):
         assert getattr(Extra, attribute) == value
 
@@ -786,10 +786,10 @@ def test_deprecated_module(tmp_path: Path) -> None:
         validate_arguments()(test)
     assert len(all_warnings) == 12
     expected_warnings = [
-        '`parse_obj_as` is deprecated. Use `pydantic.TypeAdapter.validate_python` instead',
-        '`schema_json_of` is deprecated. Use `pydantic.TypeAdapter.json_schema` instead',
-        '`schema_of` is deprecated. Use `pydantic.TypeAdapter.json_schema` instead',
-        '`schema_of` is deprecated. Use `pydantic.TypeAdapter.json_schema` instead',
+        '`parse_obj_as` is deprecated. Use `whoop_pydantic_v2.TypeAdapter.validate_python` instead',
+        '`schema_json_of` is deprecated. Use `whoop_pydantic_v2.TypeAdapter.json_schema` instead',
+        '`schema_of` is deprecated. Use `whoop_pydantic_v2.TypeAdapter.json_schema` instead',
+        '`schema_of` is deprecated. Use `whoop_pydantic_v2.TypeAdapter.json_schema` instead',
         '`load_str_bytes` is deprecated',
         '`load_file` is deprecated',
         '`load_str_bytes` is deprecated',
@@ -803,7 +803,7 @@ def test_deprecated_module(tmp_path: Path) -> None:
 
 
 def test_deprecated_color():
-    from pydantic.color import Color
+    from whoop_pydantic_v2.color import Color
 
     with pytest.warns(
         PydanticDeprecatedSince20, match='The `Color` class is deprecated, use `pydantic_extra_types` instead.'
@@ -812,7 +812,7 @@ def test_deprecated_color():
 
 
 def test_deprecated_payment():
-    from pydantic import PaymentCardNumber
+    from whoop_pydantic_v2 import PaymentCardNumber
 
     with pytest.warns(
         PydanticDeprecatedSince20,

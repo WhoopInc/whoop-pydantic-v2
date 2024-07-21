@@ -13,7 +13,7 @@ Pydantic V2 is now the current production release of Pydantic.
 You can install Pydantic V2 from PyPI:
 
 ```bash
-pip install -U pydantic
+pip install -U whoop_pydantic_v2
 ```
 
 If you encounter any issues, please [create an issue in GitHub](https://github.com/pydantic/pydantic/issues) using
@@ -30,7 +30,7 @@ migrate your code more quickly.
 You can install the tool from PyPI:
 
 ```bash
-pip install bump-pydantic
+pip install bump-whoop_pydantic_v2
 ```
 
 The usage is simple. If your project structure is:
@@ -64,13 +64,13 @@ For example, you can use the `BaseModel` class from Pydantic V1 instead of the
 Pydantic V2 `pydantic.BaseModel` class:
 
 ```python test="skip" lint="skip" upgrade="skip"
-from pydantic.v1 import BaseModel
+from whoop_pydantic_v2.v1 import BaseModel
 ```
 
 You can also import functions that have been removed from Pydantic V2, such as `lenient_isinstance`:
 
 ```python test="skip" lint="skip" upgrade="skip"
-from pydantic.v1.utils import lenient_isinstance
+from whoop_pydantic_v2.v1.utils import lenient_isinstance
 ```
 
 Pydantic V1 documentation is available at [https://docs.pydantic.dev/1.10/](https://docs.pydantic.dev/1.10/).
@@ -86,13 +86,15 @@ features, take the following steps:
 2. Find and replace all occurrences of:
 
 ```python test="skip" lint="skip" upgrade="skip"
-from pydantic.<module> import <object>
+from whoop_pydantic_v2. < module >
+import < object >
 ```
 
 with:
 
 ```python test="skip" lint="skip" upgrade="skip"
-from pydantic.v1.<module> import <object>
+from whoop_pydantic_v2.v1. < module >
+import < object >
 ```
 
 Here's how you can import `pydantic`'s v1 features based on your version of `pydantic`:
@@ -191,8 +193,8 @@ If you'd still like to use said arguments, you can use [this workaround](https:/
 ```py
 from typing import Dict, Optional
 
-from pydantic import BaseModel as V2BaseModel
-from pydantic.v1 import BaseModel as V1BaseModel
+from whoop_pydantic_v2 import BaseModel as V2BaseModel
+from whoop_pydantic_v2.v1 import BaseModel as V1BaseModel
 
 
 class V1Model(V1BaseModel):
@@ -208,22 +210,22 @@ v2_model = V2Model(a={None: 123})
 
 # V1
 print(v1_model.json())
-#> {"a": {"null": 123}}
+# > {"a": {"null": 123}}
 
 # V2
 print(v2_model.model_dump_json())
-#> {"a":{"None":123}}
+# > {"a":{"None":123}}
 ```
 
 * `model_dump_json()` results are compacted in order to save space, and don't always exactly match that of `json.dumps()` output.
-That being said, you can easily modify the separators used in `json.dumps()` results in order to align the two outputs:
+  That being said, you can easily modify the separators used in `json.dumps()` results in order to align the two outputs:
 
 ```py
 import json
 from typing import List
 
-from pydantic import BaseModel as V2BaseModel
-from pydantic.v1 import BaseModel as V1BaseModel
+from whoop_pydantic_v2 import BaseModel as V2BaseModel
+from whoop_pydantic_v2.v1 import BaseModel as V1BaseModel
 
 
 class V1Model(V1BaseModel):
@@ -239,19 +241,19 @@ v2_model = V2Model(a=['fancy', 'sushi'])
 
 # V1
 print(v1_model.json())
-#> {"a": ["fancy", "sushi"]}
+# > {"a": ["fancy", "sushi"]}
 
 # V2
 print(v2_model.model_dump_json())
-#> {"a":["fancy","sushi"]}
+# > {"a":["fancy","sushi"]}
 
 # Plain json.dumps
 print(json.dumps(v2_model.model_dump()))
-#> {"a": ["fancy", "sushi"]}
+# > {"a": ["fancy", "sushi"]}
 
 # Modified json.dumps
 print(json.dumps(v2_model.model_dump(), separators=(',', ':')))
-#> {"a":["fancy","sushi"]}
+# > {"a":["fancy","sushi"]}
 ```
 
 ### Changes to `pydantic.generics.GenericModel`
@@ -381,9 +383,8 @@ See the [`ConfigDict` API reference][pydantic.config.ConfigDict] for more detail
 !!! note
     To avoid this, you can use the `validate_default` argument in the `Field` function. When set to `True`, it mimics the behavior of `always=True` in Pydantic v1. However, the new way of using `validate_default` is encouraged as it provides more flexibility and control.
 
-
 ```python test="skip"
-from pydantic import BaseModel, validator
+from whoop_pydantic_v2 import BaseModel, validator
 
 
 class Model(BaseModel):
@@ -416,11 +417,11 @@ being validated. Some of these arguments have been removed from `@field_validato
     backwards compatible. If you need to access the configuration you should migrate to `@field_validator` and use
     `info.config`.
 * `field`: this argument used to be a `ModelField` object, which was a quasi-internal class that no longer exists
-    in Pydantic V2. Most of this information can still be accessed by using the field name from `info.field_name`
+  in Pydantic V2. Most of this information can still be accessed by using the field name from `info.field_name`
     to index into `cls.model_fields`
 
 ```python
-from pydantic import BaseModel, ValidationInfo, field_validator
+from whoop_pydantic_v2 import BaseModel, ValidationInfo, field_validator
 
 
 class Model(BaseModel):
@@ -452,7 +453,7 @@ However, in Pydantic V2, when a `TypeError` is raised in a validator, it is no l
 ```python
 import pytest
 
-from pydantic import BaseModel, field_validator  # or validator
+from whoop_pydantic_v2 import BaseModel, field_validator  # or validator
 
 
 class Model(BaseModel):
@@ -523,7 +524,7 @@ plain `dict`:
 ```python
 from typing import Mapping
 
-from pydantic import TypeAdapter
+from whoop_pydantic_v2 import TypeAdapter
 
 
 class MyDict(dict):
@@ -543,7 +544,7 @@ from typing import Any, Mapping, TypeVar
 
 from typing_extensions import Annotated
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     TypeAdapter,
     ValidationInfo,
     ValidatorFunctionWrapHandler,
@@ -552,14 +553,13 @@ from pydantic import (
 
 
 def restore_input_type(
-    value: Any, handler: ValidatorFunctionWrapHandler, _info: ValidationInfo
+        value: Any, handler: ValidatorFunctionWrapHandler, _info: ValidationInfo
 ) -> Any:
     return type(value)(handler(value))
 
 
 T = TypeVar('T')
 PreserveType = Annotated[T, WrapValidator(restore_input_type)]
-
 
 ta = TypeAdapter(PreserveType[Mapping[str, int]])
 
@@ -576,8 +576,8 @@ While we don't promise to preserve input types everywhere, we _do_ preserve them
 and for dataclasses:
 
 ```python
-import pydantic.dataclasses
-from pydantic import BaseModel
+import whoop_pydantic_v2.dataclasses
+from whoop_pydantic_v2 import BaseModel
 
 
 class InnerModel(BaseModel):
@@ -594,20 +594,22 @@ class SubInnerModel(InnerModel):
 
 m = OuterModel(inner=SubInnerModel(x=1, y=2))
 print(m)
+
+
 #> inner=SubInnerModel(x=1, y=2)
 
 
-@pydantic.dataclasses.dataclass
+@whoop_pydantic_v2.dataclasses.dataclass
 class InnerDataclass:
     x: int
 
 
-@pydantic.dataclasses.dataclass
+@whoop_pydantic_v2.dataclasses.dataclass
 class SubInnerDataclass(InnerDataclass):
     y: int
 
 
-@pydantic.dataclasses.dataclass
+@whoop_pydantic_v2.dataclasses.dataclass
 class OuterDataclass:
     inner: InnerDataclass
 
@@ -633,7 +635,7 @@ As a demonstration, consider the following example:
 ```python
 from typing import Union
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Model(BaseModel):
@@ -677,10 +679,11 @@ The following table describes the behavior of field annotations in V2:
     Any default value if provided makes a field not required.
 
 Here is a code example demonstrating the above:
+
 ```py
 from typing import Optional
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Foo(BaseModel):
@@ -729,7 +732,7 @@ and also covers some of the use cases of "root" models. ([`RootModel`](concepts/
 ```python
 from typing import List
 
-from pydantic import TypeAdapter
+from whoop_pydantic_v2 import TypeAdapter
 
 adapter = TypeAdapter(List[int])
 assert adapter.validate_python(['1', '2', '3']) == [1, 2, 3]
@@ -741,7 +744,7 @@ Due to limitations of inferring generic types with common type checkers, to get 
 may need to explicitly specify the generic parameter:
 
 ```python test="skip"
-from pydantic import TypeAdapter
+from whoop_pydantic_v2 import TypeAdapter
 
 adapter = TypeAdapter[str | int](str | int)
 ...
@@ -839,7 +842,7 @@ One notable difference is that the new `Url` types append slashes to the validat
 even if a slash is not specified in the argument to a `Url` type constructor. See the example below for this behavior:
 
 ```py
-from pydantic import AnyUrl
+from whoop_pydantic_v2 import AnyUrl
 
 assert str(AnyUrl(url='https://google.com')) == 'https://google.com/'
 assert str(AnyUrl(url='https://google.com/')) == 'https://google.com/'
@@ -855,7 +858,7 @@ If you still want to use the old behavior without the appended slash, take a loo
 The `Constrained*` classes were _removed_, and you should replace them by `Annotated[<type>, Field(...)]`, for example:
 
 ```py test="skip"
-from pydantic import BaseModel, ConstrainedInt
+from whoop_pydantic_v2 import BaseModel, ConstrainedInt
 
 
 class MyInt(ConstrainedInt):
@@ -871,7 +874,7 @@ class Model(BaseModel):
 ```py
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 MyInt = Annotated[int, Field(ge=0)]
 

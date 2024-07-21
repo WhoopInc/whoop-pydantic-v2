@@ -11,7 +11,7 @@ This error is raised when a type referenced in an annotation of a pydantic-valid
 ```py
 from typing import ForwardRef
 
-from pydantic import BaseModel, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, PydanticUserError
 
 UndefinedType = ForwardRef('UndefinedType')
 
@@ -31,7 +31,7 @@ Or when the type has been defined after usage:
 ```py
 from typing import Optional
 
-from pydantic import BaseModel, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, PydanticUserError
 
 
 class Foo(BaseModel):
@@ -58,7 +58,7 @@ For BaseModel subclasses, it can be fixed by defining the type and then calling 
 ```py
 from typing import Optional
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Foo(BaseModel):
@@ -83,7 +83,7 @@ The `__modify_schema__` method is no longer supported in V2. You should use the 
 The `__modify_schema__` used to receive a single argument representing the JSON schema. See the example below:
 
 ```py title="Old way"
-from pydantic import BaseModel, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, PydanticUserError
 
 try:
 
@@ -105,13 +105,13 @@ from typing import Any, Dict
 
 from pydantic_core import CoreSchema
 
-from pydantic import BaseModel, GetJsonSchemaHandler
+from whoop_pydantic_v2 import BaseModel, GetJsonSchemaHandler
 
 
 class Model(BaseModel):
     @classmethod
     def __get_pydantic_json_schema__(
-        cls, core_schema: CoreSchema, handler: GetJsonSchemaHandler
+            cls, core_schema: CoreSchema, handler: GetJsonSchemaHandler
     ) -> Dict[str, Any]:
         json_schema = super().__get_pydantic_json_schema__(core_schema, handler)
         json_schema = handler.resolve_ref_schema(json_schema)
@@ -132,7 +132,7 @@ This error is raised when you define a decorator with a field that is not valid.
 ```py
 from typing import Any
 
-from pydantic import BaseModel, PydanticUserError, field_validator
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, field_validator
 
 try:
 
@@ -152,7 +152,7 @@ You can use `check_fields=False` if you're inheriting from the model and intende
 ```py
 from typing import Any
 
-from pydantic import BaseModel, create_model, field_validator
+from whoop_pydantic_v2 import BaseModel, create_model, field_validator
 
 
 class Model(BaseModel):
@@ -173,7 +173,7 @@ from typing import Union
 
 from typing_extensions import Literal
 
-from pydantic import BaseModel, Field, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, Field, PydanticUserError
 
 
 class Cat(BaseModel):
@@ -204,7 +204,7 @@ from typing import Union
 
 from typing_extensions import Literal
 
-from pydantic import AliasChoices, BaseModel, Field, PydanticUserError
+from whoop_pydantic_v2 import AliasChoices, BaseModel, Field, PydanticUserError
 
 
 class Cat(BaseModel):
@@ -238,7 +238,7 @@ from typing import Union
 
 from typing_extensions import Literal
 
-from pydantic import BaseModel, Field, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, Field, PydanticUserError
 
 
 class Cat(BaseModel):
@@ -270,7 +270,7 @@ from typing import Union
 
 from typing_extensions import Literal
 
-from pydantic import BaseModel, Field, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, Field, PydanticUserError
 
 
 class Cat(BaseModel):
@@ -305,7 +305,7 @@ from typing import Union
 
 from typing_extensions import Literal
 
-from pydantic import BaseModel, Field, PydanticUserError, field_validator
+from whoop_pydantic_v2 import BaseModel, Field, PydanticUserError, field_validator
 
 
 class Cat(BaseModel):
@@ -340,7 +340,7 @@ from typing import Union
 
 from typing_extensions import Literal
 
-from pydantic import BaseModel, field_validator
+from whoop_pydantic_v2 import BaseModel, field_validator
 
 
 class Cat(BaseModel):
@@ -374,7 +374,7 @@ from typing import Union
 
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, Discriminator, PydanticUserError, Tag
+from whoop_pydantic_v2 import BaseModel, Discriminator, PydanticUserError, Tag
 
 
 def model_x_discriminator(v):
@@ -432,7 +432,7 @@ instead of `typing_extensions.TypedDict` on Python < 3.12.
 This error is raised when a field defined on a base class was overridden by a non-annotated attribute.
 
 ```py
-from pydantic import BaseModel, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, PydanticUserError
 
 
 class Foo(BaseModel):
@@ -454,7 +454,7 @@ except PydanticUserError as exc_info:
 This error is raised when a field doesn't have an annotation.
 
 ```py
-from pydantic import BaseModel, Field, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, Field, PydanticUserError
 
 try:
 
@@ -472,7 +472,7 @@ by annotating it as a `ClassVar`:
 ```py
 from typing import ClassVar
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Model(BaseModel):
@@ -482,7 +482,7 @@ class Model(BaseModel):
 Or updating `model_config['ignored_types']`:
 
 ```py
-from pydantic import BaseModel, ConfigDict
+from whoop_pydantic_v2 import BaseModel, ConfigDict
 
 
 class IgnoredType:
@@ -503,7 +503,7 @@ class MyModel(BaseModel):
 This error is raised when `class Config` and `model_config` are used together.
 
 ```py
-from pydantic import BaseModel, ConfigDict, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, ConfigDict, PydanticUserError
 
 try:
 
@@ -526,7 +526,7 @@ This error is raised when the keyword arguments are not available in Pydantic V2
 For example, `regex` is removed from Pydantic V2:
 
 ```py
-from pydantic import BaseModel, Field, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, Field, PydanticUserError
 
 try:
 
@@ -542,7 +542,7 @@ except PydanticUserError as exc_info:
 This error is raised when Pydantic fails to generate a JSON schema for some `CoreSchema`.
 
 ```py
-from pydantic import BaseModel, ImportString, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, ImportString, PydanticUserError
 
 
 class Model(BaseModel):
@@ -566,7 +566,7 @@ You must create a new instance to generate a new JSON schema.
 This error is raised when you instantiate `BaseModel` directly. Pydantic models should inherit from `BaseModel`.
 
 ```py
-from pydantic import BaseModel, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, PydanticUserError
 
 try:
     BaseModel()
@@ -579,7 +579,7 @@ except PydanticUserError as exc_info:
 This error is raised when handling undefined annotations during `CoreSchema` generation.
 
 ```py
-from pydantic import BaseModel, PydanticUndefinedAnnotation
+from whoop_pydantic_v2 import BaseModel, PydanticUndefinedAnnotation
 
 
 class Model(BaseModel):
@@ -597,7 +597,7 @@ except PydanticUndefinedAnnotation as exc_info:
 This error is raised when Pydantic fails to generate a `CoreSchema` for some type.
 
 ```py
-from pydantic import BaseModel, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, PydanticUserError
 
 try:
 
@@ -620,7 +620,7 @@ See the [Migration Guide](../migration.md) for more information.
 This error is raised when you provide field definitions input in `create_model` that is not valid.
 
 ```py
-from pydantic import PydanticUserError, create_model
+from whoop_pydantic_v2 import PydanticUserError, create_model
 
 try:
     create_model('FooModel', foo=(str, 'default value', 'more'))
@@ -633,7 +633,7 @@ Or when you use [`typing.Annotated`][] with invalid input
 ```py
 from typing_extensions import Annotated
 
-from pydantic import PydanticUserError, create_model
+from whoop_pydantic_v2 import PydanticUserError, create_model
 
 try:
     create_model('FooModel', foo=Annotated[str, 'NotFieldInfoValue'])
@@ -646,7 +646,7 @@ except PydanticUserError as exc_info:
 This error is raised when you use both `__config__` and `__base__` together in `create_model`.
 
 ```py
-from pydantic import BaseModel, ConfigDict, PydanticUserError, create_model
+from whoop_pydantic_v2 import BaseModel, ConfigDict, PydanticUserError, create_model
 
 try:
     config = ConfigDict(frozen=True)
@@ -662,7 +662,7 @@ except PydanticUserError as exc_info:
 This error is raised when you use validator bare (with no fields).
 
 ```py
-from pydantic import BaseModel, PydanticUserError, field_validator
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, field_validator
 
 try:
 
@@ -680,7 +680,7 @@ except PydanticUserError as exc_info:
 Validators should be used with fields and keyword arguments.
 
 ```py
-from pydantic import BaseModel, field_validator
+from whoop_pydantic_v2 import BaseModel, field_validator
 
 
 class Model(BaseModel):
@@ -696,7 +696,7 @@ class Model(BaseModel):
 This error is raised when you use a validator with non-string fields.
 
 ```py
-from pydantic import BaseModel, PydanticUserError, field_validator
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, field_validator
 
 try:
 
@@ -715,7 +715,7 @@ except PydanticUserError as exc_info:
 Fields should be passed as separate string arguments:
 
 ```py
-from pydantic import BaseModel, field_validator
+from whoop_pydantic_v2 import BaseModel, field_validator
 
 
 class Model(BaseModel):
@@ -732,7 +732,7 @@ class Model(BaseModel):
 This error is raised when you apply a validator on an instance method.
 
 ```py
-from pydantic import BaseModel, PydanticUserError, field_validator
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, field_validator
 
 try:
 
@@ -764,7 +764,7 @@ Please see the [Migration Guide](../migration.md) for more details.
 This error is raised when you apply `model_serializer` on an instance method without `self`:
 
 ```py
-from pydantic import BaseModel, PydanticUserError, model_serializer
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, model_serializer
 
 try:
 
@@ -782,7 +782,7 @@ except PydanticUserError as exc_info:
 Or on a class method:
 
 ```py
-from pydantic import BaseModel, PydanticUserError, model_serializer
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, model_serializer
 
 try:
 
@@ -815,7 +815,7 @@ This error is raised when you use an unsupported signature for Pydantic V1-style
 ```py
 import warnings
 
-from pydantic import BaseModel, PydanticUserError, validator
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, validator
 
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 
@@ -837,7 +837,7 @@ except PydanticUserError as exc_info:
 This error is raised when a `field_validator` or `model_validator` function has the wrong signature.
 
 ```py
-from pydantic import BaseModel, PydanticUserError, field_validator
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, field_validator
 
 try:
 
@@ -858,7 +858,7 @@ except PydanticUserError as exc_info:
 This error is raised when the `field_serializer` function has the wrong signature.
 
 ```py
-from pydantic import BaseModel, PydanticUserError, field_serializer
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, field_serializer
 
 try:
 
@@ -876,36 +876,62 @@ except PydanticUserError as exc_info:
 Valid serializer signatures are:
 
 ```py test="skip" lint="skip" upgrade="skip"
-from pydantic import model_serializer
+from whoop_pydantic_v2 import model_serializer
+
 
 # an instance method with the default mode or `mode='plain'`
 @model_serializer('x')  # or @serialize('x', mode='plain')
 def ser_x(self, value: Any, info: pydantic.FieldSerializationInfo): ...
 
+
 # a static method or free-standing function with the default mode or `mode='plain'`
 @model_serializer('x')  # or @serialize('x', mode='plain')
 @staticmethod
 def ser_x(value: Any, info: pydantic.FieldSerializationInfo): ...
+
+
 # equivalent to
 def ser_x(value: Any, info: pydantic.FieldSerializationInfo): ...
+
+
 serializer('x')(ser_x)
+
 
 # an instance method with `mode='wrap'`
 @model_serializer('x', mode='wrap')
 def ser_x(self, value: Any, nxt: pydantic.SerializerFunctionWrapHandler, info: pydantic.FieldSerializationInfo): ...
 
+
 # a static method or free-standing function with `mode='wrap'`
 @model_serializer('x', mode='wrap')
 @staticmethod
 def ser_x(value: Any, nxt: pydantic.SerializerFunctionWrapHandler, info: pydantic.FieldSerializationInfo): ...
+
+
 # equivalent to
 def ser_x(value: Any, nxt: pydantic.SerializerFunctionWrapHandler, info: pydantic.FieldSerializationInfo): ...
+
+
 serializer('x')(ser_x)
 
-For all of these, you can also choose to omit the `info` argument, for example:
+For
+all
+of
+these, you
+can
+also
+choose
+to
+omit
+the
+`info`
+argument,
+for example:
+
 
 @model_serializer('x')
 def ser_x(self, value: Any): ...
+
 
 @model_serializer('x', mode='wrap')
 def ser_x(self, value: Any, handler: pydantic.SerializerFunctionWrapHandler): ...
@@ -916,7 +942,7 @@ def ser_x(self, value: Any, handler: pydantic.SerializerFunctionWrapHandler): ..
 This error is raised when the `model_serializer` function has the wrong signature.
 
 ```py
-from pydantic import BaseModel, PydanticUserError, model_serializer
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, model_serializer
 
 try:
 
@@ -936,7 +962,7 @@ except PydanticUserError as exc_info:
 This error is raised when multiple `model_serializer` functions are defined for a field.
 
 ```py
-from pydantic import BaseModel, PydanticUserError, field_serializer
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, field_serializer
 
 try:
 
@@ -963,7 +989,7 @@ This error is raised when an annotation cannot annotate a type.
 ```py
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, FutureDate, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, FutureDate, PydanticUserError
 
 try:
 
@@ -982,7 +1008,7 @@ has its own config that cannot be overridden (currently this is only `BaseModel`
 ```py
 from typing_extensions import TypedDict
 
-from pydantic import ConfigDict, PydanticUserError, TypeAdapter
+from whoop_pydantic_v2 import ConfigDict, PydanticUserError, TypeAdapter
 
 
 class MyTypedDict(TypedDict):
@@ -1000,7 +1026,7 @@ Instead you'll need to subclass the type and override or set the config on it:
 ```py
 from typing_extensions import TypedDict
 
-from pydantic import ConfigDict, TypeAdapter
+from whoop_pydantic_v2 import ConfigDict, TypeAdapter
 
 
 class MyTypedDict(TypedDict):
@@ -1019,7 +1045,7 @@ Because `RootModel` is not capable of storing or even accepting extra fields dur
 if you try to specify a value for the config setting `'extra'` when creating a subclass of `RootModel`:
 
 ```py
-from pydantic import PydanticUserError, RootModel
+from whoop_pydantic_v2 import PydanticUserError, RootModel
 
 try:
 
@@ -1039,7 +1065,7 @@ that clashes with one of your fields. We raise an error in the following case:
 ```py test="skip"
 from datetime import date
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Model(BaseModel):
@@ -1052,7 +1078,7 @@ As a workaround, you can either use an alias or change your import:
 import datetime
 # Or `from datetime import date as _date`
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Model(BaseModel):
@@ -1067,8 +1093,8 @@ while any of the fields have `init=False` set.
 Thus, you may not do something like the following:
 
 ```py test="skip"
-from pydantic import ConfigDict, Field
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import ConfigDict, Field
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass(config=ConfigDict(extra='allow'))
@@ -1088,8 +1114,8 @@ This combination is not allowed.
 The `init=False` and `init_var=True` settings are mutually exclusive. Doing so results in the `PydanticUserError` shown in the example below.
 
 ```py test="skip"
-from pydantic import Field
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import Field
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass
@@ -1098,15 +1124,16 @@ class Foo:
 
 
 """
-pydantic.errors.PydanticUserError: Dataclass field bar has init=False and init_var=True, but these are mutually exclusive.
+whoop_pydantic_v2.errors.PydanticUserError: Dataclass field bar has init=False and init_var=True, but these are mutually exclusive.
 """
 ```
 
 ## `model_config` is used as a model field {#model-config-invalid-field-name}
 
 This error is raised when `model_config` is used as the name of a field.
+
 ```py
-from pydantic import BaseModel, PydanticUserError
+from whoop_pydantic_v2 import BaseModel, PydanticUserError
 
 try:
 
@@ -1123,7 +1150,7 @@ except PydanticUserError as exc_info:
 This error is raised when the [`with_config`][pydantic.config.with_config]  decorator is used on a class which is already a Pydantic model (use the `model_config` attribute instead).
 
 ```py
-from pydantic import BaseModel, PydanticUserError, with_config
+from whoop_pydantic_v2 import BaseModel, PydanticUserError, with_config
 
 try:
 
@@ -1142,8 +1169,8 @@ This error is raised when the Pydantic `dataclass` decorator is used on a class 
 a Pydantic model.
 
 ```py
-from pydantic import BaseModel, PydanticUserError
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import BaseModel, PydanticUserError
+from whoop_pydantic_v2.dataclasses import dataclass
 
 try:
 

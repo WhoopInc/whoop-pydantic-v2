@@ -17,7 +17,7 @@ When you import an experimental feature from the `experimental` module, you'll s
 ```python
 import warnings
 
-from pydantic import PydanticExperimentalWarning
+from whoop_pydantic_v2 import PydanticExperimentalWarning
 
 warnings.filterwarnings('ignore', category=PydanticExperimentalWarning)
 ```
@@ -50,8 +50,8 @@ from datetime import datetime
 
 from typing_extensions import Annotated
 
-from pydantic import BaseModel
-from pydantic.experimental.pipeline import validate_as, validate_as_deferred
+from whoop_pydantic_v2 import BaseModel
+from whoop_pydantic_v2.experimental.pipeline import validate_as, validate_as_deferred
 
 
 class User(BaseModel):
@@ -99,7 +99,7 @@ The `validate_as` method is a more type-safe way to define `BeforeValidator`, `A
 ```python
 from typing_extensions import Annotated
 
-from pydantic.experimental.pipeline import transform, validate_as
+from whoop_pydantic_v2.experimental.pipeline import transform, validate_as
 
 # BeforeValidator
 Annotated[int, validate_as(str).str_strip().validate_as(...)]  # (1)!
@@ -128,7 +128,7 @@ Just as an example, consider the `UserIn` and `UserOut` pattern mentioned above:
 ```python
 from __future__ import annotations
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class UserIn(BaseModel):

@@ -14,11 +14,11 @@ import pytest
 from pydantic_core import core_schema
 from pytest_examples import CodeExample, EvalExample, find_examples
 
-from pydantic.errors import PydanticErrorCodes
+from whoop_pydantic_v2.errors import PydanticErrorCodes
 
 INDEX_MAIN = None
 DOCS_ROOT = Path(__file__).parent.parent / 'docs'
-SOURCES_ROOT = Path(__file__).parent.parent / 'pydantic'
+SOURCES_ROOT = Path(__file__).parent.parent / 'whoop_pydantic_v2'
 
 
 def skip_docs_tests():
@@ -166,7 +166,7 @@ def set_cwd():
 
 
 @pytest.mark.filterwarnings('ignore:(parse_obj_as|schema_json_of|schema_of) is deprecated.*:DeprecationWarning')
-@pytest.mark.filterwarnings('ignore::pydantic.warnings.PydanticExperimentalWarning')
+@pytest.mark.filterwarnings('ignore::whoop_pydantic_v2.warnings.PydanticExperimentalWarning')
 @pytest.mark.skipif(bool(skip_reason), reason=skip_reason or 'not skipping')
 @pytest.mark.parametrize('example', find_examples(str(DOCS_ROOT), skip=sys.platform == 'win32'), ids=str)
 def test_docs_examples(example: CodeExample, eval_example: EvalExample, tmp_path: Path, mocker):
@@ -239,8 +239,8 @@ def test_validation_error_codes():
     error_text = (DOCS_ROOT / 'errors/validation_errors.md').read_text()
 
     expected_validation_error_codes = set(core_schema.ErrorType.__args__)
-    # Remove codes that are not currently accessible from pydantic:
-    expected_validation_error_codes.remove('timezone_offset')  # not currently exposed for configuration in pydantic
+    # Remove codes that are not currently accessible from whoop_pydantic_v2:
+    expected_validation_error_codes.remove('timezone_offset')  # not currently exposed for configuration in whoop_pydantic_v2
 
     test_failures = []
 

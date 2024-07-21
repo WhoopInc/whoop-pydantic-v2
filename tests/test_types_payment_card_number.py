@@ -4,8 +4,8 @@ from typing import Any
 import pytest
 from pydantic_core import PydanticCustomError
 
-from pydantic import BaseModel, ValidationError
-from pydantic.types import PaymentCardBrand, PaymentCardNumber
+from whoop_pydantic_v2 import BaseModel, ValidationError
+from whoop_pydantic_v2.types import PaymentCardBrand, PaymentCardNumber
 
 pytestmark = pytest.mark.filterwarnings(
     'ignore:' 'The `PaymentCardNumber` class is deprecated, use `pydantic_extra_types` instead.*' ':DeprecationWarning'

@@ -5,7 +5,7 @@ import pytest
 from dirty_equals import HasRepr
 from typing_extensions import Annotated
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     AwareDatetime,
     BaseModel,
     FutureDate,

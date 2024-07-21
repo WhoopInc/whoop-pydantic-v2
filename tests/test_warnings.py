@@ -1,5 +1,5 @@
-from pydantic import PydanticDeprecatedSince20, PydanticDeprecationWarning
-from pydantic.version import version_short
+from whoop_pydantic_v2 import PydanticDeprecatedSince20, PydanticDeprecationWarning
+from whoop_pydantic_v2.version import version_short
 
 
 def test_pydantic_deprecation_warning():

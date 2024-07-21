@@ -3,8 +3,8 @@ from typing import Any, ClassVar, Generic, List, Optional, TypeVar, Union
 
 from typing_extensions import Self
 
-from pydantic import BaseModel, ConfigDict, Field, RootModel, create_model, field_validator, model_validator, validator
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import BaseModel, ConfigDict, Field, RootModel, create_model, field_validator, model_validator, validator
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 class Model(BaseModel):
@@ -283,7 +283,7 @@ def get_my_custom_validator(field_name: str) -> Any:
 def foo() -> None:
     class MyModel(BaseModel):
         number: int
-        custom_validator = get_my_custom_validator('number')  # type: ignore[pydantic-field]
+        custom_validator = get_my_custom_validator('number')  # type: ignore[whoop_pydantic_v2-field]
 # MYPY: error: Unused "type: ignore" comment
 
         @model_validator(mode='before')

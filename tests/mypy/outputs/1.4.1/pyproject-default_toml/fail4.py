@@ -1,6 +1,6 @@
 from typing import Any
 
-from pydantic import BaseModel, root_validator, validate_call
+from whoop_pydantic_v2 import BaseModel, root_validator, validate_call
 
 
 @validate_call

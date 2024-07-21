@@ -8,12 +8,12 @@ import pytest
 from pydantic_core import ValidationError
 from typing_extensions import Annotated, TypeAlias, TypedDict
 
-from pydantic import BaseModel, Field, TypeAdapter, ValidationInfo, create_model, field_validator
-from pydantic._internal._typing_extra import annotated_type
-from pydantic.config import ConfigDict
-from pydantic.dataclasses import dataclass as pydantic_dataclass
-from pydantic.errors import PydanticUserError
-from pydantic.type_adapter import _type_has_config
+from whoop_pydantic_v2 import BaseModel, Field, TypeAdapter, ValidationInfo, create_model, field_validator
+from whoop_pydantic_v2._internal._typing_extra import annotated_type
+from whoop_pydantic_v2.config import ConfigDict
+from whoop_pydantic_v2.dataclasses import dataclass as pydantic_dataclass
+from whoop_pydantic_v2.errors import PydanticUserError
+from whoop_pydantic_v2.type_adapter import _type_has_config
 
 ItemType = TypeVar('ItemType')
 

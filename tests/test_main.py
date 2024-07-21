@@ -30,7 +30,7 @@ import pytest
 from pydantic_core import CoreSchema, core_schema
 from typing_extensions import Annotated, Literal
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     AfterValidator,
     BaseModel,
     ConfigDict,
@@ -48,8 +48,8 @@ from pydantic import (
     constr,
     field_validator,
 )
-from pydantic._internal._mock_val_ser import MockCoreSchema
-from pydantic.dataclasses import dataclass as pydantic_dataclass
+from whoop_pydantic_v2._internal._mock_val_ser import MockCoreSchema
+from whoop_pydantic_v2.dataclasses import dataclass as pydantic_dataclass
 
 
 def test_success():
@@ -925,7 +925,7 @@ def test_arbitrary_type_allowed_validation_fails():
 
 
 def test_arbitrary_types_not_allowed():
-    with pytest.raises(TypeError, match='Unable to generate pydantic-core schema for <class'):
+    with pytest.raises(TypeError, match='Unable to generate whoop_pydantic_v2-core schema for <class'):
 
         class ArbitraryTypeNotAllowedModel(BaseModel):
             t: ArbitraryType
@@ -1150,7 +1150,7 @@ def test_dict_with_extra_keys():
 
 
 def test_ignored_types():
-    from pydantic import BaseModel
+    from whoop_pydantic_v2 import BaseModel
 
     class _ClassPropertyDescriptor:
         def __init__(self, getter):
@@ -1616,7 +1616,7 @@ def test_custom_init_subclass_params():
             cls.something = something
 
     # if this raises a TypeError, then there is a regression of issue 867:
-    # pydantic.main.MetaModel.__new__ should include **kwargs at the end of the
+    # whoop_pydantic_v2.main.MetaModel.__new__ should include **kwargs at the end of the
     # method definition and pass them on to the super call at the end in order
     # to allow the special method __init_subclass__ to be defined with custom
     # parameters on extended BaseModel classes.
@@ -2434,7 +2434,7 @@ def test_model_validate_strict() -> None:
     'See issue: https://github.com/pydantic/pydantic/issues/8930'
 )
 def test_model_validate_list_strict() -> None:
-    # FIXME: This change must be implemented in pydantic-core. The argument strict=True
+    # FIXME: This change must be implemented in whoop_pydantic_v2-core. The argument strict=True
     # in model_validate_json method is not overwriting the one set with ConfigDict(strict=False)
     # for sequence like types. See: https://github.com/pydantic/pydantic/issues/8930
 
@@ -2640,7 +2640,7 @@ def test_model_get_core_schema() -> None:
 
 
 def test_nested_types_ignored():
-    from pydantic import BaseModel
+    from whoop_pydantic_v2 import BaseModel
 
     class NonNestedType:
         pass
@@ -3094,7 +3094,7 @@ def test_help(create_module):
         """
 import pydoc
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class Model(BaseModel):
     x: int
@@ -3313,7 +3313,7 @@ def test_inherited_class_vars(create_module):
     def module():
         import typing
 
-        from pydantic import BaseModel
+        from whoop_pydantic_v2 import BaseModel
 
         class Base(BaseModel):
             CONST1: 'typing.ClassVar[str]' = 'a'

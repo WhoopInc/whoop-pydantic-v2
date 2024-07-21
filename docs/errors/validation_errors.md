@@ -10,7 +10,7 @@ produce this error:
 ```py
 from typing import NamedTuple
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class MyNamedTuple(NamedTuple):
@@ -25,7 +25,7 @@ try:
     MyModel.model_validate({'field': 'invalid'})
 except ValidationError as exc:
     print(repr(exc.errors()[0]['type']))
-    #> 'arguments_type'
+    # > 'arguments_type'
 ```
 
 ## `assertion_error`
@@ -33,7 +33,7 @@ except ValidationError as exc:
 This error is raised when a failing `assert` statement is encountered during validation:
 
 ```py
-from pydantic import BaseModel, ValidationError, field_validator
+from whoop_pydantic_v2 import BaseModel, ValidationError, field_validator
 
 
 class Model(BaseModel):
@@ -50,7 +50,7 @@ try:
     Model(x=-1)
 except ValidationError as exc:
     print(repr(exc.errors()[0]['type']))
-    #> 'assertion_error'
+    # > 'assertion_error'
 ```
 
 ## `bool_parsing`
@@ -58,7 +58,7 @@ except ValidationError as exc:
 This error is raised when the input value is a string that is not valid for coercion to a boolean:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -71,7 +71,7 @@ try:
     Model(x='test')
 except ValidationError as exc:
     print(repr(exc.errors()[0]['type']))
-    #> 'bool_parsing'
+    # > 'bool_parsing'
 ```
 
 ## `bool_type`
@@ -79,7 +79,7 @@ except ValidationError as exc:
 This error is raised when the input value's type is not valid for a `bool` field:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -90,7 +90,7 @@ try:
     Model(x=None)
 except ValidationError as exc:
     print(repr(exc.errors()[0]['type']))
-    #> 'bool_type'
+    # > 'bool_type'
 ```
 
 This error is also raised for strict fields when the input value is not an instance of `bool`.
@@ -100,7 +100,7 @@ This error is also raised for strict fields when the input value is not an insta
 This error is raised when the length of a `bytes` value is greater than the field's `max_length` constraint:
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -111,7 +111,7 @@ try:
     Model(x=b'test')
 except ValidationError as exc:
     print(repr(exc.errors()[0]['type']))
-    #> 'bytes_too_long'
+    # > 'bytes_too_long'
 ```
 
 ## `bytes_too_short`
@@ -119,7 +119,7 @@ except ValidationError as exc:
 This error is raised when the length of a `bytes` value is less than the field's `min_length` constraint:
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -138,7 +138,7 @@ except ValidationError as exc:
 This error is raised when the input value's type is not valid for a `bytes` field:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -161,7 +161,7 @@ This error is raised when the input value is not valid as a `Callable`:
 ```py
 from typing import Any, Callable
 
-from pydantic import BaseModel, ImportString, ValidationError
+from whoop_pydantic_v2 import BaseModel, ImportString, ValidationError
 
 
 class Model(BaseModel):
@@ -182,11 +182,11 @@ except ValidationError as exc:
 This error is raised when validating a dataclass with `strict=True` and the input is not an instance of the dataclass:
 
 ```py
-import pydantic.dataclasses
-from pydantic import TypeAdapter, ValidationError
+import whoop_pydantic_v2.dataclasses
+from whoop_pydantic_v2 import TypeAdapter, ValidationError
 
 
-@pydantic.dataclasses.dataclass
+@whoop_pydantic_v2.dataclasses.dataclass
 class MyDataclass:
     x: str
 
@@ -210,7 +210,7 @@ except ValidationError as exc:
 This error is raised when the input value is not valid for a `dataclass` field:
 
 ```py
-from pydantic import ValidationError, dataclasses
+from whoop_pydantic_v2 import ValidationError, dataclasses
 
 
 @dataclasses.dataclass
@@ -240,7 +240,7 @@ For a timestamp to parse into a field of type `date`, the time components must a
 ```py
 from datetime import date, datetime
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -264,7 +264,7 @@ This error is raised when the input value is a string that cannot be parsed for 
 ```py
 from datetime import date
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -285,7 +285,7 @@ This error is raised when the input value provided for a `FutureDate` field is n
 ```py
 from datetime import date
 
-from pydantic import BaseModel, FutureDate, ValidationError
+from whoop_pydantic_v2 import BaseModel, FutureDate, ValidationError
 
 
 class Model(BaseModel):
@@ -307,7 +307,7 @@ This error is raised when validating JSON where the input value is string that c
 import json
 from datetime import date
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -328,7 +328,7 @@ This error is raised when the value provided for a `PastDate` field is not in th
 ```py
 from datetime import date, timedelta
 
-from pydantic import BaseModel, PastDate, ValidationError
+from whoop_pydantic_v2 import BaseModel, PastDate, ValidationError
 
 
 class Model(BaseModel):
@@ -349,7 +349,7 @@ This error is raised when the input value's type is not valid for a `date` field
 ```py
 from datetime import date
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -375,7 +375,7 @@ This error is raised when the input value is a string that cannot be parsed for 
 ```py
 from datetime import datetime
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -397,7 +397,7 @@ This error is raised when the value provided for a `FutureDatetime` field is not
 ```py
 from datetime import datetime
 
-from pydantic import BaseModel, FutureDatetime, ValidationError
+from whoop_pydantic_v2 import BaseModel, FutureDatetime, ValidationError
 
 
 class Model(BaseModel):
@@ -418,7 +418,7 @@ This error is raised when something about the `datetime` object is not valid:
 ```py
 from datetime import datetime, tzinfo
 
-from pydantic import AwareDatetime, BaseModel, ValidationError
+from whoop_pydantic_v2 import AwareDatetime, BaseModel, ValidationError
 
 
 class CustomTz(tzinfo):
@@ -447,7 +447,7 @@ This error is raised when the value is a string that cannot be parsed for a `dat
 import json
 from datetime import datetime
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -468,7 +468,7 @@ This error is raised when the value provided for a `PastDatetime` field is not i
 ```py
 from datetime import datetime, timedelta
 
-from pydantic import BaseModel, PastDatetime, ValidationError
+from whoop_pydantic_v2 import BaseModel, PastDatetime, ValidationError
 
 
 class Model(BaseModel):
@@ -489,7 +489,7 @@ This error is raised when the input value's type is not valid for a `datetime` f
 ```py
 from datetime import datetime
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -512,7 +512,7 @@ This error is raised when the value provided for a `Decimal` has too many digits
 ```py
 from decimal import Decimal
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -533,7 +533,7 @@ This error is raised when the value provided for a `Decimal` has too many digits
 ```py
 from decimal import Decimal
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -554,7 +554,7 @@ This error is raised when the value provided for a `Decimal` could not be parsed
 ```py
 from decimal import Decimal
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -575,7 +575,7 @@ This error is raised when the value provided for a `Decimal` is of the wrong typ
 ```py
 from decimal import Decimal
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -598,7 +598,7 @@ This error is raised when the value provided for a `Decimal` has more digits bef
 ```py
 from decimal import Decimal
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -619,7 +619,7 @@ This error is also raised for strict fields when the input value is not an insta
 This error is raised when the input value's type is not `dict` for a `dict` field:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -640,7 +640,7 @@ This error is raised when the input value does not exist in an `enum` field memb
 ```py
 from enum import Enum
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class MyEnum(str, Enum):
@@ -663,7 +663,7 @@ except ValidationError as exc:
 This error is raised when the input value contains extra fields, but `model_config['extra'] == 'forbid'`:
 
 ```py
-from pydantic import BaseModel, ConfigDict, ValidationError
+from whoop_pydantic_v2 import BaseModel, ConfigDict, ValidationError
 
 
 class Model(BaseModel):
@@ -687,7 +687,7 @@ This error is raised when the value is infinite, or too large to be represented 
 during validation:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -706,7 +706,7 @@ except ValidationError as exc:
 This error is raised when the value is a string that can't be parsed as a `float`:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -725,7 +725,7 @@ except ValidationError as exc:
 This error is raised when the input value's type is not valid for a `float` field:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -744,7 +744,7 @@ except ValidationError as exc:
 This error is raised when you attempt to assign a value to a field with `frozen=True`, or to delete such a field:
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -772,7 +772,7 @@ This error is raised when `model_config['frozen] == True` and you attempt to del
 any of the fields:
 
 ```py
-from pydantic import BaseModel, ConfigDict, ValidationError
+from whoop_pydantic_v2 import BaseModel, ConfigDict, ValidationError
 
 
 class Model(BaseModel):
@@ -801,7 +801,7 @@ except ValidationError as exc:
 This error is raised when the input value's type is not valid for a `frozenset` field:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -820,7 +820,7 @@ except ValidationError as exc:
 This error is raised when `model_config['from_attributes'] == True` and an error is raised while reading the attributes:
 
 ```py
-from pydantic import BaseModel, ConfigDict, ValidationError
+from whoop_pydantic_v2 import BaseModel, ConfigDict, ValidationError
 
 
 class Foobar:
@@ -851,7 +851,7 @@ except ValidationError as exc:
 This error is raised when the value is not greater than the field's `gt` constraint:
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -870,7 +870,7 @@ except ValidationError as exc:
 This error is raised when the value is not greater than or equal to the field's `ge` constraint:
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -889,7 +889,7 @@ except ValidationError as exc:
 This error is raised when you provide a `float` value for an `int` field:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -908,7 +908,7 @@ except ValidationError as exc:
 This error is raised when the value can't be parsed as `int`:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -930,7 +930,7 @@ This error is raised when attempting to parse a python or JSON value from a stri
 ```py
 import json
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -960,7 +960,7 @@ except ValidationError as exc:
 This error is raised when the input value's type is not valid for an `int` field:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -979,7 +979,7 @@ except ValidationError as exc:
 This error is raised when attempting to validate a `dict` that has a key that is not an instance of `str`:
 
 ```py
-from pydantic import BaseModel, ConfigDict, ValidationError
+from whoop_pydantic_v2 import BaseModel, ConfigDict, ValidationError
 
 
 class Model(BaseModel):
@@ -1000,7 +1000,7 @@ except ValidationError as exc:
 This error is raised when the input value is not an instance of the expected type:
 
 ```py
-from pydantic import BaseModel, ConfigDict, ValidationError
+from whoop_pydantic_v2 import BaseModel, ConfigDict, ValidationError
 
 
 class Nested:
@@ -1027,7 +1027,7 @@ This error is raised when the input value is not a subclass of the expected type
 ```py
 from typing import Type
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Nested:
@@ -1052,7 +1052,7 @@ This error is raised when the input value is not valid as an `Iterable`:
 ```py
 from typing import Iterable
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1073,7 +1073,7 @@ This error is raised when an error occurs during iteration:
 ```py
 from typing import List
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 def gen():
@@ -1097,7 +1097,7 @@ except ValidationError as exc:
 This error is raised when the input value is not a valid JSON string:
 
 ```py
-from pydantic import BaseModel, Json, ValidationError
+from whoop_pydantic_v2 import BaseModel, Json, ValidationError
 
 
 class Model(BaseModel):
@@ -1116,7 +1116,7 @@ except ValidationError as exc:
 This error is raised when the input value is of a type that cannot be parsed as JSON:
 
 ```py
-from pydantic import BaseModel, Json, ValidationError
+from whoop_pydantic_v2 import BaseModel, Json, ValidationError
 
 
 class Model(BaseModel):
@@ -1135,7 +1135,7 @@ except ValidationError as exc:
 This error is raised when the input value is not less than the field's `lt` constraint:
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -1154,7 +1154,7 @@ except ValidationError as exc:
 This error is raised when the input value is not less than or equal to the field's `le` constraint:
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -1175,7 +1175,7 @@ This error is raised when the input value's type is not valid for a `list` field
 ```py
 from typing import List
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1196,7 +1196,7 @@ This error is raised when the input value is not one of the expected literal val
 ```py
 from typing_extensions import Literal
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1221,7 +1221,7 @@ This error is raised when a problem occurs during validation due to a failure in
 from collections.abc import Mapping
 from typing import Dict
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class BadMapping(Mapping):
@@ -1254,7 +1254,7 @@ except ValidationError as exc:
 This error is raised when there are required fields missing from the input value:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1274,7 +1274,7 @@ This error is raised when a required positional-or-keyword argument is not passe
 `validate_call`:
 
 ```py
-from pydantic import ValidationError, validate_call
+from whoop_pydantic_v2 import ValidationError, validate_call
 
 
 @validate_call
@@ -1294,7 +1294,7 @@ except ValidationError as exc:
 This error is raised when a required keyword-only argument is not passed to a function decorated with `validate_call`:
 
 ```py
-from pydantic import ValidationError, validate_call
+from whoop_pydantic_v2 import ValidationError, validate_call
 
 
 @validate_call
@@ -1315,7 +1315,7 @@ This error is raised when a required positional-only argument is not passed to a
 `validate_call`:
 
 ```py requires="3.8"
-from pydantic import ValidationError, validate_call
+from whoop_pydantic_v2 import ValidationError, validate_call
 
 
 @validate_call
@@ -1335,7 +1335,7 @@ except ValidationError as exc:
 This error is raised when the input value is not a valid dictionary, model instance, or instance that fields can be extracted from:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1345,6 +1345,8 @@ class Model(BaseModel):
 
 # simply validating a dict
 print(Model.model_validate({'a': 1, 'b': 2}))
+
+
 #> a=1 b=2
 
 
@@ -1370,7 +1372,7 @@ except ValidationError as exc:
 This error is raised when the input to a model is not an instance of the model or dict:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1400,7 +1402,7 @@ This error is raised when you provide multiple values for a single argument whil
 `validate_call`:
 
 ```py
-from pydantic import ValidationError, validate_call
+from whoop_pydantic_v2 import ValidationError, validate_call
 
 
 @validate_call
@@ -1420,7 +1422,7 @@ except ValidationError as exc:
 This error is raised when the input is not a multiple of a field's `multiple_of` constraint:
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -1440,7 +1442,7 @@ This error is raised when `validate_assignment=True` in the config, and you atte
 that is not an existing field:
 
 ```py
-from pydantic import ConfigDict, ValidationError, dataclasses
+from whoop_pydantic_v2 import ConfigDict, ValidationError, dataclasses
 
 
 @dataclasses.dataclass(config=ConfigDict(validate_assignment=True))
@@ -1461,7 +1463,7 @@ except ValidationError as exc:
 This error is raised when the input value is not `None` for a field that requires `None`:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1499,7 +1501,7 @@ This error is raised when a cyclic reference is detected:
 ```py
 from typing import List
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1522,7 +1524,7 @@ This error is raised when the value type is not valid for a `set` field:
 ```py
 from typing import Set
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1541,7 +1543,7 @@ except ValidationError as exc:
 This error is raised when the input value doesn't match the field's `pattern` constraint:
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -1562,7 +1564,7 @@ This error is raised when the value is an instance of a strict subtype of `str` 
 ```py
 from enum import Enum
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class MyEnum(str, Enum):
@@ -1585,7 +1587,7 @@ except ValidationError as exc:
 This error is raised when the input value is a string whose length is greater than the field's `max_length` constraint:
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -1604,7 +1606,7 @@ except ValidationError as exc:
 This error is raised when the input value is a string whose length is less than the field's `min_length` constraint:
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -1623,7 +1625,7 @@ except ValidationError as exc:
 This error is raised when the input value's type is not valid for a `str` field:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1644,7 +1646,7 @@ This error is also raised for strict fields when the input value is not an insta
 This error is raised when the value cannot be parsed as a Unicode string:
 
 ```py
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1665,7 +1667,7 @@ This error is raised when the input value is a string that cannot be parsed for 
 ```py
 from datetime import timedelta
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1686,7 +1688,7 @@ This error is raised when the input value's type is not valid for a `timedelta` 
 ```py
 from datetime import timedelta
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1709,7 +1711,7 @@ This error is raised when the input value is a string that cannot be parsed for 
 ```py
 from datetime import time
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1730,7 +1732,7 @@ This error is raised when the value type is not valid for a `time` field:
 ```py
 from datetime import time
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1754,7 +1756,7 @@ doesn't have timezone information:
 ```py
 from datetime import datetime
 
-from pydantic import AwareDatetime, BaseModel, ValidationError
+from whoop_pydantic_v2 import AwareDatetime, BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1776,7 +1778,7 @@ has timezone info:
 ```py
 from datetime import datetime, timezone
 
-from pydantic import BaseModel, NaiveDatetime, ValidationError
+from whoop_pydantic_v2 import BaseModel, NaiveDatetime, ValidationError
 
 
 class Model(BaseModel):
@@ -1797,7 +1799,7 @@ This error is raised when the input value's length is greater than the field's `
 ```py
 from typing import List
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -1818,7 +1820,7 @@ This error is raised when the value length is less than the field's `min_length`
 ```py
 from typing import List
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class Model(BaseModel):
@@ -1839,7 +1841,7 @@ This error is raised when the input value's type is not valid for a `tuple` fiel
 ```py
 from typing import Tuple
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -1861,7 +1863,7 @@ This error is raised when you provide a value by keyword for a positional-only
 argument while calling a function decorated with `validate_call`:
 
 ```py requires="3.8"
-from pydantic import ValidationError, validate_call
+from whoop_pydantic_v2 import ValidationError, validate_call
 
 
 @validate_call
@@ -1879,8 +1881,8 @@ except ValidationError as exc:
 It is also raised when using pydantic.dataclasses and `extra=forbid`:
 
 ```py
-from pydantic import TypeAdapter, ValidationError
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import TypeAdapter, ValidationError
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass(config={'extra': 'forbid'})
@@ -1901,7 +1903,7 @@ This error is raised when you provide a positional value for a keyword-only
 argument while calling a function decorated with `validate_call`:
 
 ```py
-from pydantic import ValidationError, validate_call
+from whoop_pydantic_v2 import ValidationError, validate_call
 
 
 @validate_call
@@ -1925,7 +1927,7 @@ from typing import Union
 
 from typing_extensions import Literal
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class BlackCat(BaseModel):
@@ -1956,7 +1958,7 @@ from typing import Union
 
 from typing_extensions import Literal
 
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class BlackCat(BaseModel):
@@ -1983,7 +1985,7 @@ except ValidationError as exc:
 This error is raised when the input value cannot be parsed as a URL:
 
 ```py
-from pydantic import AnyUrl, BaseModel, ValidationError
+from whoop_pydantic_v2 import AnyUrl, BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -2002,7 +2004,7 @@ except ValidationError as exc:
 This error is raised when the URL scheme is not valid for the URL type of the field:
 
 ```py
-from pydantic import BaseModel, HttpUrl, ValidationError
+from whoop_pydantic_v2 import BaseModel, HttpUrl, ValidationError
 
 
 class Model(BaseModel):
@@ -2021,7 +2023,7 @@ except ValidationError as exc:
 This error is raised when the URL syntax is not valid:
 
 ```py
-from pydantic import BaseModel, Field, HttpUrl, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, HttpUrl, ValidationError
 
 
 class Model(BaseModel):
@@ -2040,7 +2042,7 @@ except ValidationError as exc:
 This error is raised when the URL length is greater than 2083:
 
 ```py
-from pydantic import BaseModel, HttpUrl, ValidationError
+from whoop_pydantic_v2 import BaseModel, HttpUrl, ValidationError
 
 
 class Model(BaseModel):
@@ -2059,7 +2061,7 @@ except ValidationError as exc:
 This error is raised when the input value's type is not valid for a URL field:
 
 ```py
-from pydantic import BaseModel, HttpUrl, ValidationError
+from whoop_pydantic_v2 import BaseModel, HttpUrl, ValidationError
 
 
 class Model(BaseModel):
@@ -2080,7 +2082,7 @@ This error is raised when the input value's type is not valid for a UUID field:
 ```py
 from uuid import UUID
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -2101,7 +2103,7 @@ This error is raised when the input value's type is not valid instance for a UUI
 ```py
 from uuid import UUID
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -2120,7 +2122,7 @@ except ValidationError as exc:
 This error is raised when the input value's type is not match UUID version:
 
 ```py
-from pydantic import UUID5, BaseModel, ValidationError
+from whoop_pydantic_v2 import UUID5, BaseModel, ValidationError
 
 
 class Model(BaseModel):
@@ -2139,7 +2141,7 @@ except ValidationError as exc:
 This error is raised when a `ValueError` is raised during validation:
 
 ```py
-from pydantic import BaseModel, ValidationError, field_validator
+from whoop_pydantic_v2 import BaseModel, ValidationError, field_validator
 
 
 class Model(BaseModel):

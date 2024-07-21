@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 import pytest
 
-import pydantic.plugin._loader as loader
+import whoop_pydantic_v2.plugin._loader as loader
 
 
 class EntryPoint:
@@ -36,9 +36,9 @@ def reset_plugins():
 
 @pytest.fixture(autouse=True)
 def mock():
-    mock_entry_1 = EntryPoint(name='test_plugin1', value='test_plugin:plugin1', group='pydantic')
-    mock_entry_2 = EntryPoint(name='test_plugin2', value='test_plugin:plugin2', group='pydantic')
-    mock_entry_3 = EntryPoint(name='test_plugin3', value='test_plugin:plugin3', group='pydantic')
+    mock_entry_1 = EntryPoint(name='test_plugin1', value='test_plugin:plugin1', group='whoop_pydantic_v2')
+    mock_entry_2 = EntryPoint(name='test_plugin2', value='test_plugin:plugin2', group='whoop_pydantic_v2')
+    mock_entry_3 = EntryPoint(name='test_plugin3', value='test_plugin:plugin3', group='whoop_pydantic_v2')
     mock_dist = Dist([mock_entry_1, mock_entry_2, mock_entry_3])
 
     with patch.object(importlib_metadata, 'distributions', return_value=[mock_dist]):

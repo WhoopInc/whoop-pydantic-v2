@@ -22,7 +22,7 @@ import pytz
 from pydantic_core import CoreSchema, core_schema
 from typing_extensions import Annotated
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     GetCoreSchemaHandler,
     PydanticUserError,
     TypeAdapter,
@@ -35,15 +35,15 @@ class MyDatetimeValidator:
     tz_constraint: Optional[str] = None
 
     def tz_constraint_validator(
-        self,
-        value: dt.datetime,
-        handler: Callable,  # (1)!
+            self,
+            value: dt.datetime,
+            handler: Callable,  # (1)!
     ):
         """Validate tz_constraint and tz_info."""
         # handle naive datetimes
         if self.tz_constraint is None:
             assert (
-                value.tzinfo is None
+                    value.tzinfo is None
             ), 'tz_constraint is None, but provided value is tz-aware.'
             return handler(value)
 
@@ -61,9 +61,9 @@ class MyDatetimeValidator:
         return result
 
     def __get_pydantic_core_schema__(
-        self,
-        source_type: Any,
-        handler: GetCoreSchemaHandler,
+            self,
+            source_type: Any,
+            handler: GetCoreSchemaHandler,
     ) -> CoreSchema:
         return core_schema.no_info_wrap_validator_function(
             self.tz_constraint_validator,
@@ -76,7 +76,7 @@ ta = TypeAdapter(Annotated[dt.datetime, MyDatetimeValidator(LA)])
 print(
     ta.validate_python(dt.datetime(2023, 1, 1, 0, 0, tzinfo=pytz.timezone(LA)))
 )
-#> 2023-01-01 00:00:00-07:53
+# > 2023-01-01 00:00:00-07:53
 
 LONDON = 'Europe/London'
 try:
@@ -100,7 +100,6 @@ except ValidationError as ve:
 
 We can also enforce UTC offset constraints in a similar way.  Assuming we have a `lower_bound` and an `upper_bound`, we can create a custom validator to ensure our `datetime` has a UTC offset that is inclusive within the boundary we define:
 
-
 ```py
 import datetime as dt
 from dataclasses import dataclass
@@ -111,7 +110,7 @@ import pytz
 from pydantic_core import CoreSchema, core_schema
 from typing_extensions import Annotated
 
-from pydantic import GetCoreSchemaHandler, TypeAdapter, ValidationError
+from whoop_pydantic_v2 import GetCoreSchemaHandler, TypeAdapter, ValidationError
 
 
 @dataclass(frozen=True)
@@ -128,15 +127,15 @@ class MyDatetimeValidator:
 
         hours_offset = value.utcoffset().total_seconds() / 3600
         assert (
-            self.lower_bound <= hours_offset <= self.upper_bound
+                self.lower_bound <= hours_offset <= self.upper_bound
         ), 'Value out of bounds'
 
         return result
 
     def __get_pydantic_core_schema__(
-        self,
-        source_type: Any,
-        handler: GetCoreSchemaHandler,
+            self,
+            source_type: Any,
+            handler: GetCoreSchemaHandler,
     ) -> CoreSchema:
         return core_schema.no_info_wrap_validator_function(
             self.validate_tz_bounds,
@@ -149,7 +148,7 @@ ta = TypeAdapter(Annotated[dt.datetime, MyDatetimeValidator(-10, -5)])
 print(
     ta.validate_python(dt.datetime(2023, 1, 1, 0, 0, tzinfo=pytz.timezone(LA)))
 )
-#> 2023-01-01 00:00:00-07:53
+# > 2023-01-01 00:00:00-07:53
 
 LONDON = 'Europe/London'
 try:
@@ -183,7 +182,7 @@ from typing import List
 
 from typing_extensions import Self
 
-from pydantic import BaseModel, ValidationError, model_validator
+from whoop_pydantic_v2 import BaseModel, ValidationError, model_validator
 
 
 class User(BaseModel):
@@ -232,7 +231,7 @@ Alternatively, a custom validator can be used in the nested model class (`User`)
 ```py
 from typing import List
 
-from pydantic import BaseModel, ValidationError, ValidationInfo, field_validator
+from whoop_pydantic_v2 import BaseModel, ValidationError, ValidationInfo, field_validator
 
 
 class User(BaseModel):
@@ -242,7 +241,7 @@ class User(BaseModel):
     @field_validator('password', mode='after')
     @classmethod
     def validate_user_passwords(
-        cls, password: str, info: ValidationInfo
+            cls, password: str, info: ValidationInfo
     ) -> str:
         """Check that user password is not in forbidden list."""
         forbidden_passwords = (

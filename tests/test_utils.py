@@ -11,11 +11,11 @@ from dirty_equals import IsList
 from pydantic_core import PydanticCustomError, PydanticUndefined, core_schema
 from typing_extensions import Annotated, Literal
 
-from pydantic import BaseModel
-from pydantic._internal import _repr
-from pydantic._internal._core_utils import _WalkCoreSchema, pretty_print_core_schema
-from pydantic._internal._typing_extra import all_literal_values, get_origin, is_new_type
-from pydantic._internal._utils import (
+from whoop_pydantic_v2 import BaseModel
+from whoop_pydantic_v2._internal import _repr
+from whoop_pydantic_v2._internal._core_utils import _WalkCoreSchema, pretty_print_core_schema
+from whoop_pydantic_v2._internal._typing_extra import all_literal_values, get_origin, is_new_type
+from whoop_pydantic_v2._internal._utils import (
     BUILTIN_COLLECTIONS,
     ClassAttribute,
     ValueItems,
@@ -25,9 +25,9 @@ from pydantic._internal._utils import (
     smart_deepcopy,
     unique_list,
 )
-from pydantic._internal._validators import import_string
-from pydantic.alias_generators import to_camel, to_pascal, to_snake
-from pydantic.color import Color
+from whoop_pydantic_v2._internal._validators import import_string
+from whoop_pydantic_v2.alias_generators import to_camel, to_pascal, to_snake
+from whoop_pydantic_v2.color import Color
 
 try:
     import devtools
@@ -397,13 +397,13 @@ def test_all_literal_values():
 def test_smart_deepcopy_immutable_non_sequence(obj, mocker):
     # make sure deepcopy is not used
     # (other option will be to use obj.copy(), but this will produce error as none of given objects have this method)
-    mocker.patch('pydantic._internal._utils.deepcopy', side_effect=RuntimeError)
+    mocker.patch('whoop_pydantic_v2._internal._utils.deepcopy', side_effect=RuntimeError)
     assert smart_deepcopy(obj) is deepcopy(obj) is obj
 
 
 @pytest.mark.parametrize('empty_collection', (collection() for collection in BUILTIN_COLLECTIONS))
 def test_smart_deepcopy_empty_collection(empty_collection, mocker):
-    mocker.patch('pydantic._internal._utils.deepcopy', side_effect=RuntimeError)  # make sure deepcopy is not used
+    mocker.patch('whoop_pydantic_v2._internal._utils.deepcopy', side_effect=RuntimeError)  # make sure deepcopy is not used
     if not isinstance(empty_collection, (tuple, frozenset)):  # empty tuple or frozenset are always the same object
         assert smart_deepcopy(empty_collection) is not empty_collection
 
@@ -413,7 +413,7 @@ def test_smart_deepcopy_empty_collection(empty_collection, mocker):
 )
 def test_smart_deepcopy_collection(collection, mocker):
     expected_value = object()
-    mocker.patch('pydantic._internal._utils.deepcopy', return_value=expected_value)
+    mocker.patch('whoop_pydantic_v2._internal._utils.deepcopy', return_value=expected_value)
     assert smart_deepcopy(collection) is expected_value
 
 

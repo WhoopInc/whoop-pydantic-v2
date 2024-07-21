@@ -7,7 +7,7 @@ from pydantic_core import CoreSchema
 from pydantic_core.core_schema import SerializerFunctionWrapHandler
 from typing_extensions import Annotated, Literal, TypeVar
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     Base64Str,
     BaseModel,
     ConfigDict,
@@ -46,7 +46,7 @@ def parametrize_root_model():
 
 def check_schema(schema: CoreSchema) -> None:
     # we assume the shape of the core schema here, which is not a guarantee
-    # pydantic makes to its users but is useful to check here to make sure
+    # whoop_pydantic_v2 makes to its users but is useful to check here to make sure
     # we are doing the right thing internally
     assert schema['type'] == 'model'
     assert schema['root_model'] is True
@@ -550,7 +550,7 @@ def test_root_and_data_error():
 def test_pickle_root_model(create_module):
     @create_module
     def module():
-        from pydantic import RootModel
+        from whoop_pydantic_v2 import RootModel
 
         class MyRootModel(RootModel[str]):
             pass
@@ -597,7 +597,7 @@ def test_help(create_module):
         """
 import pydoc
 
-from pydantic import RootModel
+from whoop_pydantic_v2 import RootModel
 
 
 help_result_string = pydoc.render_doc(RootModel)

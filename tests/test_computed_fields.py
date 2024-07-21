@@ -7,7 +7,7 @@ import pytest
 from pydantic_core import ValidationError, core_schema
 from typing_extensions import TypedDict
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     BaseModel,
     Field,
     GetCoreSchemaHandler,
@@ -18,8 +18,8 @@ from pydantic import (
     field_serializer,
     field_validator,
 )
-from pydantic.alias_generators import to_camel
-from pydantic.errors import PydanticUserError
+from whoop_pydantic_v2.alias_generators import to_camel
+from whoop_pydantic_v2.errors import PydanticUserError
 
 try:
     from functools import cached_property, lru_cache, singledispatchmethod
@@ -781,7 +781,7 @@ def test_computed_field_override_raises():
                 return 'bar'
 
 
-@pytest.mark.skip(reason='waiting on next pydantic-core version, right now, causes a recursion error')
+@pytest.mark.skip(reason='waiting on next whoop_pydantic_v2-core version, right now, causes a recursion error')
 def test_computed_field_excluded_from_model_dump_recursive() -> None:
     # see https://github.com/pydantic/pydantic/issues/9015 for a more contextualized example
     class Model(BaseModel):

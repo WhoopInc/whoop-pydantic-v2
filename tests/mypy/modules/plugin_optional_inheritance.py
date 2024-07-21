@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Foo(BaseModel):

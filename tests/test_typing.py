@@ -6,8 +6,8 @@ from typing import Callable, ClassVar, ForwardRef, NamedTuple
 import pytest
 from typing_extensions import Literal, get_origin
 
-from pydantic import BaseModel, Field  # noqa: F401
-from pydantic._internal._typing_extra import (
+from whoop_pydantic_v2 import BaseModel, Field  # noqa: F401
+from whoop_pydantic_v2._internal._typing_extra import (
     NoneType,
     eval_type_lenient,
     get_function_type_hints,
