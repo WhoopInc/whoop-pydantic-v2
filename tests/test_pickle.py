@@ -6,10 +6,10 @@ from typing import Optional, Type
 import cloudpickle
 import pytest
 
-import pydantic
-from pydantic import BaseModel, PositiveFloat, ValidationError
-from pydantic._internal._model_construction import _PydanticWeakRef
-from pydantic.config import ConfigDict
+import whoop_pydantic_v2
+from whoop_pydantic_v2 import BaseModel, PositiveFloat, ValidationError
+from whoop_pydantic_v2._internal._model_construction import _PydanticWeakRef
+from whoop_pydantic_v2.config import ConfigDict
 
 
 class IntWrapper:
@@ -151,14 +151,14 @@ def test_pickle_nested_model(model_type: Type, use_cloudpickle: bool):
     assert m.inner.val == 1.0
 
 
-@pydantic.dataclasses.dataclass
+@whoop_pydantic_v2.dataclasses.dataclass
 class ImportableDataclass:
     a: int
     b: float
 
 
 def dataclass_factory() -> Type:
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class NonImportableDataclass:
         a: int
         b: float
@@ -204,9 +204,9 @@ def child_dataclass_factory() -> Type:
         (dataclass_factory(), True),
         (child_dataclass_factory(), True),
         # Pydantic dataclass generated from builtin can only be pickled with cloudpickle.
-        (pydantic.dataclasses.dataclass(ImportableBuiltinDataclass), True),
+        (whoop_pydantic_v2.dataclasses.dataclass(ImportableBuiltinDataclass), True),
         # Pydantic dataclass generated from locally-defined builtin can only be pickled with cloudpickle.
-        (pydantic.dataclasses.dataclass(builtin_dataclass_factory()), True),
+        (whoop_pydantic_v2.dataclasses.dataclass(builtin_dataclass_factory()), True),
     ],
 )
 def test_pickle_dataclass(dataclass_type: Type, use_cloudpickle: bool):

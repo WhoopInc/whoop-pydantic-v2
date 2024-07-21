@@ -96,7 +96,7 @@ But more common cases where these strict errors would be inconvenient would be w
 For example, this is valid for Pydantic:
 
 ```Python hl_lines="12 17"
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Knight(BaseModel):
@@ -144,7 +144,7 @@ or (to be specific to pylance/pyright):
 coming back to the example with `age='23'`, it would be:
 
 ```Python hl_lines="10"
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Knight(BaseModel):
@@ -169,7 +169,7 @@ You can also create a variable with the value you want to use and declare its ty
 ```Python hl_lines="1 11-12"
 from typing import Any
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Knight(BaseModel):
@@ -197,7 +197,7 @@ This way, the type declaration of the value is overridden inline, without requir
 ```Python hl_lines="1 11"
 from typing import Any, cast
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Knight(BaseModel):
@@ -224,7 +224,7 @@ Pydantic has a rich set of [Model Configurations][pydantic.config.ConfigDict] av
 These configurations can be set in an internal `class Config` on each model:
 
 ```Python hl_lines="9-10"
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Knight(BaseModel):
@@ -237,7 +237,7 @@ class Knight(BaseModel):
 or passed as keyword arguments when defining the model class:
 
 ```Python hl_lines="4"
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Knight(BaseModel, frozen=True):
@@ -261,7 +261,7 @@ in a model that is "frozen".
 Pylance/pyright requires `default` to be a keyword argument to `Field` in order to infer that the field is optional.
 
 ```py
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Knight(BaseModel):

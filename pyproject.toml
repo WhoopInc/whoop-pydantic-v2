@@ -1,9 +1,5 @@
-[build-system]
-requires = ['hatchling', 'hatch-fancy-pypi-readme>=22.5.0']
-build-backend = 'hatchling.build'
-
 [project]
-name = 'pydantic'
+name = 'whoop-pydantic-v2'
 description = 'Data validation using Python type hints'
 authors = [
     {name = 'Samuel Colvin', email = 's@muelcolvin.com'},
@@ -254,3 +250,27 @@ tests-root = "tests"
 test-framework = "pytest"
 ignore-paths = []
 formatter-cmd = ["ruff check --exit-zero --fix $file", "ruff format $file"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "whoop-pydantic-v2"
+version = "0.1.0"
+description = "Fork of Pydantic V2"
+authors = [
+    "Justin Tunis <justin.tunis@whoop.com>",
+]
+
+[[tool.poetry.source]]
+name = "whoop-nexus"
+url = "https://nexus.qa.whoop.com/repository/pypi-group/simple"
+default = true
+
+[tool.poetry.dependencies]
+python = ">=3.8.12"
+
+typing-extensions = ">=4.6.1"
+annotated-types = ">=0.4.0"
+pydantic-core = "2.20.1"

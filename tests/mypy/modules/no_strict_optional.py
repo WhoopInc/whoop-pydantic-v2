@@ -1,6 +1,6 @@
 from typing import Optional, Union
 
-from pydantic import BaseModel, ConfigDict
+from whoop_pydantic_v2 import BaseModel, ConfigDict
 
 
 class MongoSettings(BaseModel):

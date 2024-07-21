@@ -77,14 +77,14 @@ For example, to create a type representing a positive int:
 # or `from typing import Annotated` for Python 3.9+
 from typing_extensions import Annotated
 
-from pydantic import Field, TypeAdapter, ValidationError
+from whoop_pydantic_v2 import Field, TypeAdapter, ValidationError
 
 PositiveInt = Annotated[int, Field(gt=0)]
 
 ta = TypeAdapter(PositiveInt)
 
 print(ta.validate_python(1))
-#> 1
+# > 1
 
 try:
     ta.validate_python(-1)
@@ -103,14 +103,14 @@ to make this Pydantic-agnostic:
 from annotated_types import Gt
 from typing_extensions import Annotated
 
-from pydantic import TypeAdapter, ValidationError
+from whoop_pydantic_v2 import TypeAdapter, ValidationError
 
 PositiveInt = Annotated[int, Gt(0)]
 
 ta = TypeAdapter(PositiveInt)
 
 print(ta.validate_python(1))
-#> 1
+# > 1
 
 try:
     ta.validate_python(-1)
@@ -130,7 +130,7 @@ Pydantic exports:
 ```py
 from typing_extensions import Annotated
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     AfterValidator,
     PlainSerializer,
     TypeAdapter,
@@ -143,7 +143,6 @@ TruncatedFloat = Annotated[
     PlainSerializer(lambda x: f'{x:.1e}', return_type=str),
     WithJsonSchema({'type': 'string'}, mode='serialization'),
 ]
-
 
 ta = TypeAdapter(TruncatedFloat)
 
@@ -168,14 +167,12 @@ from typing import Any, List, Sequence, TypeVar
 from annotated_types import Gt, Len
 from typing_extensions import Annotated
 
-from pydantic import ValidationError
-from pydantic.type_adapter import TypeAdapter
+from whoop_pydantic_v2 import ValidationError
+from whoop_pydantic_v2.type_adapter import TypeAdapter
 
 SequenceType = TypeVar('SequenceType', bound=Sequence[Any])
 
-
 ShortSequence = Annotated[SequenceType, Len(max_length=10)]
-
 
 ta = TypeAdapter(ShortSequence[List[int]])
 
@@ -191,7 +188,6 @@ except ValidationError as exc:
       List should have at most 10 items after validation, not 100 [type=too_long, input_value=[1, 1, 1, 1, 1, 1, 1, 1, ... 1, 1, 1, 1, 1, 1, 1, 1], input_type=list]
     """
 
-
 T = TypeVar('T')  # or a bound=SupportGt
 
 PositiveList = List[Annotated[T, Gt(0)]]
@@ -200,7 +196,6 @@ ta = TypeAdapter(PositiveList[float])
 
 v = ta.validate_python([1])
 assert type(v[0]) is float
-
 
 try:
     ta.validate_python([-1])
@@ -226,7 +221,7 @@ from typing import List
 from annotated_types import Gt
 from typing_extensions import Annotated, TypeAliasType
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 ImplicitAliasPositiveIntList = List[Annotated[int, Gt(0)]]
 
@@ -293,7 +288,7 @@ from typing import Generic, List, TypeVar
 from annotated_types import Gt
 from typing_extensions import Annotated, TypeAliasType
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 T = TypeVar('T')  # or a `bound=SupportGt`
 
@@ -329,7 +324,7 @@ from typing import Any, Dict, List, Union
 from pydantic_core import PydanticCustomError
 from typing_extensions import Annotated, TypeAliasType
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     TypeAdapter,
     ValidationError,
     ValidationInfo,
@@ -339,7 +334,7 @@ from pydantic import (
 
 
 def json_custom_error_validator(
-    value: Any, handler: ValidatorFunctionWrapHandler, _info: ValidationInfo
+        value: Any, handler: ValidatorFunctionWrapHandler, _info: ValidationInfo
 ) -> Any:
     """Simplify the error message to avoid a gross error stemming
     from exhaustive checking of all union options.
@@ -360,7 +355,6 @@ Json = TypeAliasType(
         WrapValidator(json_custom_error_validator),
     ],
 )
-
 
 ta = TypeAdapter(Json)
 
@@ -406,13 +400,13 @@ from typing import Any
 
 from pydantic_core import CoreSchema, core_schema
 
-from pydantic import GetCoreSchemaHandler, TypeAdapter
+from whoop_pydantic_v2 import GetCoreSchemaHandler, TypeAdapter
 
 
 class Username(str):
     @classmethod
     def __get_pydantic_core_schema__(
-        cls, source_type: Any, handler: GetCoreSchemaHandler
+            cls, source_type: Any, handler: GetCoreSchemaHandler
     ) -> CoreSchema:
         return core_schema.no_info_after_validator_function(cls, handler(str))
 
@@ -438,7 +432,7 @@ from typing import Any, Callable
 from pydantic_core import CoreSchema, core_schema
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, GetCoreSchemaHandler
+from whoop_pydantic_v2 import BaseModel, GetCoreSchemaHandler
 
 
 @dataclass(frozen=True)  # (1)!
@@ -446,7 +440,7 @@ class MyAfterValidator:
     func: Callable[[Any], Any]
 
     def __get_pydantic_core_schema__(
-        self, source_type: Any, handler: GetCoreSchemaHandler
+            self, source_type: Any, handler: GetCoreSchemaHandler
     ) -> CoreSchema:
         return core_schema.no_info_after_validator_function(
             self.func, handler(source_type)
@@ -476,13 +470,13 @@ from typing import Any
 from pydantic_core import core_schema
 from typing_extensions import Annotated
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     BaseModel,
     GetCoreSchemaHandler,
     GetJsonSchemaHandler,
     ValidationError,
 )
-from pydantic.json_schema import JsonSchemaValue
+from whoop_pydantic_v2.json_schema import JsonSchemaValue
 
 
 class ThirdPartyType:
@@ -500,9 +494,9 @@ class ThirdPartyType:
 class _ThirdPartyTypePydanticAnnotation:
     @classmethod
     def __get_pydantic_core_schema__(
-        cls,
-        _source_type: Any,
-        _handler: GetCoreSchemaHandler,
+            cls,
+            _source_type: Any,
+            _handler: GetCoreSchemaHandler,
     ) -> core_schema.CoreSchema:
         """
         We return a pydantic_core.CoreSchema that behaves in the following ways:
@@ -541,7 +535,7 @@ class _ThirdPartyTypePydanticAnnotation:
 
     @classmethod
     def __get_pydantic_json_schema__(
-        cls, _core_schema: core_schema.CoreSchema, handler: GetJsonSchemaHandler
+            cls, _core_schema: core_schema.CoreSchema, handler: GetJsonSchemaHandler
     ) -> JsonSchemaValue:
         # Use the same schema that would be used for `int`
         return handler(core_schema.int_schema())
@@ -588,7 +582,6 @@ except ValidationError as e:
       Input should be a valid integer, unable to parse string as an integer [type=int_parsing, input_value='a', input_type=str]
     """
 
-
 assert Model.model_json_schema() == {
     'properties': {
         'third_party_type': {'title': 'Third Party Type', 'type': 'integer'}
@@ -613,7 +606,7 @@ For many simple cases you can greatly minimize this by using `pydantic.GetPydant
 from pydantic_core import core_schema
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, GetPydanticSchema
+from whoop_pydantic_v2 import BaseModel, GetPydanticSchema
 
 
 class Model(BaseModel):
@@ -666,7 +659,7 @@ from typing import Any, Generic, TypeVar
 from pydantic_core import CoreSchema, core_schema
 from typing_extensions import get_args, get_origin
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     BaseModel,
     GetCoreSchemaHandler,
     ValidationError,
@@ -676,7 +669,7 @@ from pydantic import (
 ItemType = TypeVar('ItemType')
 
 
-# This is not a pydantic model, it's an arbitrary generic class
+# This is not a whoop_pydantic_v2 model, it's an arbitrary generic class
 @dataclass
 class Owner(Generic[ItemType]):
     name: str
@@ -684,7 +677,7 @@ class Owner(Generic[ItemType]):
 
     @classmethod
     def __get_pydantic_core_schema__(
-        cls, source_type: Any, handler: GetCoreSchemaHandler
+            cls, source_type: Any, handler: GetCoreSchemaHandler
     ) -> CoreSchema:
         origin = get_origin(source_type)
         if origin is None:  # used as `x: Owner` without params
@@ -697,7 +690,7 @@ class Owner(Generic[ItemType]):
         item_schema = handler.generate_schema(item_tp)
 
         def val_item(
-            v: Owner[Any], handler: ValidatorFunctionWrapHandler
+                v: Owner[Any], handler: ValidatorFunctionWrapHandler
         ) -> Owner[Any]:
             v.item = handler(v.item)
             return v
@@ -812,7 +805,7 @@ from typing import Any, Sequence, TypeVar
 from pydantic_core import ValidationError, core_schema
 from typing_extensions import get_args
 
-from pydantic import BaseModel, GetCoreSchemaHandler
+from whoop_pydantic_v2 import BaseModel, GetCoreSchemaHandler
 
 T = TypeVar('T')
 
@@ -829,7 +822,7 @@ class MySequence(Sequence[T]):
 
     @classmethod
     def __get_pydantic_core_schema__(
-        cls, source: Any, handler: GetCoreSchemaHandler
+            cls, source: Any, handler: GetCoreSchemaHandler
     ) -> core_schema.CoreSchema:
         instance_schema = core_schema.is_instance_schema(cls)
 
@@ -855,9 +848,11 @@ class M(BaseModel):
 
 m = M()
 print(m)
-#> s1=<__main__.MySequence object at 0x0123456789ab>
+# > s1=<__main__.MySequence object at 0x0123456789ab>
 print(m.s1.v)
-#> [3]
+
+
+# > [3]
 
 
 class M(BaseModel):
@@ -891,7 +886,7 @@ from typing import Any
 
 from pydantic_core import core_schema
 
-from pydantic import BaseModel, GetCoreSchemaHandler, ValidationInfo
+from whoop_pydantic_v2 import BaseModel, GetCoreSchemaHandler, ValidationInfo
 
 
 class CustomType:
@@ -910,7 +905,7 @@ class CustomType:
 
     @classmethod
     def __get_pydantic_core_schema__(
-        cls, source_type: Any, handler: GetCoreSchemaHandler
+            cls, source_type: Any, handler: GetCoreSchemaHandler
     ) -> core_schema.CoreSchema:
         return core_schema.with_info_after_validator_function(
             cls.validate, handler(int), field_name=handler.field_name
@@ -923,7 +918,7 @@ class MyModel(BaseModel):
 
 m = MyModel(my_field=1)
 print(m.my_field)
-#> CustomType<1 'my_field'>
+# > CustomType<1 'my_field'>
 ```
 
 You can also access `field_name` from the markers used with `Annotated`, like [`AfterValidator`][pydantic.functional_validators.AfterValidator].
@@ -931,7 +926,7 @@ You can also access `field_name` from the markers used with `Annotated`, like [`
 ```python
 from typing_extensions import Annotated
 
-from pydantic import AfterValidator, BaseModel, ValidationInfo
+from whoop_pydantic_v2 import AfterValidator, BaseModel, ValidationInfo
 
 
 def my_validators(value: int, info: ValidationInfo):

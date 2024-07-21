@@ -1,5 +1,5 @@
 """
-Test pydantic's compliance with mypy.
+Test whoop_pydantic_v2's compliance with mypy.
 
 Do a little skipping about with types to demonstrate its usage.
 """
@@ -11,7 +11,7 @@ from uuid import UUID
 
 from typing_extensions import Annotated, TypedDict
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     UUID1,
     AwareDatetime,
     BaseModel,
@@ -46,9 +46,9 @@ from pydantic import (
     root_validator,
     validate_call,
 )
-from pydantic.fields import Field, PrivateAttr
-from pydantic.json_schema import Examples
-from pydantic.networks import AnyUrl
+from whoop_pydantic_v2.fields import Field, PrivateAttr
+from whoop_pydantic_v2.json_schema import Examples
+from whoop_pydantic_v2.networks import AnyUrl
 
 
 class Flags(BaseModel):

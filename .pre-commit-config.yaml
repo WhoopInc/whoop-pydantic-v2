@@ -27,12 +27,12 @@ repos:
   - id: usage_docs
     name: Usage docs links
     entry: pdm run ./tests/check_usage_docs.py
-    files: '^pydantic/'
+    files: '^whoop_pydantic_v2/'
     types: [python]
     language: system
   - id: typecheck
     name: Typecheck
-    entry: pdm run pyright pydantic
+    entry: pdm run pyright whoop_pydantic_v2
     types: [python]
     language: node
     pass_filenames: false

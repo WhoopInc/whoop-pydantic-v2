@@ -6,8 +6,8 @@ import pytest
 from annotated_types import MaxLen
 from typing_extensions import Annotated, Literal, TypeAliasType
 
-from pydantic import BaseModel, Field, ValidationError
-from pydantic.type_adapter import TypeAdapter
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
+from whoop_pydantic_v2.type_adapter import TypeAdapter
 
 T = TypeVar('T')
 

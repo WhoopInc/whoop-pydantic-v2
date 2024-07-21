@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Model(BaseModel):
@@ -14,7 +14,7 @@ class Model(BaseModel):
 
 
 print(Model(a=('1', 2, 3), b='ok'))
-#> a=[1, 2, 3] b='ok'
+# > a=[1, 2, 3] b='ok'
 ```
 
 Internally, Pydantic will call a method similar to `typing.get_type_hints` to resolve annotations.
@@ -25,7 +25,7 @@ Even without using `from __future__ import annotations`, in cases where the refe
 ```py
 from typing import ForwardRef
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 Foo = ForwardRef('Foo')
 
@@ -36,9 +36,9 @@ class Foo(BaseModel):
 
 
 print(Foo())
-#> a=123 b=None
+# > a=123 b=None
 print(Foo(b={'a': '321'}))
-#> a=123 b=Foo(a=321, b=None)
+# > a=123 b=Foo(a=321, b=None)
 ```
 
 ## Self-referencing (or "Recursive") Models
@@ -49,7 +49,7 @@ resolved after model creation.
 Within the model, you can refer to the not-yet-constructed model using a string:
 
 ```py
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Foo(BaseModel):
@@ -59,9 +59,9 @@ class Foo(BaseModel):
 
 
 print(Foo())
-#> a=123 sibling=None
+# > a=123 sibling=None
 print(Foo(sibling={'a': '321'}))
-#> a=123 sibling=Foo(a=321, sibling=None)
+# > a=123 sibling=Foo(a=321, sibling=None)
 ```
 
 If you use `from __future__ import annotations`, you can also just refer to the model by its type name:
@@ -69,7 +69,7 @@ If you use `from __future__ import annotations`, you can also just refer to the 
 ```py
 from __future__ import annotations
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Foo(BaseModel):
@@ -96,7 +96,7 @@ to detect the cyclic reference and raise an appropriate `ValidationError`:
 ```py
 from typing import Optional
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 class ModelA(BaseModel):
@@ -131,7 +131,7 @@ from contextlib import contextmanager
 from dataclasses import field
 from typing import Iterator, List
 
-from pydantic import BaseModel, ValidationError, field_validator
+from whoop_pydantic_v2 import BaseModel, ValidationError, field_validator
 
 
 def is_recursion_validation_error(exc: ValidationError) -> bool:
@@ -159,8 +159,8 @@ class Node(BaseModel):
             return h(children)
         except ValidationError as exc:
             if not (
-                is_recursion_validation_error(exc)
-                and isinstance(children, list)
+                    is_recursion_validation_error(exc)
+                    and isinstance(children, list)
             ):
                 raise exc
 
@@ -183,7 +183,7 @@ Similarly, if Pydantic encounters a recursive reference during _serialization_, 
 recursion depth to be exceeded, a `ValueError` is raised immediately:
 
 ```py
-from pydantic import TypeAdapter
+from whoop_pydantic_v2 import TypeAdapter
 
 # Create data with cyclic references representing the graph 1 -> 2 -> 3 -> 1
 node_data = {'id': 1, 'children': [{'id': 2, 'children': [{'id': 3}]}]}
@@ -205,12 +205,12 @@ This can also be handled if desired:
 from dataclasses import field
 from typing import Any, List
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     SerializerFunctionWrapHandler,
     TypeAdapter,
     field_serializer,
 )
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass
@@ -224,7 +224,7 @@ class Node(NodeReference):
 
     @field_serializer('children', mode='wrap')
     def serialize(
-        self, children: List['Node'], handler: SerializerFunctionWrapHandler
+            self, children: List['Node'], handler: SerializerFunctionWrapHandler
     ) -> Any:
         """
         Serialize a list of nodes, handling circular references by excluding the children.

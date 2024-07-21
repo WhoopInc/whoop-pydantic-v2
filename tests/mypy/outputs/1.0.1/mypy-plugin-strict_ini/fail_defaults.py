@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Model(BaseModel):

@@ -11,7 +11,7 @@ to your code with minimal boilerplate.
 Example of usage:
 
 ```py
-from pydantic import ValidationError, validate_call
+from whoop_pydantic_v2 import ValidationError, validate_call
 
 
 @validate_call
@@ -22,11 +22,11 @@ def repeat(s: str, count: int, *, separator: bytes = b'') -> bytes:
 
 a = repeat('hello', 3)
 print(a)
-#> b'hellohellohello'
+# > b'hellohellohello'
 
 b = repeat('x', '4', separator=b' ')
 print(b)
-#> b'x x x x'
+# > b'x x x x'
 
 try:
     c = repeat('hello', 'wrong')
@@ -52,7 +52,7 @@ import os
 from pathlib import Path
 from typing import Optional, Pattern
 
-from pydantic import DirectoryPath, validate_call
+from whoop_pydantic_v2 import DirectoryPath, validate_call
 
 
 @validate_call
@@ -95,7 +95,7 @@ all possible combinations of these:
 To demonstrate all the above parameter types:
 
 ```py requires="3.8"
-from pydantic import validate_call
+from whoop_pydantic_v2 import validate_call
 
 
 @validate_call
@@ -104,13 +104,15 @@ def pos_or_kw(a: int, b: int = 2) -> str:
 
 
 print(pos_or_kw(1))
-#> a=1 b=2
+# > a=1 b=2
 print(pos_or_kw(a=1))
-#> a=1 b=2
+# > a=1 b=2
 print(pos_or_kw(1, 3))
-#> a=1 b=3
+# > a=1 b=3
 print(pos_or_kw(a=1, b=3))
-#> a=1 b=3
+
+
+# > a=1 b=3
 
 
 @validate_call
@@ -119,9 +121,11 @@ def kw_only(*, a: int, b: int = 2) -> str:
 
 
 print(kw_only(a=1))
-#> a=1 b=2
+# > a=1 b=2
 print(kw_only(a=1, b=3))
-#> a=1 b=3
+
+
+# > a=1 b=3
 
 
 @validate_call
@@ -130,9 +134,11 @@ def pos_only(a: int, b: int = 2, /) -> str:  # python 3.8 only
 
 
 print(pos_only(1))
-#> a=1 b=2
+# > a=1 b=2
 print(pos_only(1, 2))
-#> a=1 b=2
+
+
+# > a=1 b=2
 
 
 @validate_call
@@ -141,11 +147,13 @@ def var_args(*args: int) -> str:
 
 
 print(var_args(1))
-#> (1,)
+# > (1,)
 print(var_args(1, 2))
-#> (1, 2)
+# > (1, 2)
 print(var_args(1, 2, 3))
-#> (1, 2, 3)
+
+
+# > (1, 2, 3)
 
 
 @validate_call
@@ -154,28 +162,30 @@ def var_kwargs(**kwargs: int) -> str:
 
 
 print(var_kwargs(a=1))
-#> {'a': 1}
+# > {'a': 1}
 print(var_kwargs(a=1, b=2))
-#> {'a': 1, 'b': 2}
+
+
+# > {'a': 1, 'b': 2}
 
 
 @validate_call
 def armageddon(
-    a: int,
-    /,  # python 3.8 only
-    b: int,
-    *c: int,
-    d: int,
-    e: int = None,
-    **f: int,
+        a: int,
+        /,  # python 3.8 only
+        b: int,
+        *c: int,
+        d: int,
+        e: int = None,
+        **f: int,
 ) -> str:
     return f'a={a} b={b} c={c} d={d} e={e} f={f}'
 
 
 print(armageddon(1, 2, d=3))
-#> a=1 b=2 c=() d=3 e=None f={}
+# > a=1 b=2 c=() d=3 e=None f={}
 print(armageddon(1, 2, 3, 4, 5, 6, d=8, e=9, f=10, spam=11))
-#> a=1 b=2 c=(3, 4, 5, 6) d=8 e=9 f={'f': 10, 'spam': 11}
+# > a=1 b=2 c=(3, 4, 5, 6) d=8 e=9 f={'f': 10, 'spam': 11}
 ```
 
 ## Using Field to describe function arguments
@@ -190,7 +200,7 @@ from datetime import datetime
 
 from typing_extensions import Annotated
 
-from pydantic import Field, ValidationError, validate_call
+from whoop_pydantic_v2 import Field, ValidationError, validate_call
 
 
 @validate_call
@@ -223,7 +233,7 @@ The [`alias`](fields.md#field-aliases) can be used with the decorator as normal.
 ```py
 from typing_extensions import Annotated
 
-from pydantic import Field, validate_call
+from whoop_pydantic_v2 import Field, validate_call
 
 
 @validate_call
@@ -248,7 +258,7 @@ The raw function which was decorated is accessible, this is useful if in some sc
 arguments and want to call the function in the most performant way (see [notes on performance](#performance) below):
 
 ```py
-from pydantic import validate_call
+from whoop_pydantic_v2 import validate_call
 
 
 @validate_call
@@ -280,7 +290,7 @@ conn = Connection()
 # ignore-above
 import asyncio
 
-from pydantic import PositiveInt, ValidationError, validate_call
+from whoop_pydantic_v2 import PositiveInt, ValidationError, validate_call
 
 
 @validate_call
@@ -328,7 +338,7 @@ Configuration is set using the `config` keyword argument to the decorator, it ma
 or a dict of properties which are converted to a class later.
 
 ```py
-from pydantic import ValidationError, validate_call
+from whoop_pydantic_v2 import ValidationError, validate_call
 
 
 class Foobar:
@@ -372,7 +382,7 @@ This might be useful when a particular function is costly / time consuming.
 Here's an example of a workaround you can use for that pattern:
 
 ```py
-from pydantic import validate_call
+from whoop_pydantic_v2 import validate_call
 
 
 @validate_call

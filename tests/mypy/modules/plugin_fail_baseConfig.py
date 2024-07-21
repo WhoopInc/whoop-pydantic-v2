@@ -1,7 +1,7 @@
 from typing import Any, Generic, List, Optional, Set, TypeVar, Union
 
-from pydantic import BaseModel, Extra, Field, field_validator
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import BaseModel, Extra, Field, field_validator
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 class Model(BaseModel):
@@ -57,7 +57,7 @@ KwargsForbidExtraModel(x=1)
 
 class BadExtraModel(BaseModel):
     class Config:
-        extra = 1  # type: ignore[pydantic-config]
+        extra = 1  # type: ignore[whoop_pydantic_v2-config]
         extra = 1
 
 
@@ -198,14 +198,14 @@ AliasGeneratorModel(z=1)
 class AliasGeneratorModel2(BaseModel):
     x: int = Field(..., alias='y')
 
-    class Config:  # type: ignore[pydantic-alias]
+    class Config:  # type: ignore[whoop_pydantic_v2-alias]
         alias_generator = lambda x: x + '_'  # noqa E731
 
 
 class UntypedFieldModel(BaseModel):
     x: int = 1
     y = 2
-    z = 2  # type: ignore[pydantic-field]
+    z = 2  # type: ignore[whoop_pydantic_v2-field]
 
 
 AliasGeneratorModel2(x=1)

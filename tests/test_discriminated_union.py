@@ -9,13 +9,13 @@ from dirty_equals import HasRepr, IsStr
 from pydantic_core import SchemaValidator, core_schema
 from typing_extensions import Annotated, Literal, TypedDict
 
-from pydantic import BaseModel, ConfigDict, Discriminator, Field, TypeAdapter, ValidationError, field_validator
-from pydantic._internal._discriminated_union import apply_discriminator
-from pydantic.dataclasses import dataclass as pydantic_dataclass
-from pydantic.errors import PydanticUserError
-from pydantic.fields import FieldInfo
-from pydantic.json_schema import GenerateJsonSchema
-from pydantic.types import Tag
+from whoop_pydantic_v2 import BaseModel, ConfigDict, Discriminator, Field, TypeAdapter, ValidationError, field_validator
+from whoop_pydantic_v2._internal._discriminated_union import apply_discriminator
+from whoop_pydantic_v2.dataclasses import dataclass as pydantic_dataclass
+from whoop_pydantic_v2.errors import PydanticUserError
+from whoop_pydantic_v2.fields import FieldInfo
+from whoop_pydantic_v2.json_schema import GenerateJsonSchema
+from whoop_pydantic_v2.types import Tag
 
 
 def test_discriminated_union_type():

@@ -40,7 +40,7 @@ theme:
   logo: 'logo-white.svg'
   favicon: 'favicon.png'
 
-repo_name: pydantic/pydantic
+repo_name: whoop_pydantic_v2/whoop_pydantic_v2
 repo_url: https://github.com/pydantic/pydantic
 edit_uri: edit/main/docs/
 extra:
@@ -187,7 +187,7 @@ markdown_extensions:
     alternate_style: true
 
 watch:
-- pydantic
+- whoop_pydantic_v2
 
 plugins:
 - mike:
@@ -235,18 +235,18 @@ plugins:
       'usage/linting.md': 'integrations/linting.md'
       'usage/types.md': 'concepts/types.md'
       'usage/types/secrets.md': 'examples/secrets.md'
-      'usage/types/string_types.md': 'api/types.md#pydantic.types.StringConstraints'
-      'usage/types/file_types.md': 'api/types.md#pydantic.types.FilePath'
+      'usage/types/string_types.md': 'api/types.md#whoop_pydantic_v2.types.StringConstraints'
+      'usage/types/file_types.md': 'api/types.md#whoop_pydantic_v2.types.FilePath'
       'api/main.md': 'api/base_model.md'
       'api/color.md': 'api/pydantic_extra_types_color.md'
-      'api/alias_generators.md': 'api/config.md#pydantic.config.ConfigDict.alias_generator'
+      'api/alias_generators.md': 'api/config.md#whoop_pydantic_v2.config.ConfigDict.alias_generator'
       'api/pydantic_core_init.md': 'api/pydantic_core.md'
       'usage/types/booleans.md': 'api/standard_library_types.md#booleans'
       'usage/types/callables.md': 'api/standard_library_types.md#callable'
       'usage/types/custom.md': 'concepts/types.md#custom-types'
       'usage/types/datetime.md': 'api/standard_library_types.md#datetime-types'
       'usage/types/enum.md': 'api/standard_library_types.md#enum'
-      'usage/types/json.md': 'api/types.md#pydantic.types.Json'
+      'usage/types/json.md': 'api/types.md#whoop_pydantic_v2.types.Json'
       'usage/types/list_types.md': 'api/standard_library_types.md#list'
       'usage/types/standard_types.md': 'api/standard_library_types.md'
       'usage/types/strict_types.md': 'concepts/types.md#strict-types'
@@ -266,7 +266,7 @@ plugins:
       'usage/types/extra_types/routing_numbers.md': 'api/pydantic_extra_types_routing_numbers.md'
       'version-compatibility.md': 'version-policy.md'
       'api/pydantic_extra_types_routing_number.md': 'api/pydantic_extra_types_routing_numbers.md'
-      'usage/computed_fields.md': 'api/fields.md#pydantic.fields.computed_field'
+      'usage/computed_fields.md': 'api/fields.md#whoop_pydantic_v2.fields.computed_field'
       'usage/conversion_table.md': 'concepts/conversion_table.md'
       'usage/dataclasses.md': 'concepts/dataclasses.md'
       'usage/fields.md': 'concepts/fields.md'
@@ -279,9 +279,9 @@ plugins:
       'usage/type_adapter.md': 'concepts/type_adapter.md'
       'usage/validation_decorator.md': 'concepts/validation_decorator.md'
       'usage/validators.md': 'concepts/validators.md'
-      'usage/types/bytesize.md': 'api/types.md#pydantic.types.ByteSize'
+      'usage/types/bytesize.md': 'api/types.md#whoop_pydantic_v2.types.ByteSize'
       'usage/types/dicts_mapping.md': 'api/standard_library_types.md#mapping-types'
-      'usage/types/encoded.md': 'api/types.md#pydantic.types.EncodedBytes'
+      'usage/types/encoded.md': 'api/types.md#whoop_pydantic_v2.types.EncodedBytes'
       'usage/types/enums.md': 'api/standard_library_types.md#enum'
       'usage/types/number_types.md': 'api/standard_library_types.md#number-types'
       'usage/types/sequence_iterable.md': 'api/standard_library_types.md#other-iterables'

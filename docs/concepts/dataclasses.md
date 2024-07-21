@@ -7,7 +7,7 @@ If you don't want to use Pydantic's `BaseModel` you can instead get the same dat
 ```py
 from datetime import datetime
 
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass
@@ -50,8 +50,8 @@ Fields that require a `default_factory` can be specified by either a `pydantic.F
 import dataclasses
 from typing import List, Optional
 
-from pydantic import Field, TypeAdapter
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import Field, TypeAdapter
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass
@@ -117,8 +117,8 @@ If you want to modify the `config` like you would with a `BaseModel`, you have t
 * Use `ConfigDict` as the config
 
 ```py
-from pydantic import ConfigDict
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import ConfigDict
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 # Option 1 - use directly a dict
@@ -148,8 +148,8 @@ class MyDataclass2:
 Nested dataclasses are supported both in dataclasses and normal models.
 
 ```py
-from pydantic import AnyUrl
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import AnyUrl
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass
@@ -164,7 +164,7 @@ class Navbar:
 
 navbar = Navbar(button={'href': 'https://example.com'})
 print(navbar)
-#> Navbar(button=NavbarButton(href=Url('https://example.com/')))
+# > Navbar(button=NavbarButton(href=Url('https://example.com/')))
 ```
 
 When used as fields, dataclasses (Pydantic or vanilla) should use dicts as validation inputs.
@@ -176,8 +176,8 @@ Pydantic supports generic dataclasses, including those with type variables.
 ```py
 from typing import Generic, TypeVar
 
-from pydantic import TypeAdapter
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import TypeAdapter
+from whoop_pydantic_v2.dataclasses import dataclass
 
 T = TypeVar('T')
 
@@ -206,7 +206,7 @@ all the inherited fields.
 ```py
 import dataclasses
 
-import pydantic
+import whoop_pydantic_v2
 
 
 @dataclasses.dataclass
@@ -219,18 +219,18 @@ class Y(Z):
     y: int = 0
 
 
-@pydantic.dataclasses.dataclass
+@whoop_pydantic_v2.dataclasses.dataclass
 class X(Y):
     x: int = 0
 
 
 foo = X(x=b'1', y='2', z='3')
 print(foo)
-#> X(z=3, y=2, x=1)
+# > X(z=3, y=2, x=1)
 
 try:
     X(z='pika')
-except pydantic.ValidationError as e:
+except whoop_pydantic_v2.ValidationError as e:
     print(e)
     """
     1 validation error for X
@@ -250,7 +250,7 @@ import dataclasses
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, ValidationError
+from whoop_pydantic_v2 import BaseModel, ConfigDict, ValidationError
 
 
 @dataclasses.dataclass(frozen=True)
@@ -265,7 +265,7 @@ class File:
 
 
 class Foo(BaseModel):
-    # Required so that pydantic revalidates the model attributes
+    # Required so that whoop_pydantic_v2 revalidates the model attributes
     model_config = ConfigDict(revalidate_instances='always')
 
     file: File
@@ -296,7 +296,7 @@ try:
     foo.user.name = 'bulbi'
 except dataclasses.FrozenInstanceError as e:
     print(e)
-    #> cannot assign to field 'name'
+    # > cannot assign to field 'name'
 ```
 
 ### Use custom types
@@ -308,8 +308,8 @@ In this case you can simply add `arbitrary_types_allowed` in the config!
 ```py
 import dataclasses
 
-from pydantic import BaseModel, ConfigDict
-from pydantic.errors import PydanticSchemaGenerationError
+from whoop_pydantic_v2 import BaseModel, ConfigDict
+from whoop_pydantic_v2.errors import PydanticSchemaGenerationError
 
 
 class ArbitraryType:
@@ -335,12 +335,13 @@ try:
         dc: DC
         other: str
 
-    # invalid as it is now a pydantic dataclass
+
+    # invalid as it is now a whoop_pydantic_v2 dataclass
     Model(dc=my_dc, other='other')
 except PydanticSchemaGenerationError as e:
     print(e.message)
     """
-    Unable to generate pydantic-core schema for <class '__main__.ArbitraryType'>. Set `arbitrary_types_allowed=True` in the model_config to ignore this error or implement `__get_pydantic_core_schema__` on your type to fully support it.
+    Unable to generate whoop_pydantic_v2-core schema for <class '__main__.ArbitraryType'>. Set `arbitrary_types_allowed=True` in the model_config to ignore this error or implement `__get_pydantic_core_schema__` on your type to fully support it.
 
     If you got this error by calling handler(<some type>) within `__get_pydantic_core_schema__` then you likely need to call `handler.generate_schema(<some type>)` since we do not call `__get_pydantic_core_schema__` on `<some type>` otherwise to avoid infinite recursion.
     """
@@ -355,7 +356,7 @@ class Model(BaseModel):
 
 m = Model(dc=my_dc, other='other')
 print(repr(m))
-#> Model(dc=DC(a=ArbitraryType(value=3), b='qwe'), other='other')
+# > Model(dc=DC(a=ArbitraryType(value=3), b='qwe'), other='other')
 ```
 
 ### Checking if a dataclass is a pydantic dataclass
@@ -365,7 +366,7 @@ Pydantic dataclasses are still considered dataclasses, so using `dataclasses.is_
 ```py
 import dataclasses
 
-import pydantic
+import whoop_pydantic_v2
 
 
 @dataclasses.dataclass
@@ -373,17 +374,17 @@ class StdLibDataclass:
     id: int
 
 
-PydanticDataclass = pydantic.dataclasses.dataclass(StdLibDataclass)
+PydanticDataclass = whoop_pydantic_v2.dataclasses.dataclass(StdLibDataclass)
 
 print(dataclasses.is_dataclass(StdLibDataclass))
-#> True
-print(pydantic.dataclasses.is_pydantic_dataclass(StdLibDataclass))
-#> False
+# > True
+print(whoop_pydantic_v2.dataclasses.is_pydantic_dataclass(StdLibDataclass))
+# > False
 
 print(dataclasses.is_dataclass(PydanticDataclass))
-#> True
-print(pydantic.dataclasses.is_pydantic_dataclass(PydanticDataclass))
-#> True
+# > True
+print(whoop_pydantic_v2.dataclasses.is_pydantic_dataclass(PydanticDataclass))
+# > True
 ```
 
 ## Initialization hooks
@@ -396,8 +397,8 @@ from typing import Any, Dict
 
 from typing_extensions import Self
 
-from pydantic import model_validator
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import model_validator
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass
@@ -444,13 +445,12 @@ Here is the order:
 * `__post_init__`.
 * `model_validator(mode='after')`
 
-
 ```py requires="3.8"
 from dataclasses import InitVar
 from pathlib import Path
 from typing import Optional
 
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass
@@ -483,8 +483,8 @@ make use of the [RootModel](models.md#rootmodel-and-custom-root-types) as follow
 import dataclasses
 from typing import List
 
-from pydantic import RootModel
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import RootModel
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass

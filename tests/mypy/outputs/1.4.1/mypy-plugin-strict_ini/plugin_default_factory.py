@@ -4,7 +4,7 @@ See https://github.com/pydantic/pydantic/issues/4457
 
 from typing import Dict, List
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 def new_list() -> List[int]:

@@ -1,8 +1,8 @@
 """
 An integration-style benchmark of a model with a class of what should
-(hopefully) be some of the most common field types used in pydantic validation.
+(hopefully) be some of the most common field types used in whoop_pydantic_v2 validation.
 
-Used to gauge overall pydantic performance.
+Used to gauge overall whoop_pydantic_v2 performance.
 """
 
 import json
@@ -18,8 +18,8 @@ from typing_extensions import Annotated, Literal
 
 @pytest.fixture(scope='module')
 def pydantic_type_adapter():
-    from pydantic import BaseModel, Field, TypeAdapter
-    from pydantic.networks import AnyHttpUrl
+    from whoop_pydantic_v2 import BaseModel, Field, TypeAdapter
+    from whoop_pydantic_v2.networks import AnyHttpUrl
 
     class Blog(BaseModel):
         type: Literal['blog']

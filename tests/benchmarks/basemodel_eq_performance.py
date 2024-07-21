@@ -17,18 +17,18 @@ if TYPE_CHECKING:
     import numpy as np
     from matplotlib import axes, figure
 
-import pydantic
+import whoop_pydantic_v2
 
 PYTHON_VERSION = '.'.join(map(str, sys.version_info))
-PYDANTIC_VERSION = metadata.version('pydantic')
+PYDANTIC_VERSION = metadata.version('whoop_pydantic_v2')
 
 
-# New implementation of pydantic.BaseModel.__eq__ to test
+# New implementation of whoop_pydantic_v2.BaseModel.__eq__ to test
 
 
-class OldImplementationModel(pydantic.BaseModel, frozen=True):
+class OldImplementationModel(whoop_pydantic_v2.BaseModel, frozen=True):
     def __eq__(self, other: Any) -> bool:
-        if isinstance(other, pydantic.BaseModel):
+        if isinstance(other, whoop_pydantic_v2.BaseModel):
             # When comparing instances of generic types for equality, as long as all field values are equal,
             # only require their generic origin types to be equal, rather than exact type equality.
             # This prevents headaches like MyGeneric(x=1) != MyGeneric[Any](x=1).
@@ -45,9 +45,9 @@ class OldImplementationModel(pydantic.BaseModel, frozen=True):
             return NotImplemented  # delegate to the other item in the comparison
 
 
-class DictComprehensionEqModel(pydantic.BaseModel, frozen=True):
+class DictComprehensionEqModel(whoop_pydantic_v2.BaseModel, frozen=True):
     def __eq__(self, other: Any) -> bool:
-        if isinstance(other, pydantic.BaseModel):
+        if isinstance(other, whoop_pydantic_v2.BaseModel):
             # When comparing instances of generic types for equality, as long as all field values are equal,
             # only require their generic origin types to be equal, rather than exact type equality.
             # This prevents headaches like MyGeneric(x=1) != MyGeneric[Any](x=1).
@@ -66,9 +66,9 @@ class DictComprehensionEqModel(pydantic.BaseModel, frozen=True):
             return NotImplemented  # delegate to the other item in the comparison
 
 
-class ItemGetterEqModel(pydantic.BaseModel, frozen=True):
+class ItemGetterEqModel(whoop_pydantic_v2.BaseModel, frozen=True):
     def __eq__(self, other: Any) -> bool:
-        if isinstance(other, pydantic.BaseModel):
+        if isinstance(other, whoop_pydantic_v2.BaseModel):
             # When comparing instances of generic types for equality, as long as all field values are equal,
             # only require their generic origin types to be equal, rather than exact type equality.
             # This prevents headaches like MyGeneric(x=1) != MyGeneric[Any](x=1).
@@ -88,9 +88,9 @@ class ItemGetterEqModel(pydantic.BaseModel, frozen=True):
             return NotImplemented  # delegate to the other item in the comparison
 
 
-class ItemGetterEqModelFastPath(pydantic.BaseModel, frozen=True):
+class ItemGetterEqModelFastPath(whoop_pydantic_v2.BaseModel, frozen=True):
     def __eq__(self, other: Any) -> bool:
-        if isinstance(other, pydantic.BaseModel):
+        if isinstance(other, whoop_pydantic_v2.BaseModel):
             # When comparing instances of generic types for equality, as long as all field values are equal,
             # only require their generic origin types to be equal, rather than exact type equality.
             # This prevents headaches like MyGeneric(x=1) != MyGeneric[Any](x=1).
@@ -105,11 +105,11 @@ class ItemGetterEqModelFastPath(pydantic.BaseModel, frozen=True):
             ):
                 return False
 
-            # Fix GH-7444 by comparing only pydantic fields
+            # Fix GH-7444 by comparing only whoop_pydantic_v2 fields
             # We provide a fast-path for performance: __dict__ comparison is *much* faster
             # See tests/benchmarks/test_basemodel_eq_performances.py and GH-7825 for benchmarks
             if self.__dict__ == other.__dict__:
-                # If the check above passes, then pydantic fields are equal, we can return early
+                # If the check above passes, then whoop_pydantic_v2 fields are equal, we can return early
                 return True
             else:
                 # Else, we need to perform a more detailed, costlier comparison
@@ -151,9 +151,9 @@ class _SafeGetItemProxy(Generic[K, V]):
         return self.wrapped.__contains__(key)
 
 
-class SafeItemGetterEqModelFastPath(pydantic.BaseModel, frozen=True):
+class SafeItemGetterEqModelFastPath(whoop_pydantic_v2.BaseModel, frozen=True):
     def __eq__(self, other: Any) -> bool:
-        if isinstance(other, pydantic.BaseModel):
+        if isinstance(other, whoop_pydantic_v2.BaseModel):
             # When comparing instances of generic types for equality, as long as all field values are equal,
             # only require their generic origin types to be equal, rather than exact type equality.
             # This prevents headaches like MyGeneric(x=1) != MyGeneric[Any](x=1).
@@ -168,11 +168,11 @@ class SafeItemGetterEqModelFastPath(pydantic.BaseModel, frozen=True):
             ):
                 return False
 
-            # Fix GH-7444 by comparing only pydantic fields
+            # Fix GH-7444 by comparing only whoop_pydantic_v2 fields
             # We provide a fast-path for performance: __dict__ comparison is *much* faster
             # See tests/benchmarks/test_basemodel_eq_performances.py and GH-7825 for benchmarks
             if self.__dict__ == other.__dict__:
-                # If the check above passes, then pydantic fields are equal, we can return early
+                # If the check above passes, then whoop_pydantic_v2 fields are equal, we can return early
                 return True
             else:
                 # Else, we need to perform a more detailed, costlier comparison
@@ -183,9 +183,9 @@ class SafeItemGetterEqModelFastPath(pydantic.BaseModel, frozen=True):
             return NotImplemented  # delegate to the other item in the comparison
 
 
-class ItemGetterEqModelFastPathFallback(pydantic.BaseModel, frozen=True):
+class ItemGetterEqModelFastPathFallback(whoop_pydantic_v2.BaseModel, frozen=True):
     def __eq__(self, other: Any) -> bool:
-        if isinstance(other, pydantic.BaseModel):
+        if isinstance(other, whoop_pydantic_v2.BaseModel):
             # When comparing instances of generic types for equality, as long as all field values are equal,
             # only require their generic origin types to be equal, rather than exact type equality.
             # This prevents headaches like MyGeneric(x=1) != MyGeneric[Any](x=1).
@@ -200,11 +200,11 @@ class ItemGetterEqModelFastPathFallback(pydantic.BaseModel, frozen=True):
             ):
                 return False
 
-            # Fix GH-7444 by comparing only pydantic fields
+            # Fix GH-7444 by comparing only whoop_pydantic_v2 fields
             # We provide a fast-path for performance: __dict__ comparison is *much* faster
             # See tests/benchmarks/test_basemodel_eq_performances.py and GH-7825 for benchmarks
             if self.__dict__ == other.__dict__:
-                # If the check above passes, then pydantic fields are equal, we can return early
+                # If the check above passes, then whoop_pydantic_v2 fields are equal, we can return early
                 return True
             else:
                 # Else, we need to perform a more detailed, costlier comparison
@@ -232,7 +232,7 @@ IMPLEMENTATIONS = {
 
 
 def plot_all_benchmark(
-    bases: dict[str, type[pydantic.BaseModel]],
+    bases: dict[str, type[whoop_pydantic_v2.BaseModel]],
     sizes: list[int],
 ) -> figure.Figure:
     import matplotlib.pyplot as plt
@@ -252,14 +252,14 @@ def plot_all_benchmark(
             )
     for ax in axes.ravel():
         ax.legend()
-    fig.suptitle(f'python {PYTHON_VERSION}, pydantic {PYDANTIC_VERSION}')
+    fig.suptitle(f'python {PYTHON_VERSION}, whoop_pydantic_v2 {PYDANTIC_VERSION}')
     return fig
 
 
 def plot_benchmark(
     title: str,
     benchmark: Callable,
-    bases: dict[str, type[pydantic.BaseModel]],
+    bases: dict[str, type[whoop_pydantic_v2.BaseModel]],
     sizes: list[int],
     mimic_cached_property: bool,
     ax: axes.Axes | None = None,
@@ -288,7 +288,7 @@ def plot_benchmark(
         ax.plot(arr_sizes[mask_valid], times[mask_valid] / baseline[mask_valid], label=name)
 
     ax.set_title(title)
-    ax.set_xlabel('Number of pydantic fields')
+    ax.set_xlabel('Number of whoop_pydantic_v2 fields')
     ax.set_ylabel('Average time relative to baseline')
     return ax
 
@@ -299,7 +299,7 @@ class SizedIterable(Sized, Iterable):
 
 def run_benchmark_nodiff(
     title: str,
-    base: type[pydantic.BaseModel],
+    base: type[whoop_pydantic_v2.BaseModel],
     sizes: SizedIterable,
     mimic_cached_property: bool,
     n_execution: int = 10_000,
@@ -307,9 +307,9 @@ def run_benchmark_nodiff(
 ) -> np.ndarray:
     setup = textwrap.dedent(
         """
-        import pydantic
+        import whoop_pydantic_v2
 
-        Model = pydantic.create_model(
+        Model = whoop_pydantic_v2.create_model(
             "Model",
             __base__=Base,
             **{f'x{i}': (int, i) for i in range(%(size)d)}
@@ -345,7 +345,7 @@ def run_benchmark_nodiff(
 
 def run_benchmark_first_diff(
     title: str,
-    base: type[pydantic.BaseModel],
+    base: type[whoop_pydantic_v2.BaseModel],
     sizes: SizedIterable,
     mimic_cached_property: bool,
     n_execution: int = 10_000,
@@ -353,9 +353,9 @@ def run_benchmark_first_diff(
 ) -> np.ndarray:
     setup = textwrap.dedent(
         """
-        import pydantic
+        import whoop_pydantic_v2
 
-        Model = pydantic.create_model(
+        Model = whoop_pydantic_v2.create_model(
             "Model",
             __base__=Base,
             **{f'x{i}': (int, i) for i in range(%(size)d)}
@@ -391,7 +391,7 @@ def run_benchmark_first_diff(
 
 def run_benchmark_last_diff(
     title: str,
-    base: type[pydantic.BaseModel],
+    base: type[whoop_pydantic_v2.BaseModel],
     sizes: SizedIterable,
     mimic_cached_property: bool,
     n_execution: int = 10_000,
@@ -399,9 +399,9 @@ def run_benchmark_last_diff(
 ) -> np.ndarray:
     setup = textwrap.dedent(
         """
-        import pydantic
+        import whoop_pydantic_v2
 
-        Model = pydantic.create_model(
+        Model = whoop_pydantic_v2.create_model(
             "Model",
             __base__=Base,
             # shift the range() so that there is a field named size
@@ -438,7 +438,7 @@ def run_benchmark_last_diff(
 
 def run_benchmark_random_unequal(
     title: str,
-    base: type[pydantic.BaseModel],
+    base: type[whoop_pydantic_v2.BaseModel],
     sizes: SizedIterable,
     mimic_cached_property: bool,
     n_samples: int = 100,
@@ -449,9 +449,9 @@ def run_benchmark_random_unequal(
 
     setup = textwrap.dedent(
         """
-        import pydantic
+        import whoop_pydantic_v2
 
-        Model = pydantic.create_model(
+        Model = whoop_pydantic_v2.create_model(
             "Model",
             __base__=Base,
             **{f'x{i}': (int, i) for i in range(%(size)d)}

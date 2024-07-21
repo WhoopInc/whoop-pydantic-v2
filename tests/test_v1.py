@@ -1,7 +1,7 @@
-from pydantic import VERSION
-from pydantic.v1 import VERSION as V1_VERSION
-from pydantic.v1 import BaseModel as V1BaseModel
-from pydantic.v1 import root_validator as v1_root_validator
+from whoop_pydantic_v2 import VERSION
+from whoop_pydantic_v2.v1 import VERSION as V1_VERSION
+from whoop_pydantic_v2.v1 import BaseModel as V1BaseModel
+from whoop_pydantic_v2.v1 import root_validator as v1_root_validator
 
 
 def test_version():

@@ -1,0 +1,38 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@1.5.0
+
+jobs:
+  publish-python-package:
+    executor: python/default
+    docker:
+      - image: cimg/python:3.8.12
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run:
+          name: Set Package Version
+          command: |
+            if [ "$CIRCLE_BRANCH" != "master" ]; then
+              export PACKAGE_VERSION=0.1.${CIRCLE_BUILD_NUM}b0
+            else
+              export PACKAGE_VERSION=0.1.${CIRCLE_BUILD_NUM}
+            fi
+            poetry version $PACKAGE_VERSION
+            poetry version -s
+      - run:
+          name: Configure Poetry to Point to Nexus Repo
+          command: |
+            poetry config repositories.whoop-nexus https://nexus.qa.whoop.com/repository/pypi-internal/
+      - run:
+          name: Publish Package to Nexus
+          command: |
+            poetry publish --build -r whoop-nexus -u $NEXUS_RM_USERNAME -p $NEXUS_RM_PASSWORD
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - publish-python-package:
+          context: environment-variables

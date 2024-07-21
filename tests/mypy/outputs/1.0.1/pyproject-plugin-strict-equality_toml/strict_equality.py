@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class User(BaseModel):

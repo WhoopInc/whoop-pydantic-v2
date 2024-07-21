@@ -2,9 +2,9 @@ from typing import Dict, List, Mapping, Union
 
 import pytest
 
-from pydantic import BaseModel, PydanticDeprecatedSince20, ValidationError
-from pydantic.dataclasses import dataclass
-from pydantic.deprecated.tools import parse_obj_as, schema_json_of, schema_of
+from whoop_pydantic_v2 import BaseModel, PydanticDeprecatedSince20, ValidationError
+from whoop_pydantic_v2.dataclasses import dataclass
+from whoop_pydantic_v2.deprecated.tools import parse_obj_as, schema_json_of, schema_of
 
 pytestmark = pytest.mark.filterwarnings('ignore::DeprecationWarning')
 

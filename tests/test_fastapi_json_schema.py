@@ -1,7 +1,7 @@
 """
 This file contains an initial proposal that can be scrapped and reworked if/when appropriate.
 Either way, this test file should probably be removed once the actual FastAPI implementation
-is complete and has integration tests with pydantic v2. However, we are including it here for now
+is complete and has integration tests with whoop_pydantic_v2 v2. However, we are including it here for now
 to get an early warning if this approach would require modification for compatibility with
 any future changes to the JSON schema generation logic, etc.
 
@@ -15,11 +15,11 @@ from typing import Any
 
 from dirty_equals import HasRepr, IsInstance, IsStr
 
-from pydantic import BaseModel, ConfigDict
-from pydantic._internal._core_metadata import CoreMetadataHandler
-from pydantic._internal._core_utils import CoreSchemaOrField
-from pydantic.errors import PydanticInvalidForJsonSchema
-from pydantic.json_schema import GenerateJsonSchema, JsonSchemaValue
+from whoop_pydantic_v2 import BaseModel, ConfigDict
+from whoop_pydantic_v2._internal._core_metadata import CoreMetadataHandler
+from whoop_pydantic_v2._internal._core_utils import CoreSchemaOrField
+from whoop_pydantic_v2.errors import PydanticInvalidForJsonSchema
+from whoop_pydantic_v2.json_schema import GenerateJsonSchema, JsonSchemaValue
 
 
 class _ErrorKey(str):

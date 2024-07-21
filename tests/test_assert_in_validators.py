@@ -8,7 +8,7 @@ import pprint
 import pytest
 from dirty_equals import HasRepr
 
-from pydantic import BaseModel, ValidationError, field_validator
+from whoop_pydantic_v2 import BaseModel, ValidationError, field_validator
 
 
 def _pformat_lines(obj):

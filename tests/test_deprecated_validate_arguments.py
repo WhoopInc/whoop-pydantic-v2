@@ -7,10 +7,10 @@ import pytest
 from dirty_equals import IsInstance
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, Field, PydanticDeprecatedSince20, ValidationError
-from pydantic.deprecated.decorator import ValidatedFunction
-from pydantic.deprecated.decorator import validate_arguments as validate_arguments_deprecated
-from pydantic.errors import PydanticUserError
+from whoop_pydantic_v2 import BaseModel, Field, PydanticDeprecatedSince20, ValidationError
+from whoop_pydantic_v2.deprecated.decorator import ValidatedFunction
+from whoop_pydantic_v2.deprecated.decorator import validate_arguments as validate_arguments_deprecated
+from whoop_pydantic_v2.errors import PydanticUserError
 
 
 def validate_arguments(*args, **kwargs):
@@ -148,7 +148,7 @@ def test_positional_only(create_module):
         module = create_module(
             # language=Python
             """
-from pydantic.deprecated.decorator import validate_arguments
+from whoop_pydantic_v2.deprecated.decorator import validate_arguments
 
 @validate_arguments
 def foo(a, b, /, c=None):

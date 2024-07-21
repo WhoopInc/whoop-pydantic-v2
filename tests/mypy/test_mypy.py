@@ -13,7 +13,7 @@ try:
     from mypy import api as mypy_api
     from mypy.version import __version__ as mypy_version
 
-    from pydantic.version import parse_mypy_version
+    from whoop_pydantic_v2.version import parse_mypy_version
 
 except ImportError:
     mypy_api = None
@@ -251,11 +251,11 @@ def test_success_cases_run(module: str) -> None:
 
 
 def test_explicit_reexports():
-    from pydantic import __all__ as root_all
-    from pydantic.deprecated.tools import __all__ as tools
-    from pydantic.main import __all__ as main
-    from pydantic.networks import __all__ as networks
-    from pydantic.types import __all__ as types
+    from whoop_pydantic_v2 import __all__ as root_all
+    from whoop_pydantic_v2.deprecated.tools import __all__ as tools
+    from whoop_pydantic_v2.main import __all__ as main
+    from whoop_pydantic_v2.networks import __all__ as networks
+    from whoop_pydantic_v2.types import __all__ as types
 
     for name, export_all in [('main', main), ('network', networks), ('tools', tools), ('types', types)]:
         for export in export_all:
@@ -263,10 +263,10 @@ def test_explicit_reexports():
 
 
 def test_explicit_reexports_exist():
-    import pydantic
+    import whoop_pydantic_v2
 
-    for name in pydantic.__all__:
-        assert hasattr(pydantic, name), f'{name} is in pydantic.__all__ but missing from pydantic'
+    for name in whoop_pydantic_v2.__all__:
+        assert hasattr(whoop_pydantic_v2, name), f'{name} is in pydantic.__all__ but missing from pydantic'
 
 
 @pytest.mark.parametrize(

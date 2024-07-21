@@ -7,8 +7,8 @@ from typing import Any, Generic, List, TypeVar
 
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, TypeAdapter, create_model
-from pydantic.fields import FieldInfo
+from whoop_pydantic_v2 import BaseModel, TypeAdapter, create_model
+from whoop_pydantic_v2.fields import FieldInfo
 
 TYPES_DEFAULTS = {int: 0, str: '', bool: False}  # some dummy basic types with defaults for some fields
 TYPES = [*TYPES_DEFAULTS.keys()]

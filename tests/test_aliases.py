@@ -6,7 +6,7 @@ import pytest
 from dirty_equals import IsStr
 from pydantic_core import PydanticUndefined
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     AliasChoices,
     AliasGenerator,
     AliasPath,

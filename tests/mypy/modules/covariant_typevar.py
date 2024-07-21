@@ -1,6 +1,6 @@
 from typing import Generic, TypeVar
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 T = TypeVar("T", covariant=True)
 

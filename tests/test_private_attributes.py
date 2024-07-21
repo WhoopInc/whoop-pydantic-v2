@@ -4,7 +4,7 @@ from typing import ClassVar, Generic, TypeVar
 import pytest
 from pydantic_core import PydanticUndefined
 
-from pydantic import BaseModel, ConfigDict, PrivateAttr, computed_field
+from whoop_pydantic_v2 import BaseModel, ConfigDict, PrivateAttr, computed_field
 
 
 def test_private_attribute():
@@ -329,7 +329,7 @@ def test_ignored_types_are_ignored_cached_property():
 
 
 def test_none_as_private_attr():
-    from pydantic import BaseModel
+    from whoop_pydantic_v2 import BaseModel
 
     class A(BaseModel):
         _x: None
@@ -342,14 +342,14 @@ def test_none_as_private_attr():
 def test_layout_compatible_multiple_private_parents():
     import typing as t
 
-    import pydantic
+    import whoop_pydantic_v2
 
-    class ModelMixin(pydantic.BaseModel):
-        _mixin_private: t.Optional[str] = pydantic.PrivateAttr(None)
+    class ModelMixin(whoop_pydantic_v2.BaseModel):
+        _mixin_private: t.Optional[str] = whoop_pydantic_v2.PrivateAttr(None)
 
-    class Model(pydantic.BaseModel):
+    class Model(whoop_pydantic_v2.BaseModel):
         public: str = 'default'
-        _private: t.Optional[str] = pydantic.PrivateAttr(None)
+        _private: t.Optional[str] = whoop_pydantic_v2.PrivateAttr(None)
 
     class NewModel(ModelMixin, Model):
         pass
@@ -365,7 +365,7 @@ def test_layout_compatible_multiple_private_parents():
 
 
 def test_unannotated_private_attr():
-    from pydantic import BaseModel, PrivateAttr
+    from whoop_pydantic_v2 import BaseModel, PrivateAttr
 
     class A(BaseModel):
         _x = PrivateAttr()
@@ -384,7 +384,7 @@ def test_classvar_collision_prevention(create_module):
         """
 from __future__ import annotations
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 import typing as t
 
 class BaseConfig(BaseModel):

@@ -5,7 +5,7 @@ import pytest
 from pydantic_core import PydanticCustomError, Url
 from typing_extensions import Annotated
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     AmqpDsn,
     AnyUrl,
     BaseModel,
@@ -27,7 +27,7 @@ from pydantic import (
     ValidationError,
     WebsocketUrl,
 )
-from pydantic.networks import validate_email
+from whoop_pydantic_v2.networks import validate_email
 
 try:
     import email_validator
@@ -249,7 +249,7 @@ def test_at_in_path():
 def test_fragment_without_query():
     url = validate_url('https://docs.pydantic.dev/usage/types/#constrained-types')
     assert url.scheme == 'https'
-    assert url.host == 'docs.pydantic.dev'
+    assert url.host == 'docs.whoop_pydantic_v2.dev'
     assert url.path == '/usage/types/'
     assert url.query is None
     assert url.fragment == 'constrained-types'

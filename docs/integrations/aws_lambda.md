@@ -30,7 +30,7 @@ pip install \
     --implementation cp \  # (3)!
     --python-version 3.10 \  # (4)!
     --only-binary=:all: \  # (5)!
-    --upgrade pydantic  # (6)!
+    --upgrade whoop_pydantic_v2  # (6)!
 ```
 
 1. Use the platform corresponding to your Lambda runtime.
@@ -55,7 +55,7 @@ error is a common issue that indicates you have installed `pydantic` incorrectly
 
 ```py test="skip" lint="skip"
 from importlib.metadata import files
-print([file for file in files('pydantic-core') if file.name.startswith('_pydantic_core')])
+print([file for file in files('whoop_pydantic_v2-core') if file.name.startswith('_pydantic_core')])
 """
 [PackagePath('pydantic_core/_pydantic_core.pyi'), PackagePath('pydantic_core/_pydantic_core.cpython-312-x86_64-linux-gnu.so')]
 """

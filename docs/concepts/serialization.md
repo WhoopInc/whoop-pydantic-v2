@@ -36,7 +36,7 @@ Example:
 ```py
 from typing import Any, List, Optional
 
-from pydantic import BaseModel, Field, Json
+from whoop_pydantic_v2 import BaseModel, Field, Json
 
 
 class BarModel(BaseModel):
@@ -53,37 +53,39 @@ m = FooBarModel(banana=3.14, foo='hello', bar={'whatever': 123})
 
 # returns a dictionary:
 print(m.model_dump())
-#> {'banana': 3.14, 'foo': 'hello', 'bar': {'whatever': 123}}
+# > {'banana': 3.14, 'foo': 'hello', 'bar': {'whatever': 123}}
 print(m.model_dump(include={'foo', 'bar'}))
-#> {'foo': 'hello', 'bar': {'whatever': 123}}
+# > {'foo': 'hello', 'bar': {'whatever': 123}}
 print(m.model_dump(exclude={'foo', 'bar'}))
-#> {'banana': 3.14}
+# > {'banana': 3.14}
 print(m.model_dump(by_alias=True))
-#> {'banana': 3.14, 'foo_alias': 'hello', 'bar': {'whatever': 123}}
+# > {'banana': 3.14, 'foo_alias': 'hello', 'bar': {'whatever': 123}}
 print(
     FooBarModel(foo='hello', bar={'whatever': 123}).model_dump(
         exclude_unset=True
     )
 )
-#> {'foo': 'hello', 'bar': {'whatever': 123}}
+# > {'foo': 'hello', 'bar': {'whatever': 123}}
 print(
     FooBarModel(banana=1.1, foo='hello', bar={'whatever': 123}).model_dump(
         exclude_defaults=True
     )
 )
-#> {'foo': 'hello', 'bar': {'whatever': 123}}
+# > {'foo': 'hello', 'bar': {'whatever': 123}}
 print(
     FooBarModel(foo='hello', bar={'whatever': 123}).model_dump(
         exclude_defaults=True
     )
 )
-#> {'foo': 'hello', 'bar': {'whatever': 123}}
+# > {'foo': 'hello', 'bar': {'whatever': 123}}
 print(
     FooBarModel(banana=None, foo='hello', bar={'whatever': 123}).model_dump(
         exclude_none=True
     )
 )
-#> {'foo': 'hello', 'bar': {'whatever': 123}}
+
+
+# > {'foo': 'hello', 'bar': {'whatever': 123}}
 
 
 class Model(BaseModel):
@@ -91,9 +93,9 @@ class Model(BaseModel):
 
 
 print(Model(x=['{"a": 1}', '[1, 2]']).model_dump())
-#> {'x': [{'a': 1}, [1, 2]]}
+# > {'x': [{'a': 1}, [1, 2]]}
 print(Model(x=['{"a": 1}', '[1, 2]']).model_dump(round_trip=True))
-#> {'x': ['{"a":1}', '[1,2]']}
+# > {'x': ['{"a":1}', '[1,2]']}
 ```
 
 ## `model.model_dump_json(...)` <a name="model_dump_json"></a>
@@ -113,7 +115,7 @@ See [arguments][pydantic.main.BaseModel.model_dump_json] for more information.
 ```py
 from datetime import datetime
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class BarModel(BaseModel):
@@ -148,7 +150,7 @@ sub-models will not be converted to dictionaries.
 Example:
 
 ```py
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class BarModel(BaseModel):
@@ -191,7 +193,7 @@ Serialization can be customised on a field using the
 from datetime import datetime, timedelta, timezone
 from typing import Any, Dict
 
-from pydantic import BaseModel, ConfigDict, field_serializer, model_serializer
+from whoop_pydantic_v2 import BaseModel, ConfigDict, field_serializer, model_serializer
 
 
 class WithCustomEncoders(BaseModel):
@@ -209,6 +211,8 @@ m = WithCustomEncoders(
     dt=datetime(2032, 6, 1, tzinfo=timezone.utc), diff=timedelta(hours=100)
 )
 print(m.model_dump_json())
+
+
 #> {"dt":1969660800.0,"diff":"P4DT4H"}
 
 
@@ -241,8 +245,8 @@ Both serializers accept optional arguments including:
 ```py
 from typing_extensions import Annotated
 
-from pydantic import BaseModel
-from pydantic.functional_serializers import PlainSerializer
+from whoop_pydantic_v2 import BaseModel
+from whoop_pydantic_v2.functional_serializers import PlainSerializer
 
 FancyInt = Annotated[
     int, PlainSerializer(lambda x: f'{x:,}', return_type=str, when_used='json')
@@ -268,8 +272,8 @@ from typing import Any
 
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, SerializerFunctionWrapHandler
-from pydantic.functional_serializers import WrapSerializer
+from whoop_pydantic_v2 import BaseModel, SerializerFunctionWrapHandler
+from whoop_pydantic_v2.functional_serializers import WrapSerializer
 
 
 def ser_wrap(v: Any, nxt: SerializerFunctionWrapHandler) -> str:
@@ -294,8 +298,9 @@ print(MyModel(x=1234).model_dump(mode='json'))
 
 While the return value of `.model_dump()` can usually be described as `dict[str, Any]`, through the use of
 `@model_serializer` you can actually cause it to return a value that doesn't match this signature:
+
 ```py
-from pydantic import BaseModel, model_serializer
+from whoop_pydantic_v2 import BaseModel, model_serializer
 
 
 class Model(BaseModel):
@@ -318,7 +323,7 @@ from typing import TYPE_CHECKING, Any
 
 from typing_extensions import Literal
 
-from pydantic import BaseModel, model_serializer
+from whoop_pydantic_v2 import BaseModel, model_serializer
 
 
 class Model(BaseModel):
@@ -331,17 +336,17 @@ class Model(BaseModel):
     if TYPE_CHECKING:
         # Ensure type checkers see the correct return type
         def model_dump(
-            self,
-            *,
-            mode: Literal['json', 'python'] | str = 'python',
-            include: Any = None,
-            exclude: Any = None,
-            by_alias: bool = False,
-            exclude_unset: bool = False,
-            exclude_defaults: bool = False,
-            exclude_none: bool = False,
-            round_trip: bool = False,
-            warnings: bool = True,
+                self,
+                *,
+                mode: Literal['json', 'python'] | str = 'python',
+                include: Any = None,
+                exclude: Any = None,
+                by_alias: bool = False,
+                exclude_unset: bool = False,
+                exclude_defaults: bool = False,
+                exclude_none: bool = False,
+                round_trip: bool = False,
+                warnings: bool = True,
         ) -> str: ...
 ```
 
@@ -359,7 +364,7 @@ from typing import Any, Type
 
 from pydantic_core import core_schema
 
-from pydantic import BaseModel, GetCoreSchemaHandler
+from whoop_pydantic_v2 import BaseModel, GetCoreSchemaHandler
 
 
 class DayThisYear(date):
@@ -370,7 +375,7 @@ class DayThisYear(date):
 
     @classmethod
     def __get_pydantic_core_schema__(
-        cls, source: Type[Any], handler: GetCoreSchemaHandler
+            cls, source: Type[Any], handler: GetCoreSchemaHandler
     ) -> core_schema.CoreSchema:
         return core_schema.no_info_after_validator_function(
             cls.validate,
@@ -400,7 +405,7 @@ even if it is a subclass. More specifically, only the fields from the _annotated
 dumped object:
 
 ```py
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class User(BaseModel):
@@ -415,13 +420,13 @@ class OuterModel(BaseModel):
     user: User
 
 
-user = UserLogin(name='pydantic', password='hunter2')
+user = UserLogin(name='whoop_pydantic_v2', password='hunter2')
 
 m = OuterModel(user=user)
 print(m)
-#> user=UserLogin(name='pydantic', password='hunter2')
+#> user=UserLogin(name='whoop_pydantic_v2', password='hunter2')
 print(m.model_dump())  # note: the password field is not included
-#> {'user': {'name': 'pydantic'}}
+#> {'user': {'name': 'whoop_pydantic_v2'}}
 ```
 !!! warning "Migration Warning"
     This behavior is different from how things worked in Pydantic V1, where we would always include
@@ -454,7 +459,7 @@ We discuss these options below in more detail:
 If you want duck-typing serialization behavior, this can be done using the `SerializeAsAny` annotation on a type:
 
 ```py
-from pydantic import BaseModel, SerializeAsAny
+from whoop_pydantic_v2 import BaseModel, SerializeAsAny
 
 
 class User(BaseModel):
@@ -470,13 +475,13 @@ class OuterModel(BaseModel):
     as_user: User
 
 
-user = UserLogin(name='pydantic', password='password')
+user = UserLogin(name='whoop_pydantic_v2', password='password')
 
 print(OuterModel(as_any=user, as_user=user).model_dump())
 """
 {
-    'as_any': {'name': 'pydantic', 'password': 'password'},
-    'as_user': {'name': 'pydantic'},
+    'as_any': {'name': 'whoop_pydantic_v2', 'password': 'password'},
+    'as_user': {'name': 'whoop_pydantic_v2'},
 }
 """
 ```
@@ -508,7 +513,7 @@ which means that fields present in a subclass but not in the original schema wil
 For example:
 
 ```py
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class User(BaseModel):
@@ -524,19 +529,19 @@ class OuterModel(BaseModel):
     user2: User
 
 
-user = UserLogin(name='pydantic', password='password')
+user = UserLogin(name='whoop_pydantic_v2', password='password')
 
 outer_model = OuterModel(user1=user, user2=user)
 print(outer_model.model_dump(serialize_as_any=True))  # (1)!
 """
 {
-    'user1': {'name': 'pydantic', 'password': 'password'},
-    'user2': {'name': 'pydantic', 'password': 'password'},
+    'user1': {'name': 'whoop_pydantic_v2', 'password': 'password'},
+    'user2': {'name': 'whoop_pydantic_v2', 'password': 'password'},
 }
 """
 
 print(outer_model.model_dump(serialize_as_any=False))  # (2)!
-#> {'user1': {'name': 'pydantic'}, 'user2': {'name': 'pydantic'}}
+#> {'user1': {'name': 'whoop_pydantic_v2'}, 'user2': {'name': 'whoop_pydantic_v2'}}
 ```
 
 1. With `serialize_as_any` set to `True`, the result matches that of V1.
@@ -548,7 +553,7 @@ This setting even takes effect with nested and recursive patterns as well. For e
 ```py
 from typing import List
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class User(BaseModel):
@@ -566,7 +571,7 @@ class OuterModel(BaseModel):
 
 user = UserLogin(
     name='samuel',
-    password='pydantic-pw',
+    password='whoop_pydantic_v2-pw',
     friends=[UserLogin(name='sebastian', password='fastapi-pw', friends=[])],
 )
 
@@ -578,7 +583,7 @@ print(OuterModel(user=user).model_dump(serialize_as_any=True))  # (1)!
         'friends': [
             {'name': 'sebastian', 'friends': [], 'password': 'fastapi-pw'}
         ],
-        'password': 'pydantic-pw',
+        'password': 'whoop_pydantic_v2-pw',
     }
 }
 """
@@ -606,7 +611,7 @@ For example, you could do the following if you want to use duck-typing serializa
 ```py
 from typing import Any, Dict
 
-from pydantic import BaseModel, SecretStr
+from whoop_pydantic_v2 import BaseModel, SecretStr
 
 
 class MyBaseModel(BaseModel):
@@ -641,10 +646,11 @@ print(u.model_dump_json())  # (1)!
 Pydantic models support efficient pickling and unpickling.
 
 <!-- TODO need to get pickling doctest to work -->
+
 ```py test="skip"
 import pickle
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class FooBarModel(BaseModel):
@@ -669,7 +675,7 @@ The `model_dump` and `model_dump_json` methods support `include` and `exclude` a
 sets or dictionaries. This allows nested selection of which fields to export:
 
 ```py
-from pydantic import BaseModel, SecretStr
+from whoop_pydantic_v2 import BaseModel, SecretStr
 
 
 class User(BaseModel):
@@ -713,7 +719,7 @@ To exclude a field from **every** member of a list or tuple, the dictionary key 
 import datetime
 from typing import List
 
-from pydantic import BaseModel, SecretStr
+from whoop_pydantic_v2 import BaseModel, SecretStr
 
 
 class Country(BaseModel):
@@ -816,7 +822,7 @@ Setting `exclude` on the field constructor (`Field(..., exclude=True)`) takes pr
 `exclude`/`include` on `model_dump` and `model_dump_json`:
 
 ```py
-from pydantic import BaseModel, Field, SecretStr
+from whoop_pydantic_v2 import BaseModel, Field, SecretStr
 
 
 class User(BaseModel):
@@ -849,7 +855,7 @@ over the `exclude_unset`, `exclude_none`, and `exclude_default` parameters on `m
 ```py
 from typing import Optional
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Person(BaseModel):
@@ -882,7 +888,7 @@ a dynamically controllable set of allowed values, this could be done by passing 
 by context:
 
 ```python
-from pydantic import BaseModel, SerializationInfo, field_serializer
+from whoop_pydantic_v2 import BaseModel, SerializationInfo, field_serializer
 
 
 class Model(BaseModel):
@@ -918,7 +924,7 @@ Similarly, you can [use a context for validation](../concepts/validators.md#vali
 Example:
 
 ```py
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class BarModel(BaseModel):

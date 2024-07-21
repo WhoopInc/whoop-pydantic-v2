@@ -8,7 +8,7 @@ else:
 
 import pytest
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, ConfigDict, Field, ValidationError
 
 
 @pytest.fixture(scope='session', name='ModelWithStrictField')

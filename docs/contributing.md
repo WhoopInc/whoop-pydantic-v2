@@ -62,8 +62,8 @@ Fork the repository on GitHub and clone your fork locally.
 
 ```bash
 # Clone your fork and cd into the repo directory
-git clone git@github.com:<your username>/pydantic.git
-cd pydantic
+git clone git@github.com:<your username>/whoop_pydantic_v2.git
+cd whoop_pydantic_v2
 
 # Install PDM and pre-commit
 # We use pipx here, for other options see:
@@ -74,7 +74,7 @@ cd pydantic
 pipx install pdm
 pipx install pre-commit
 
-# Install pydantic, dependencies, test dependencies and doc dependencies
+# Install whoop_pydantic_v2, dependencies, test dependencies and doc dependencies
 make install
 ```
 

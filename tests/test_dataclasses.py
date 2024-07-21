@@ -15,8 +15,8 @@ from dirty_equals import HasRepr
 from pydantic_core import ArgsKwargs, CoreSchema, SchemaValidator, core_schema
 from typing_extensions import Annotated, Literal
 
-import pydantic
-from pydantic import (
+import whoop_pydantic_v2
+from whoop_pydantic_v2 import (
     BaseModel,
     BeforeValidator,
     ConfigDict,
@@ -34,10 +34,10 @@ from pydantic import (
     model_validator,
     with_config,
 )
-from pydantic._internal._mock_val_ser import MockValSer
-from pydantic.dataclasses import is_pydantic_dataclass, rebuild_dataclass
-from pydantic.fields import Field, FieldInfo
-from pydantic.json_schema import model_json_schema
+from whoop_pydantic_v2._internal._mock_val_ser import MockValSer
+from whoop_pydantic_v2.dataclasses import is_pydantic_dataclass, rebuild_dataclass
+from whoop_pydantic_v2.fields import Field, FieldInfo
+from whoop_pydantic_v2.json_schema import model_json_schema
 
 
 def test_cannot_create_dataclass_from_basemodel_subclass():
@@ -45,13 +45,13 @@ def test_cannot_create_dataclass_from_basemodel_subclass():
 
     with pytest.raises(PydanticUserError, match=msg):
 
-        @pydantic.dataclasses.dataclass
+        @whoop_pydantic_v2.dataclasses.dataclass
         class SubModel(BaseModel):
             pass
 
 
 def test_simple():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         a: int
         b: float
@@ -65,7 +65,7 @@ def test_simple():
 
 
 def test_model_name():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataClass:
         model_name: str
 
@@ -76,7 +76,7 @@ def test_model_name():
 
 
 def test_value_error():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         a: int
         b: int
@@ -96,7 +96,7 @@ def test_value_error():
 
 
 def test_frozen():
-    @pydantic.dataclasses.dataclass(frozen=True)
+    @whoop_pydantic_v2.dataclasses.dataclass(frozen=True)
     class MyDataclass:
         a: int
 
@@ -108,7 +108,7 @@ def test_frozen():
 
 
 def test_validate_assignment():
-    @pydantic.dataclasses.dataclass(config=ConfigDict(validate_assignment=True))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(validate_assignment=True))
     class MyDataclass:
         a: int
 
@@ -120,7 +120,7 @@ def test_validate_assignment():
 
 
 def test_validate_assignment_error():
-    @pydantic.dataclasses.dataclass(config=ConfigDict(validate_assignment=True))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(validate_assignment=True))
     class MyDataclass:
         a: int
 
@@ -139,7 +139,7 @@ def test_validate_assignment_error():
 
 
 def test_not_validate_assignment():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         a: int
 
@@ -151,7 +151,7 @@ def test_not_validate_assignment():
 
 
 def test_validate_assignment_value_change():
-    @pydantic.dataclasses.dataclass(config=ConfigDict(validate_assignment=True), frozen=False)
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(validate_assignment=True), frozen=False)
     class MyDataclass:
         a: int
 
@@ -182,7 +182,7 @@ def test_validate_assignment_value_change():
     ],
 )
 def test_validate_assignment_extra_unknown_field_assigned_allowed(config: ConfigDict):
-    @pydantic.dataclasses.dataclass(config=config)
+    @whoop_pydantic_v2.dataclasses.dataclass(config=config)
     class MyDataclass:
         a: int
 
@@ -203,7 +203,7 @@ def test_validate_assignment_extra_unknown_field_assigned_allowed(config: Config
     ],
 )
 def test_validate_assignment_extra_unknown_field_assigned_errors(config: ConfigDict):
-    @pydantic.dataclasses.dataclass(config=config)
+    @whoop_pydantic_v2.dataclasses.dataclass(config=config)
     class MyDataclass:
         a: int
 
@@ -227,7 +227,7 @@ def test_validate_assignment_extra_unknown_field_assigned_errors(config: ConfigD
 def test_post_init():
     post_init_called = False
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         a: int
 
@@ -249,7 +249,7 @@ def test_post_init_validation():
             self.a *= 2
 
     assert DC(a='2').a == '22'
-    PydanticDC = pydantic.dataclasses.dataclass(DC)
+    PydanticDC = whoop_pydantic_v2.dataclasses.dataclass(DC)
     assert DC(a='2').a == '22'
     assert PydanticDC(a='2').a == 4
 
@@ -267,7 +267,7 @@ def test_convert_vanilla_dc():
     dc1 = DC(a='2')
     assert dc1.a == '22'
     assert dc1.b == 'hello'
-    PydanticDC = pydantic.dataclasses.dataclass(DC)
+    PydanticDC = whoop_pydantic_v2.dataclasses.dataclass(DC)
     dc2 = DC(a='2')
     assert dc2.a == '22'
     assert dc2.b == 'hello'
@@ -290,7 +290,7 @@ def test_std_dataclass_with_parent():
             self.a *= 2
 
     assert dataclasses.asdict(DC(a='2', b='1')) == {'a': '22', 'b': '1'}
-    PydanticDC = pydantic.dataclasses.dataclass(DC)
+    PydanticDC = whoop_pydantic_v2.dataclasses.dataclass(DC)
     assert dataclasses.asdict(DC(a='2', b='1')) == {'a': '22', 'b': '1'}
     assert dataclasses.asdict(PydanticDC(a='2', b='1')) == {'a': 4, 'b': 1}
 
@@ -299,7 +299,7 @@ def test_post_init_inheritance_chain():
     parent_post_init_called = False
     post_init_called = False
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class ParentDataclass:
         a: int
 
@@ -307,7 +307,7 @@ def test_post_init_inheritance_chain():
             nonlocal parent_post_init_called
             parent_post_init_called = True
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass(ParentDataclass):
         b: int
 
@@ -326,7 +326,7 @@ def test_post_init_inheritance_chain():
 def test_post_init_post_parse():
     with pytest.warns(PydanticDeprecatedSince20, match='Support for `__post_init_post_parse__` has been dropped'):
 
-        @pydantic.dataclasses.dataclass
+        @whoop_pydantic_v2.dataclasses.dataclass
         class MyDataclass:
             a: int
 
@@ -338,7 +338,7 @@ def test_post_init_assignment():
     from dataclasses import field
 
     # Based on: https://docs.python.org/3/library/dataclasses.html#post-init-processing
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class C:
         a: float
         b: float
@@ -354,14 +354,14 @@ def test_post_init_assignment():
 
 
 def test_inheritance():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class A:
         a: str = None
 
     a_ = A(a=b'a')
     assert a_.a == 'a'
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class B(A):
         b: int = None
 
@@ -377,7 +377,7 @@ def test_inheritance():
 
 
 def test_validate_long_string_error():
-    @pydantic.dataclasses.dataclass(config=dict(str_max_length=3))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=dict(str_max_length=3))
     class MyDataclass:
         a: str
 
@@ -397,7 +397,7 @@ def test_validate_long_string_error():
 
 
 def test_validate_assignment_long_string_error():
-    @pydantic.dataclasses.dataclass(config=ConfigDict(str_max_length=3, validate_assignment=True))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(str_max_length=3, validate_assignment=True))
     class MyDataclass:
         a: str
 
@@ -417,7 +417,7 @@ def test_validate_assignment_long_string_error():
 
 
 def test_no_validate_assignment_long_string_error():
-    @pydantic.dataclasses.dataclass(config=ConfigDict(str_max_length=3, validate_assignment=False))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(str_max_length=3, validate_assignment=False))
     class MyDataclass:
         a: str
 
@@ -428,11 +428,11 @@ def test_no_validate_assignment_long_string_error():
 
 
 def test_nested_dataclass():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Nested:
         number: int
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Outer:
         n: Nested
 
@@ -474,7 +474,7 @@ def test_arbitrary_types_allowed():
         def __init__(self, href: str):
             self.href = href
 
-    @pydantic.dataclasses.dataclass(config=dict(arbitrary_types_allowed=True))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=dict(arbitrary_types_allowed=True))
     class Navbar:
         button: Button
 
@@ -497,7 +497,7 @@ def test_arbitrary_types_allowed():
 
 
 def test_nested_dataclass_model():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Nested:
         number: int
 
@@ -509,7 +509,7 @@ def test_nested_dataclass_model():
 
 
 def test_fields():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class User:
         id: int
         name: str = 'John Doe'
@@ -527,9 +527,9 @@ def test_fields():
     assert fields['signup_ts'].default is None
 
 
-@pytest.mark.parametrize('field_constructor', [dataclasses.field, pydantic.dataclasses.Field])
+@pytest.mark.parametrize('field_constructor', [dataclasses.field, whoop_pydantic_v2.dataclasses.Field])
 def test_default_factory_field(field_constructor: Callable):
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class User:
         id: int
         other: Dict[str, str] = field_constructor(default_factory=lambda: {'John': 'Joey'})
@@ -553,7 +553,7 @@ def test_default_factory_singleton_field():
 
     MY_SINGLETON = MySingleton()
 
-    @pydantic.dataclasses.dataclass(config=dict(arbitrary_types_allowed=True))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=dict(arbitrary_types_allowed=True))
     class Foo:
         singleton: MySingleton = dataclasses.field(default_factory=lambda: MY_SINGLETON)
 
@@ -562,7 +562,7 @@ def test_default_factory_singleton_field():
 
 
 def test_schema():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class User:
         id: int
         name: str = 'John Doe'
@@ -571,7 +571,7 @@ def test_schema():
         age: Optional[int] = dataclasses.field(
             default=None, metadata=dict(title='The age of the user', description='do not lie!')
         )
-        height: Optional[int] = pydantic.Field(None, title='The height in cm', ge=50, le=300)
+        height: Optional[int] = whoop_pydantic_v2.Field(None, title='The height in cm', ge=50, le=300)
 
     User(id=123)
     assert model_json_schema(User) == {
@@ -603,11 +603,11 @@ def test_schema():
 
 
 def test_nested_schema():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Nested:
         number: int
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Outer:
         n: Nested
 
@@ -628,7 +628,7 @@ def test_nested_schema():
 
 
 def test_initvar():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class TestInitVar:
         x: int
         y: dataclasses.InitVar
@@ -640,7 +640,7 @@ def test_initvar():
 
 
 def test_derived_field_from_initvar():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class DerivedWithInitVar:
         plusone: int = dataclasses.field(init=False)
         number: dataclasses.InitVar[int]
@@ -655,7 +655,7 @@ def test_derived_field_from_initvar():
 
 
 def test_initvars_post_init():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class PathDataPostInit:
         path: Path
         base_path: dataclasses.InitVar[Optional[Path]] = None
@@ -674,7 +674,7 @@ def test_initvars_post_init():
 
 
 def test_classvar():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class TestClassVar:
         klassvar: ClassVar = "I'm a Class variable"
         x: int
@@ -684,7 +684,7 @@ def test_classvar():
 
 
 def test_frozenset_field():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class TestFrozenSet:
         set: FrozenSet[int]
 
@@ -697,7 +697,7 @@ def test_frozenset_field():
 def test_inheritance_post_init():
     post_init_called = False
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Base:
         a: int
 
@@ -705,7 +705,7 @@ def test_inheritance_post_init():
             nonlocal post_init_called
             post_init_called = True
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Child(Base):
         b: int
 
@@ -714,7 +714,7 @@ def test_inheritance_post_init():
 
 
 def test_hashable_required():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         v: Hashable
 
@@ -735,7 +735,7 @@ def test_hashable_required():
 
 @pytest.mark.parametrize('default', [1, None])
 def test_default_value(default):
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         v: int = default
 
@@ -748,7 +748,7 @@ def test_default_value_ellipsis():
     https://github.com/pydantic/pydantic/issues/5488
     """
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         v: int = ...
 
@@ -765,7 +765,7 @@ def test_override_builtin_dataclass():
         size: int
         content: Optional[bytes] = None
 
-    ValidFile = pydantic.dataclasses.dataclass(File)
+    ValidFile = whoop_pydantic_v2.dataclasses.dataclass(File)
 
     file = File(hash='xxx', name=b'whatever.txt', size='456')
     valid_file = ValidFile(hash='xxx', name=b'whatever.txt', size='456')
@@ -800,7 +800,7 @@ def test_override_builtin_dataclass_2():
 
     Meta(modified_date='not-validated', seen_count=0)
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     @dataclasses.dataclass
     class File(Meta):
         filename: str
@@ -824,7 +824,7 @@ def test_override_builtin_dataclass_nested():
         filename: str
         meta: Meta
 
-    FileChecked = pydantic.dataclasses.dataclass(File, config=ConfigDict(revalidate_instances='always'))
+    FileChecked = whoop_pydantic_v2.dataclasses.dataclass(File, config=ConfigDict(revalidate_instances='always'))
     f = FileChecked(filename=b'thefilename', meta=Meta(modified_date='2020-01-01T00:00', seen_count='7'))
     assert f.filename == 'thefilename'
     assert f.meta.modified_date == datetime(2020, 1, 1, 0, 0)
@@ -866,7 +866,7 @@ def test_override_builtin_dataclass_nested_schema():
         filename: str
         meta: Meta
 
-    FileChecked = pydantic.dataclasses.dataclass(File)
+    FileChecked = whoop_pydantic_v2.dataclasses.dataclass(File)
     assert model_json_schema(FileChecked) == {
         '$defs': {
             'Meta': {
@@ -898,7 +898,7 @@ def test_inherit_builtin_dataclass():
     class Y(Z):
         y: int
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class X(Y):
         x: int
 
@@ -926,7 +926,7 @@ def test_forward_stdlib_dataclass_params():
 
 
 def test_pydantic_callable_field():
-    """pydantic callable fields behaviour should be the same as stdlib dataclass"""
+    """whoop_pydantic_v2 callable fields behaviour should be the same as stdlib dataclass"""
 
     def foo(arg1, arg2):
         return arg1, arg2
@@ -941,7 +941,7 @@ def test_pydantic_callable_field():
         default_callable: Callable = foo
         default_callable_2: Callable[[int, float, str], bool] = bar
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class PydanticDataclass:
         required_callable: Callable
         required_callable_2: Callable[[int, float, str], bool]
@@ -984,10 +984,10 @@ def test_pickle_overridden_builtin_dataclass(create_module: Any):
         # language=Python
         """\
 import dataclasses
-import pydantic
+import whoop_pydantic_v2
 
 
-@pydantic.dataclasses.dataclass(config=pydantic.config.ConfigDict(validate_assignment=True))
+@whoop_pydantic_v2.dataclasses.dataclass(config=whoop_pydantic_v2.config.ConfigDict(validate_assignment=True))
 class BuiltInDataclassForPickle:
     value: int
         """
@@ -1000,7 +1000,7 @@ class BuiltInDataclassForPickle:
     assert restored_obj.value == 5
     assert restored_obj == obj
 
-    # ensure the restored dataclass is still a pydantic dataclass
+    # ensure the restored dataclass is still a whoop_pydantic_v2 dataclass
     with pytest.raises(ValidationError):
         restored_obj.value = 'value of a wrong type'
 
@@ -1022,7 +1022,7 @@ def lazy_cases_for_dataclass_equality_checks():
             a: str
             b: int
 
-        @pydantic.dataclasses.dataclass(frozen=True)
+        @whoop_pydantic_v2.dataclasses.dataclass(frozen=True)
         class PydanticFoo:
             a: str
             b: int
@@ -1031,7 +1031,7 @@ def lazy_cases_for_dataclass_equality_checks():
         class StdLibBar:
             c: StdLibFoo
 
-        @pydantic.dataclasses.dataclass(frozen=True)
+        @whoop_pydantic_v2.dataclasses.dataclass(frozen=True)
         class PydanticBar:
             c: PydanticFoo
 
@@ -1039,7 +1039,7 @@ def lazy_cases_for_dataclass_equality_checks():
         class StdLibBaz:
             c: PydanticFoo
 
-        @pydantic.dataclasses.dataclass(frozen=True)
+        @whoop_pydantic_v2.dataclasses.dataclass(frozen=True)
         class PydanticBaz:
             c: StdLibFoo
 
@@ -1086,7 +1086,7 @@ def test_issue_2383():
         def __hash__(self):
             return 123
 
-    class B(pydantic.BaseModel):
+    class B(whoop_pydantic_v2.BaseModel):
         a: A
 
     a = A('')
@@ -1101,7 +1101,7 @@ def test_issue_2398():
     class DC:
         num: int = 42
 
-    class Model(pydantic.BaseModel):
+    class Model(whoop_pydantic_v2.BaseModel):
         dc: DC
 
     real_dc = DC()
@@ -1124,7 +1124,7 @@ def test_issue_2424():
 
     assert Thing(x='hi').y == ''
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class ValidatedThing(Base):
         y: str = dataclasses.field(default_factory=str)
 
@@ -1172,7 +1172,7 @@ def test_complex_nested_vanilla_dataclass():
     class Sentence:
         relations: BinaryRelation
 
-    class M(pydantic.BaseModel):
+    class M(whoop_pydantic_v2.BaseModel):
         s: Sentence
 
     assert M.model_json_schema() == {
@@ -1262,7 +1262,7 @@ def test_issue_2594():
     class Empty:
         pass
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class M:
         e: Empty
 
@@ -1270,13 +1270,13 @@ def test_issue_2594():
 
 
 def test_schema_description_unset():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class A:
         x: int
 
     assert 'description' not in model_json_schema(A)
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     @dataclasses.dataclass
     class B:
         x: int
@@ -1285,7 +1285,7 @@ def test_schema_description_unset():
 
 
 def test_schema_description_set():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class A:
         """my description"""
 
@@ -1293,7 +1293,7 @@ def test_schema_description_set():
 
     assert model_json_schema(A)['description'] == 'my description'
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     @dataclasses.dataclass
     class B:
         """my description"""
@@ -1313,7 +1313,7 @@ def test_issue_3011():
     class B(A):
         thing_b: str
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class C:
         thing: A
 
@@ -1349,15 +1349,15 @@ def test_issue_3162():
 
 
 def test_discriminated_union_basemodel_instance_value():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class A:
         l: Literal['a']  # noqa: E741
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class B:
         l: Literal['b']  # noqa: E741
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Top:
         sub: Union[A, B] = dataclasses.field(metadata=dict(discriminator='l'))
 
@@ -1402,7 +1402,7 @@ def test_post_init_after_validation():
                 self.set, set
             ), f"self.set should be a set but it's {self.set!r} of type {type(self.set).__name__}"
 
-    class Model(pydantic.BaseModel):
+    class Model(whoop_pydantic_v2.BaseModel):
         set_wrapper: SetWrapper
 
     model = Model(set_wrapper=SetWrapper({1, 2, 3}))
@@ -1412,7 +1412,7 @@ def test_post_init_after_validation():
 
 def test_new_not_called():
     """
-    pydantic dataclasses do not preserve sunder attributes set in __new__
+    whoop_pydantic_v2 dataclasses do not preserve sunder attributes set in __new__
     """
 
     class StandardClass:
@@ -1428,7 +1428,7 @@ def test_new_not_called():
             return instance
 
     StandardLibDataclass = dataclasses.dataclass(StandardClass)
-    PydanticDataclass = pydantic.dataclasses.dataclass(StandardClass)
+    PydanticDataclass = whoop_pydantic_v2.dataclasses.dataclass(StandardClass)
 
     test_string = 'string'
 
@@ -1442,7 +1442,7 @@ def test_new_not_called():
 
 
 def test_ignore_extra():
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra='ignore'))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra='ignore'))
     class Foo:
         x: int
 
@@ -1451,11 +1451,11 @@ def test_ignore_extra():
 
 
 def test_ignore_extra_subclass():
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra='ignore'))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra='ignore'))
     class Foo:
         x: int
 
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra='ignore'))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra='ignore'))
     class Bar(Foo):
         y: int
 
@@ -1464,7 +1464,7 @@ def test_ignore_extra_subclass():
 
 
 def test_allow_extra():
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra='allow'))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra='allow'))
     class Foo:
         x: int
 
@@ -1473,11 +1473,11 @@ def test_allow_extra():
 
 
 def test_allow_extra_subclass():
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra='allow'))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra='allow'))
     class Foo:
         x: int
 
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra='allow'))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra='allow'))
     class Bar(Foo):
         y: int
 
@@ -1486,7 +1486,7 @@ def test_allow_extra_subclass():
 
 
 def test_forbid_extra():
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra='forbid'))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra='forbid'))
     class Foo:
         x: int
 
@@ -1497,7 +1497,7 @@ def test_forbid_extra():
 
 
 def test_self_reference_dataclass():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         self_reference: Optional['MyDataclass'] = None
 
@@ -1524,7 +1524,7 @@ def test_self_reference_dataclass():
 
 
 def test_cyclic_reference_dataclass(create_module):
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra='forbid'))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra='forbid'))
     class D1:
         d2: Optional['D2'] = None
 
@@ -1532,9 +1532,9 @@ def test_cyclic_reference_dataclass(create_module):
     def module():
         from typing import Optional
 
-        import pydantic
+        import whoop_pydantic_v2
 
-        @pydantic.dataclasses.dataclass(config=pydantic.ConfigDict(extra='forbid'))
+        @whoop_pydantic_v2.dataclasses.dataclass(config=whoop_pydantic_v2.ConfigDict(extra='forbid'))
         class D2:
             d1: Optional['D1'] = None
 
@@ -1581,7 +1581,7 @@ def test_cyclic_reference_dataclass(create_module):
 
 
 def test_cross_module_cyclic_reference_dataclass(create_module):
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra='forbid'))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra='forbid'))
     class D1:
         d2: Optional['D2'] = None  # noqa F821
 
@@ -1589,9 +1589,9 @@ def test_cross_module_cyclic_reference_dataclass(create_module):
     def module():
         from typing import Optional
 
-        import pydantic
+        import whoop_pydantic_v2
 
-        @pydantic.dataclasses.dataclass(config=pydantic.ConfigDict(extra='forbid'))
+        @whoop_pydantic_v2.dataclasses.dataclass(config=whoop_pydantic_v2.ConfigDict(extra='forbid'))
         class D2:
             d1: Optional['D1'] = None
 
@@ -1600,7 +1600,7 @@ def test_cross_module_cyclic_reference_dataclass(create_module):
         PydanticUserError,
         match=re.escape(
             '`D1` is not fully defined; you should define `D2`, then call'
-            ' `pydantic.dataclasses.rebuild_dataclass(D1)`.'
+            ' `whoop_pydantic_v2.dataclasses.rebuild_dataclass(D1)`.'
         ),
     ):
         D1()
@@ -1646,10 +1646,10 @@ def test_cross_module_cyclic_reference_dataclass(create_module):
 @pytest.mark.parametrize(
     'dataclass_decorator',
     [
-        pydantic.dataclasses.dataclass,
+        whoop_pydantic_v2.dataclasses.dataclass,
         dataclasses.dataclass,
     ],
-    ids=['pydantic', 'stdlib'],
+    ids=['whoop_pydantic_v2', 'stdlib'],
 )
 def test_base_dataclasses_annotations_resolving(create_module, dataclass_decorator: Callable):
     @create_module
@@ -1676,10 +1676,10 @@ def test_base_dataclasses_annotations_resolving(create_module, dataclass_decorat
 @pytest.mark.parametrize(
     'dataclass_decorator',
     [
-        pydantic.dataclasses.dataclass,
+        whoop_pydantic_v2.dataclasses.dataclass,
         dataclasses.dataclass,
     ],
-    ids=['pydantic', 'stdlib'],
+    ids=['whoop_pydantic_v2', 'stdlib'],
 )
 def test_base_dataclasses_annotations_resolving_with_override(create_module, dataclass_decorator: Callable):
     @create_module
@@ -1717,7 +1717,7 @@ def test_base_dataclasses_annotations_resolving_with_override(create_module, dat
 
 @pytest.mark.skipif(sys.version_info < (3, 10), reason='kw_only is not available in python < 3.10')
 def test_kw_only():
-    @pydantic.dataclasses.dataclass(kw_only=True)
+    @whoop_pydantic_v2.dataclasses.dataclass(kw_only=True)
     class A:
         a: int | None = None
         b: str
@@ -1730,12 +1730,12 @@ def test_kw_only():
 
 @pytest.mark.skipif(sys.version_info < (3, 10), reason='kw_only is not available in python < 3.10')
 def test_kw_only_subclass():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class A:
         x: int
-        y: int = pydantic.Field(default=0, kw_only=True)
+        y: int = whoop_pydantic_v2.Field(default=0, kw_only=True)
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class B(A):
         z: int
 
@@ -1743,9 +1743,9 @@ def test_kw_only_subclass():
     assert B(1, y=2, z=3) == B(x=1, y=2, z=3)
 
 
-@pytest.mark.parametrize('field_constructor', [pydantic.dataclasses.Field, dataclasses.field])
+@pytest.mark.parametrize('field_constructor', [whoop_pydantic_v2.dataclasses.Field, dataclasses.field])
 def test_repr_false(field_constructor: Callable):
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class A:
         visible_field: str
         hidden_field: str = field_constructor(repr=False)
@@ -1756,18 +1756,18 @@ def test_repr_false(field_constructor: Callable):
 
 
 def dataclass_decorators(include_identity: bool = False, exclude_combined: bool = False):
-    decorators = [pydantic.dataclasses.dataclass, dataclasses.dataclass]
-    ids = ['pydantic', 'stdlib']
+    decorators = [whoop_pydantic_v2.dataclasses.dataclass, dataclasses.dataclass]
+    ids = ['whoop_pydantic_v2', 'stdlib']
 
     if not exclude_combined:
 
         def combined_decorator(cls):
             """
             Should be equivalent to:
-            @pydantic.dataclasses.dataclass
+            @whoop_pydantic_v2.dataclasses.dataclass
             @dataclasses.dataclass
             """
-            return pydantic.dataclasses.dataclass(dataclasses.dataclass(cls))
+            return whoop_pydantic_v2.dataclasses.dataclass(dataclasses.dataclass(cls))
 
         decorators.append(combined_decorator)
         ids.append('combined')
@@ -1802,10 +1802,10 @@ def test_kw_only_inheritance(decorator1, decorator2):
 
 
 def test_extra_forbid_list_no_error():
-    @pydantic.dataclasses.dataclass(config=dict(extra='forbid'))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=dict(extra='forbid'))
     class Bar: ...
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Foo:
         a: List[Bar]
 
@@ -1813,7 +1813,7 @@ def test_extra_forbid_list_no_error():
 
 
 def test_extra_forbid_list_error():
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra='forbid'))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra='forbid'))
     class Bar: ...
 
     with pytest.raises(ValidationError, match=r'a\s+Unexpected keyword argument'):
@@ -1821,7 +1821,7 @@ def test_extra_forbid_list_error():
 
 
 def test_field_validator():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         a: int
         b: float
@@ -1837,7 +1837,7 @@ def test_field_validator():
 
 
 def test_model_validator_before():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         a: int
         b: float
@@ -1854,7 +1854,7 @@ def test_model_validator_before():
 
 
 def test_model_validator_after():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         a: int
         b: float
@@ -1886,7 +1886,7 @@ def test_parent_post_init():
 
     assert A(a=1.2).a == 2.4
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class B(A):
         @field_validator('a')
         @classmethod
@@ -1902,7 +1902,7 @@ def test_subclass_post_init_order():
     class A:
         a: float
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class B(A):
         def __post_init__(self):
             self.a *= 2
@@ -1921,7 +1921,7 @@ def test_subclass_post_init_inheritance():
     class A:
         a: int
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class B(A):
         def __post_init__(self):
             self.a *= 2
@@ -1932,7 +1932,7 @@ def test_subclass_post_init_inheritance():
             value += 3
             return value
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class C(B):
         def __post_init__(self):
             self.a *= 3
@@ -1948,7 +1948,7 @@ def test_config_as_type_deprecated():
         PydanticDeprecatedSince20, match='Support for class-based `config` is deprecated, use ConfigDict instead.'
     ):
 
-        @pydantic.dataclasses.dataclass(config=Config)
+        @whoop_pydantic_v2.dataclasses.dataclass(config=Config)
         class MyDataclass:
             a: int
 
@@ -1962,7 +1962,7 @@ def test_validator_info_field_name_data_before():
     all share the same implementation.
     """
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         a: str
         b: str
@@ -1982,13 +1982,13 @@ def test_validator_info_field_name_data_before():
     'decorator1, expected_parent, expected_child',
     [
         (
-            pydantic.dataclasses.dataclass,
-            ['parent before', 'parent', 'parent after'],
-            ['parent before', 'child', 'parent after', 'child before', 'child after'],
+                whoop_pydantic_v2.dataclasses.dataclass,
+                ['parent before', 'parent', 'parent after'],
+                ['parent before', 'child', 'parent after', 'child before', 'child after'],
         ),
         (dataclasses.dataclass, [], ['parent before', 'child', 'parent after', 'child before', 'child after']),
     ],
-    ids=['pydantic', 'stdlib'],
+    ids=['whoop_pydantic_v2', 'stdlib'],
 )
 def test_inheritance_replace(decorator1: Callable[[Any], Any], expected_parent: List[str], expected_child: List[str]):
     """We promise that if you add a validator
@@ -2018,7 +2018,7 @@ def test_inheritance_replace(decorator1: Callable[[Any], Any], expected_parent: 
             v.append('parent after')
             return v
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Child(Parent):
         @field_validator('a')
         @classmethod
@@ -2045,15 +2045,15 @@ def test_inheritance_replace(decorator1: Callable[[Any], Any], expected_parent: 
 @pytest.mark.parametrize(
     'decorator1',
     [
-        pydantic.dataclasses.dataclass,
+        whoop_pydantic_v2.dataclasses.dataclass,
         dataclasses.dataclass,
     ],
-    ids=['pydantic', 'stdlib'],
+    ids=['whoop_pydantic_v2', 'stdlib'],
 )
 @pytest.mark.parametrize(
     'default',
     [1, dataclasses.field(default=1), Field(default=1)],
-    ids=['1', 'dataclasses.field(default=1)', 'pydantic.Field(default=1)'],
+    ids=['1', 'dataclasses.field(default=1)', 'whoop_pydantic_v2.Field(default=1)'],
 )
 def test_dataclasses_inheritance_default_value_is_not_deleted(
     decorator1: Callable[[Any], Any], default: Literal[1]
@@ -2068,7 +2068,7 @@ def test_dataclasses_inheritance_default_value_is_not_deleted(
     assert Parent.a == 1
     assert Parent().a == 1
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Child(Parent):
         pass
 
@@ -2077,7 +2077,7 @@ def test_dataclasses_inheritance_default_value_is_not_deleted(
 
 
 def test_dataclass_config_validate_default():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         x: int = -1
 
@@ -2089,7 +2089,7 @@ def test_dataclass_config_validate_default():
 
     assert Model().x == -1
 
-    @pydantic.dataclasses.dataclass(config=ConfigDict(validate_default=True))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(validate_default=True))
     class ValidatingModel(Model):
         pass
 
@@ -2116,7 +2116,7 @@ def test_unparametrized_generic_dataclass(dataclass_decorator):
 
     # In principle we could call GenericDataclass(...) below, but this won't do validation
     # for standard dataclasses, so we just use TypeAdapter to get validation for each.
-    validator = pydantic.TypeAdapter(GenericDataclass)
+    validator = whoop_pydantic_v2.TypeAdapter(GenericDataclass)
 
     assert validator.validate_python({'x': None}).x is None
     assert validator.validate_python({'x': 1}).x == 1
@@ -2158,7 +2158,7 @@ def test_parametrized_generic_dataclass(dataclass_decorator, annotation, input_v
 
     # Need to use TypeAdapter here because GenericDataclass[annotation] will be a GenericAlias, which delegates
     # method calls to the (non-parametrized) origin class. This is essentially a limitation of typing._GenericAlias.
-    validator = pydantic.TypeAdapter(GenericDataclass[annotation])
+    validator = whoop_pydantic_v2.TypeAdapter(GenericDataclass[annotation])
 
     if not error:
         assert validator.validate_python({'x': input_value}).x == output_value
@@ -2171,12 +2171,12 @@ def test_parametrized_generic_dataclass(dataclass_decorator, annotation, input_v
 def test_multiple_parametrized_generic_dataclasses():
     T = TypeVar('T')
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class GenericDataclass(Generic[T]):
         x: T
 
-    validator1 = pydantic.TypeAdapter(GenericDataclass[int])
-    validator2 = pydantic.TypeAdapter(GenericDataclass[str])
+    validator1 = whoop_pydantic_v2.TypeAdapter(GenericDataclass[int])
+    validator2 = whoop_pydantic_v2.TypeAdapter(GenericDataclass[str])
 
     # verify that generic parameters are showing up in the type ref for generic dataclasses
     # this can probably be removed if the schema changes in some way that makes this part of the test fail
@@ -2209,7 +2209,7 @@ def test_pydantic_dataclass_preserves_metadata(dataclass_decorator: Callable[[An
     class FooStd:
         """Docstring"""
 
-    FooPydantic = pydantic.dataclasses.dataclass(FooStd)
+    FooPydantic = whoop_pydantic_v2.dataclasses.dataclass(FooStd)
 
     assert FooPydantic.__module__ == FooStd.__module__
     assert FooPydantic.__name__ == FooStd.__name__
@@ -2222,7 +2222,7 @@ def test_recursive_dataclasses_gh_4509(create_module) -> None:
         import dataclasses
         from typing import List
 
-        import pydantic
+        import whoop_pydantic_v2
 
         @dataclasses.dataclass
         class Recipe:
@@ -2232,7 +2232,7 @@ def test_recursive_dataclasses_gh_4509(create_module) -> None:
         class Cook:
             recipes: List[Recipe]
 
-        @pydantic.dataclasses.dataclass
+        @whoop_pydantic_v2.dataclasses.dataclass
         class Foo(Cook):
             pass
 
@@ -2249,7 +2249,7 @@ def test_dataclass_alias_generator():
     def alias_generator(name: str) -> str:
         return 'alias_' + name
 
-    @pydantic.dataclasses.dataclass(config=ConfigDict(alias_generator=alias_generator))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(alias_generator=alias_generator))
     class User:
         name: str
         score: int = Field(alias='my_score')
@@ -2279,11 +2279,11 @@ def test_dataclass_alias_generator():
 def test_init_vars_inheritance():
     init_vars = []
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Foo:
         init: 'InitVar[int]'
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Bar(Foo):
         arg: int
 
@@ -2306,7 +2306,7 @@ def test_init_vars_inheritance():
     ]
 
 
-@pytest.mark.skipif(not hasattr(pydantic.dataclasses, '_call_initvar'), reason='InitVar was not modified')
+@pytest.mark.skipif(not hasattr(whoop_pydantic_v2.dataclasses, '_call_initvar'), reason='InitVar was not modified')
 @pytest.mark.parametrize('remove_monkeypatch', [True, False])
 def test_init_vars_call_monkeypatch(remove_monkeypatch, monkeypatch):
     # Parametrizing like this allows us to test that the behavior is the same with or without the monkeypatch
@@ -2400,10 +2400,10 @@ def test_vanilla_dataclass_decorators_in_type_adapter(decorator1, decorator2):
 @pytest.mark.parametrize(
     'dataclass_decorator',
     [
-        pydantic.dataclasses.dataclass,
+        whoop_pydantic_v2.dataclasses.dataclass,
         dataclasses.dataclass,
     ],
-    ids=['pydantic', 'stdlib'],
+    ids=['whoop_pydantic_v2', 'stdlib'],
 )
 @pytest.mark.skipif(sys.version_info < (3, 10), reason='slots are only supported for dataclasses in Python >= 3.10')
 def test_dataclass_slots(dataclass_decorator):
@@ -2420,10 +2420,10 @@ def test_dataclass_slots(dataclass_decorator):
 @pytest.mark.parametrize(
     'dataclass_decorator',
     [
-        pydantic.dataclasses.dataclass,
+        whoop_pydantic_v2.dataclasses.dataclass,
         dataclasses.dataclass,
     ],
-    ids=['pydantic', 'stdlib'],
+    ids=['whoop_pydantic_v2', 'stdlib'],
 )
 @pytest.mark.skipif(sys.version_info < (3, 10), reason='slots are only supported for dataclasses in Python >= 3.10')
 def test_dataclass_slots_mixed(dataclass_decorator):
@@ -2447,13 +2447,13 @@ def test_dataclass_slots_mixed(dataclass_decorator):
 
 
 def test_rebuild_dataclass():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataClass:
         x: str
 
     assert rebuild_dataclass(MyDataClass) is None
 
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class MyDataClass1:
         d2: Optional['Foo'] = None  # noqa F821
 
@@ -2464,10 +2464,10 @@ def test_rebuild_dataclass():
 @pytest.mark.parametrize(
     'dataclass_decorator',
     [
-        pydantic.dataclasses.dataclass,
+        whoop_pydantic_v2.dataclasses.dataclass,
         dataclasses.dataclass,
     ],
-    ids=['pydantic', 'stdlib'],
+    ids=['whoop_pydantic_v2', 'stdlib'],
 )
 def test_model_config(dataclass_decorator: Any) -> None:
     @dataclass_decorator
@@ -2480,7 +2480,7 @@ def test_model_config(dataclass_decorator: Any) -> None:
 
 
 def test_model_config_override_in_decorator() -> None:
-    @pydantic.dataclasses.dataclass(config=ConfigDict(str_to_lower=False, str_strip_whitespace=True))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(str_to_lower=False, str_strip_whitespace=True))
     class Model:
         x: str
         __pydantic_config__ = ConfigDict(str_to_lower=True)
@@ -2490,7 +2490,7 @@ def test_model_config_override_in_decorator() -> None:
 
 
 def test_model_config_override_in_decorator_empty_config() -> None:
-    @pydantic.dataclasses.dataclass(config=ConfigDict())
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict())
     class Model:
         x: str
         __pydantic_config__ = ConfigDict(str_to_lower=True)
@@ -2518,7 +2518,7 @@ def test_dataclasses_with_config_decorator():
 
 
 def test_pydantic_field_annotation():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         x: Annotated[int, Field(gt=0)]
 
@@ -2543,11 +2543,11 @@ def test_combined_field_annotations():
     (E.g., `x: Annotated[int, Field(gt=1, validate_default=True)] = field(default=0)` doesn't cause an error)
 
     I would generally advise against doing this, and if we do change the behavior in the future to somehow merge
-    pydantic.FieldInfo and dataclasses.Field in a way that changes runtime behavior for existing code, I would probably
+    whoop_pydantic_v2.FieldInfo and dataclasses.Field in a way that changes runtime behavior for existing code, I would probably
     consider it a bugfix rather than a breaking change.
     """
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         x: Annotated[int, Field(gt=1)] = dataclasses.field(default=1)
 
@@ -2567,7 +2567,7 @@ def test_combined_field_annotations():
 
 
 def test_dataclass_field_default_factory_with_init():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         x: int = dataclasses.field(default_factory=lambda: 3, init=False)
 
@@ -2578,7 +2578,7 @@ def test_dataclass_field_default_factory_with_init():
 
 
 def test_dataclass_field_default_with_init():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         x: int = dataclasses.field(default=3, init=False)
 
@@ -2593,7 +2593,7 @@ def test_metadata():
     class Test:
         value: int = dataclasses.field(metadata={'info': 'Some int value', 'json_schema_extra': {'a': 'b'}})
 
-    PydanticTest = pydantic.dataclasses.dataclass(Test)
+    PydanticTest = whoop_pydantic_v2.dataclasses.dataclass(Test)
 
     assert TypeAdapter(PydanticTest).json_schema() == {
         'properties': {'value': {'a': 'b', 'title': 'Value', 'type': 'integer'}},
@@ -2604,7 +2604,7 @@ def test_metadata():
 
 
 def test_signature():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         x: int
         y: str = 'y'
@@ -2620,11 +2620,11 @@ def test_signature():
 
 
 def test_inherited_dataclass_signature():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class A:
         a: int
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class B(A):
         b: int
 
@@ -2633,13 +2633,13 @@ def test_inherited_dataclass_signature():
 
 
 def test_dataclasses_with_slots_and_default():
-    @pydantic.dataclasses.dataclass(slots=True)
+    @whoop_pydantic_v2.dataclasses.dataclass(slots=True)
     class A:
         a: int = 0
 
     assert A().a == 0
 
-    @pydantic.dataclasses.dataclass(slots=True)
+    @whoop_pydantic_v2.dataclasses.dataclass(slots=True)
     class B:
         b: int = Field(1)
 
@@ -2651,7 +2651,7 @@ def test_schema_generator() -> None:
         def str_schema(self) -> CoreSchema:
             return core_schema.no_info_plain_validator_function(str)
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         x: str
         __pydantic_config__ = ConfigDict(schema_generator=LaxStrGenerator)
@@ -2680,7 +2680,7 @@ def test_annotated_before_validator_called_once(decorator1):
 
 
 def test_is_pydantic_dataclass():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class PydanticDataclass:
         a: int
 
@@ -2742,7 +2742,7 @@ def test_can_inherit_stdlib_dataclasses_with_dataclass_fields():
 def test_alias_with_dashes():
     """Test for fix issue #7226."""
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Foo:
         some_var: str = Field(alias='some-var')
 
@@ -2751,7 +2751,7 @@ def test_alias_with_dashes():
 
 
 def test_validate_strings():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Nested:
         d: date
 
@@ -2761,13 +2761,13 @@ def test_validate_strings():
     assert Model.model_validate_strings({'n': {'d': '2017-01-01'}}).n.d == date(2017, 1, 1)
 
 
-@pytest.mark.parametrize('field_constructor', [dataclasses.field, pydantic.dataclasses.Field])
+@pytest.mark.parametrize('field_constructor', [dataclasses.field, whoop_pydantic_v2.dataclasses.Field])
 @pytest.mark.parametrize('extra', ['ignore', 'forbid'])
 def test_init_false_not_in_signature(extra, field_constructor):
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra=extra))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra=extra))
     class MyDataclass:
         a: int = field_constructor(init=False, default=-1)
-        b: int = pydantic.dataclasses.Field(default=2)
+        b: int = whoop_pydantic_v2.dataclasses.Field(default=2)
 
     signature = inspect.signature(MyDataclass)
     # `a` should not be in the __init__
@@ -2794,13 +2794,13 @@ init_test_cases = [
 ]
 
 
-@pytest.mark.parametrize('field_constructor', [dataclasses.field, pydantic.dataclasses.Field])
+@pytest.mark.parametrize('field_constructor', [dataclasses.field, whoop_pydantic_v2.dataclasses.Field])
 @pytest.mark.parametrize(
     'input_data,extra,expected',
     init_test_cases,
 )
 def test_init_false_with_post_init(input_data, extra, expected, field_constructor):
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra=extra))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra=extra))
     class MyDataclass:
         a: int
         b: int = field_constructor(init=False)
@@ -2817,13 +2817,13 @@ def test_init_false_with_post_init(input_data, extra, expected, field_constructo
         assert dataclasses.asdict(MyDataclass(**input_data)) == expected
 
 
-@pytest.mark.parametrize('field_constructor', [dataclasses.field, pydantic.dataclasses.Field])
+@pytest.mark.parametrize('field_constructor', [dataclasses.field, whoop_pydantic_v2.dataclasses.Field])
 @pytest.mark.parametrize(
     'input_data,extra,expected',
     init_test_cases,
 )
 def test_init_false_with_default(input_data, extra, expected, field_constructor):
-    @pydantic.dataclasses.dataclass(config=ConfigDict(extra=extra))
+    @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra=extra))
     class MyDataclass:
         a: int
         b: int = field_constructor(init=False, default=1)
@@ -2840,7 +2840,7 @@ def test_init_false_with_default(input_data, extra, expected, field_constructor)
 def test_disallow_extra_allow_and_init_false() -> None:
     with pytest.raises(PydanticUserError, match='This combination is not allowed.'):
 
-        @pydantic.dataclasses.dataclass(config=ConfigDict(extra='allow'))
+        @whoop_pydantic_v2.dataclasses.dataclass(config=ConfigDict(extra='allow'))
         class A:
             a: int = Field(init=False, default=1)
 
@@ -2848,7 +2848,7 @@ def test_disallow_extra_allow_and_init_false() -> None:
 def test_disallow_init_false_and_init_var_true() -> None:
     with pytest.raises(PydanticUserError, match='mutually exclusive.'):
 
-        @pydantic.dataclasses.dataclass
+        @whoop_pydantic_v2.dataclasses.dataclass
         class Foo:
             bar: str = Field(..., init=False, init_var=True)
 
@@ -2856,11 +2856,11 @@ def test_disallow_init_false_and_init_var_true() -> None:
 def test_annotations_valid_for_field_inheritance() -> None:
     # testing https://github.com/pydantic/pydantic/issues/8670
 
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class A:
-        a: int = pydantic.dataclasses.Field()
+        a: int = whoop_pydantic_v2.dataclasses.Field()
 
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class B(A): ...
 
     assert B.__pydantic_fields__['a'].annotation is int
@@ -2871,13 +2871,13 @@ def test_annotations_valid_for_field_inheritance() -> None:
 def test_annotations_valid_for_field_inheritance_with_existing_field() -> None:
     # variation on testing https://github.com/pydantic/pydantic/issues/8670
 
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class A:
-        a: int = pydantic.dataclasses.Field()
+        a: int = whoop_pydantic_v2.dataclasses.Field()
 
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class B(A):
-        b: str = pydantic.dataclasses.Field()
+        b: str = whoop_pydantic_v2.dataclasses.Field()
 
     assert B.__pydantic_fields__['a'].annotation is int
     assert B.__pydantic_fields__['b'].annotation is str
@@ -2888,23 +2888,23 @@ def test_annotations_valid_for_field_inheritance_with_existing_field() -> None:
 
 
 def test_annotation_with_double_override() -> None:
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class A:
         a: int
         b: int
-        c: int = pydantic.dataclasses.Field()
-        d: int = pydantic.dataclasses.Field()
+        c: int = whoop_pydantic_v2.dataclasses.Field()
+        d: int = whoop_pydantic_v2.dataclasses.Field()
 
     # note, the order of fields is different here, as to test that the annotation
     # is correctly set on the field no matter the base's default / current class's default
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class B(A):
         a: str
         c: str
-        b: str = pydantic.dataclasses.Field()
-        d: str = pydantic.dataclasses.Field()
+        b: str = whoop_pydantic_v2.dataclasses.Field()
+        d: str = whoop_pydantic_v2.dataclasses.Field()
 
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class C(B): ...
 
     for class_ in [B, C]:
@@ -2917,11 +2917,11 @@ def test_annotation_with_double_override() -> None:
 def test_schema_valid_for_inner_generic() -> None:
     T = TypeVar('T')
 
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class Inner(Generic[T]):
         x: T
 
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class Outer:
         inner: Inner[int]
 
@@ -2935,11 +2935,11 @@ def test_schema_valid_for_inner_generic() -> None:
 
 
 def test_validation_works_for_cyclical_forward_refs() -> None:
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class X:
         y: Union['Y', None]
 
-    @pydantic.dataclasses.dataclass()
+    @whoop_pydantic_v2.dataclasses.dataclass()
     class Y:
         x: Union[X, None]
 

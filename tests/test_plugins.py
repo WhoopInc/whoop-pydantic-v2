@@ -6,15 +6,15 @@ from typing import Any, Generator, List
 
 from pydantic_core import ValidationError
 
-from pydantic import BaseModel, TypeAdapter, create_model, dataclasses, field_validator, validate_call
-from pydantic.plugin import (
+from whoop_pydantic_v2 import BaseModel, TypeAdapter, create_model, dataclasses, field_validator, validate_call
+from whoop_pydantic_v2.plugin import (
     PydanticPluginProtocol,
     SchemaTypePath,
     ValidateJsonHandlerProtocol,
     ValidatePythonHandlerProtocol,
     ValidateStringsHandlerProtocol,
 )
-from pydantic.plugin._loader import _plugins
+from whoop_pydantic_v2.plugin._loader import _plugins
 
 
 @contextlib.contextmanager
@@ -377,8 +377,8 @@ def test_plugin_path_type_adapter_without_name_in_globals() -> None:
         code = """
 from typing import List
 
-import pydantic
-pydantic.TypeAdapter(List[str])
+import whoop_pydantic_v2
+whoop_pydantic_v2.TypeAdapter(List[str])
 """
         exec(code, {'bar': 'baz'})
 

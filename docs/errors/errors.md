@@ -37,7 +37,7 @@ As a demonstration:
 ```py
 from typing import List
 
-from pydantic import BaseModel, ValidationError, conint
+from whoop_pydantic_v2 import BaseModel, ValidationError, conint
 
 
 class Location(BaseModel):
@@ -136,7 +136,7 @@ In your custom data types or validators you should use `ValueError` or `Assertio
 See [validators](../concepts/validators.md) for more details on use of the `@validator` decorator.
 
 ```py
-from pydantic import BaseModel, ValidationError, field_validator
+from whoop_pydantic_v2 import BaseModel, ValidationError, field_validator
 
 
 class Model(BaseModel):
@@ -179,7 +179,7 @@ You can also use [`PydanticCustomError`][pydantic_core.PydanticCustomError], to 
 ```py
 from pydantic_core import PydanticCustomError
 
-from pydantic import BaseModel, ValidationError, field_validator
+from whoop_pydantic_v2 import BaseModel, ValidationError, field_validator
 
 
 class Model(BaseModel):
@@ -225,7 +225,7 @@ from typing import Dict, List
 
 from pydantic_core import ErrorDetails
 
-from pydantic import BaseModel, HttpUrl, ValidationError
+from whoop_pydantic_v2 import BaseModel, HttpUrl, ValidationError
 
 CUSTOM_MESSAGES = {
     'int_parsing': 'This is not an integer! 🤦',
@@ -234,7 +234,7 @@ CUSTOM_MESSAGES = {
 
 
 def convert_errors(
-    e: ValidationError, custom_messages: Dict[str, str]
+        e: ValidationError, custom_messages: Dict[str, str]
 ) -> List[ErrorDetails]:
     new_errors: List[ErrorDetails] = []
     for error in e.errors():
@@ -288,7 +288,7 @@ Another example is customizing the way that the `'loc'` value of an error is rep
 ```py
 from typing import Any, Dict, List, Tuple, Union
 
-from pydantic import BaseModel, ValidationError
+from whoop_pydantic_v2 import BaseModel, ValidationError
 
 
 def loc_to_dot_sep(loc: Tuple[Union[str, int], ...]) -> str:

@@ -9,7 +9,7 @@ from typing import Any, ContextManager, Dict, Iterable, NamedTuple, Optional, Tu
 from dirty_equals import HasRepr, IsPartialDict
 from pydantic_core import SchemaError, SchemaSerializer, SchemaValidator
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     BaseConfig,
     BaseModel,
     Field,
@@ -23,15 +23,15 @@ from pydantic import (
     validate_call,
     with_config,
 )
-from pydantic._internal._config import ConfigWrapper, config_defaults
-from pydantic._internal._mock_val_ser import MockValSer
-from pydantic._internal._typing_extra import get_type_hints
-from pydantic.config import ConfigDict, JsonValue
-from pydantic.dataclasses import dataclass as pydantic_dataclass
-from pydantic.errors import PydanticUserError
-from pydantic.fields import ComputedFieldInfo, FieldInfo
-from pydantic.type_adapter import TypeAdapter
-from pydantic.warnings import PydanticDeprecationWarning
+from whoop_pydantic_v2._internal._config import ConfigWrapper, config_defaults
+from whoop_pydantic_v2._internal._mock_val_ser import MockValSer
+from whoop_pydantic_v2._internal._typing_extra import get_type_hints
+from whoop_pydantic_v2.config import ConfigDict, JsonValue
+from whoop_pydantic_v2.dataclasses import dataclass as pydantic_dataclass
+from whoop_pydantic_v2.errors import PydanticUserError
+from whoop_pydantic_v2.fields import ComputedFieldInfo, FieldInfo
+from whoop_pydantic_v2.type_adapter import TypeAdapter
+from whoop_pydantic_v2.warnings import PydanticDeprecationWarning
 
 from .conftest import CallCounter
 
@@ -359,7 +359,7 @@ class TestsBaseConfig:
             'Support for class-based `config` is deprecated, use ConfigDict instead',
         ]
         if len(all_warnings) == 2:
-            expected_warnings.insert(0, 'BaseConfig is deprecated. Use the `pydantic.ConfigDict` instead')
+            expected_warnings.insert(0, 'BaseConfig is deprecated. Use the `whoop_pydantic_v2.ConfigDict` instead')
         assert [w.message.message for w in all_warnings] == expected_warnings
 
     def test_config_class_attributes_are_deprecated(self):
@@ -375,9 +375,9 @@ class TestsBaseConfig:
         assert len(all_warnings) == 7
         expected_warnings = {
             'Support for class-based `config` is deprecated, use ConfigDict instead',
-            'BaseConfig is deprecated. Use the `pydantic.ConfigDict` instead',
+            'BaseConfig is deprecated. Use the `whoop_pydantic_v2.ConfigDict` instead',
             'Support for class-based `config` is deprecated, use ConfigDict instead',
-            'BaseConfig is deprecated. Use the `pydantic.ConfigDict` instead',
+            'BaseConfig is deprecated. Use the `whoop_pydantic_v2.ConfigDict` instead',
             'Support for class-based `config` is deprecated, use ConfigDict instead',
             'Support for class-based `config` is deprecated, use ConfigDict instead',
             'Support for class-based `config` is deprecated, use ConfigDict instead',
@@ -543,7 +543,7 @@ def test_config_wrapper_match():
     ), 'ConfigDict and ConfigWrapper must have the same annotations (except ConfigWrapper.config_dict)'
 
 
-@pytest.mark.skipif(sys.version_info < (3, 11), reason='requires backport pre 3.11, fully tested in pydantic core')
+@pytest.mark.skipif(sys.version_info < (3, 11), reason='requires backport pre 3.11, fully tested in whoop_pydantic_v2 core')
 def test_config_validation_error_cause():
     class Foo(BaseModel):
         foo: int
@@ -587,7 +587,7 @@ def test_config_defaults_match():
 def test_config_is_not_inherited_in_model_fields():
     from typing import List
 
-    from pydantic import BaseModel, ConfigDict
+    from whoop_pydantic_v2 import BaseModel, ConfigDict
 
     class Inner(BaseModel):
         a: str
@@ -695,7 +695,7 @@ def test_json_encoders_model() -> None:
     assert json.loads(Model(value=Decimal('1.1'), x=1).model_dump_json()) == {'value': '2.2', 'x': '3'}
 
 
-@pytest.mark.filterwarnings('ignore::pydantic.warnings.PydanticDeprecationWarning')
+@pytest.mark.filterwarnings('ignore::whoop_pydantic_v2.warnings.PydanticDeprecationWarning')
 def test_json_encoders_type_adapter() -> None:
     config = ConfigDict(json_encoders={Decimal: lambda x: str(x * 2), int: lambda x: str(x * 3)})
 

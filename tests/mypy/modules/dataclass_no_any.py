@@ -1,4 +1,4 @@
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass

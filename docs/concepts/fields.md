@@ -8,7 +8,7 @@ The [`Field`][pydantic.fields.Field] function is used to customize and add metad
 The `default` parameter is used to define a default value for a field.
 
 ```py
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class User(BaseModel):
@@ -17,7 +17,7 @@ class User(BaseModel):
 
 user = User()
 print(user)
-#> name='John Doe'
+# > name='John Doe'
 ```
 
 You can also use `default_factory` to define a callable that will be called to generate a default value.
@@ -25,7 +25,7 @@ You can also use `default_factory` to define a callable that will be called to g
 ```py
 from uuid import uuid4
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class User(BaseModel):
@@ -47,7 +47,7 @@ from uuid import uuid4
 
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class User(BaseModel):
@@ -76,7 +76,7 @@ and `serialization_alias` parameters, which will apply only in their respective 
 Here is an example of using the `alias` parameter:
 
 ```py
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class User(BaseModel):
@@ -85,9 +85,9 @@ class User(BaseModel):
 
 user = User(username='johndoe')  # (1)!
 print(user)
-#> name='johndoe'
+# > name='johndoe'
 print(user.model_dump(by_alias=True))  # (2)!
-#> {'username': 'johndoe'}
+# > {'username': 'johndoe'}
 ```
 
 1. The alias `'username'` is used for instance creation and validation.
@@ -103,7 +103,7 @@ print(user.model_dump(by_alias=True))  # (2)!
 If you want to use an alias _only_ for validation, you can use the `validation_alias` parameter:
 
 ```py
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class User(BaseModel):
@@ -112,9 +112,9 @@ class User(BaseModel):
 
 user = User(username='johndoe')  # (1)!
 print(user)
-#> name='johndoe'
+# > name='johndoe'
 print(user.model_dump(by_alias=True))  # (2)!
-#> {'name': 'johndoe'}
+# > {'name': 'johndoe'}
 ```
 
 1. The validation alias `'username'` is used during validation.
@@ -123,7 +123,7 @@ print(user.model_dump(by_alias=True))  # (2)!
 If you only want to define an alias for _serialization_, you can use the `serialization_alias` parameter:
 
 ```py
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class User(BaseModel):
@@ -259,7 +259,7 @@ There are some keyword arguments that can be used to constrain numeric values:
 Here's an example:
 
 ```py
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Foo(BaseModel):
@@ -374,7 +374,7 @@ There are fields that can be used to constrain strings:
 Here's an example:
 
 ```py
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Foo(BaseModel):
@@ -441,7 +441,7 @@ Here's an example:
 ```py
 from decimal import Decimal
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Foo(BaseModel):
@@ -464,8 +464,8 @@ There are fields that can be used to constrain dataclasses:
 Here's an example:
 
 ```py
-from pydantic import BaseModel, Field
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import BaseModel, Field
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 @dataclass
@@ -493,7 +493,7 @@ The parameter `validate_default` can be used to control whether the default valu
 By default, the default value of the field is not validated.
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class User(BaseModel):
@@ -517,7 +517,7 @@ The parameter `repr` can be used to control whether the field should be included
 representation of the model.
 
 ```py
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class User(BaseModel):
@@ -543,7 +543,7 @@ The following example shows how to use `discriminator` with a field name:
 ```py requires="3.8"
 from typing import Literal, Union
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Cat(BaseModel):
@@ -573,7 +573,7 @@ from typing import Literal, Union
 
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, Discriminator, Field, Tag
+from whoop_pydantic_v2 import BaseModel, Discriminator, Field, Tag
 
 
 class Cat(BaseModel):
@@ -614,7 +614,7 @@ The `strict` parameter on a [`Field`][pydantic.fields.Field] specifies whether t
 In strict mode, Pydantic throws an error during validation instead of coercing data on the field where `strict=True`.
 
 ```py
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class User(BaseModel):
@@ -642,7 +642,7 @@ assigned a new value after the model is created (immutability).
 See the [frozen dataclass documentation] for more details.
 
 ```py
-from pydantic import BaseModel, Field, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, ValidationError
 
 
 class User(BaseModel):
@@ -673,7 +673,7 @@ model when exporting the model.
 See the following example:
 
 ```py
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class User(BaseModel):
@@ -708,7 +708,7 @@ You can set the `deprecated` parameter as one of:
 ```py
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Model(BaseModel):
@@ -731,10 +731,9 @@ import importlib.metadata
 from packaging.version import Version
 from typing_extensions import Annotated, deprecated
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 if Version(importlib.metadata.version('typing_extensions')) >= Version('4.9'):
-
     class Model(BaseModel):
         deprecated_field: Annotated[int, deprecated('This is deprecated')]
 
@@ -749,7 +748,7 @@ if Version(importlib.metadata.version('typing_extensions')) >= Version('4.9'):
 ```py
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class Model(BaseModel):
@@ -810,7 +809,7 @@ are expensive to computed (and thus, are cached).
 Here's an example:
 
 ```py
-from pydantic import BaseModel, computed_field
+from whoop_pydantic_v2 import BaseModel, computed_field
 
 
 class Box(BaseModel):
@@ -833,7 +832,7 @@ As with regular fields, computed fields can be marked as being deprecated:
 ```py
 from typing_extensions import deprecated
 
-from pydantic import BaseModel, computed_field
+from whoop_pydantic_v2 import BaseModel, computed_field
 
 
 class Box(BaseModel):

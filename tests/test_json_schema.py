@@ -38,8 +38,8 @@ from packaging.version import Version
 from pydantic_core import CoreSchema, SchemaValidator, core_schema, to_json
 from typing_extensions import Annotated, Literal, Self, TypedDict, deprecated
 
-import pydantic
-from pydantic import (
+import whoop_pydantic_v2
+from whoop_pydantic_v2 import (
     AfterValidator,
     BaseModel,
     Field,
@@ -57,12 +57,12 @@ from pydantic import (
     field_serializer,
     field_validator,
 )
-from pydantic._internal._core_metadata import CoreMetadataHandler, build_metadata_dict
-from pydantic.color import Color
-from pydantic.config import ConfigDict
-from pydantic.dataclasses import dataclass
-from pydantic.errors import PydanticInvalidForJsonSchema
-from pydantic.json_schema import (
+from whoop_pydantic_v2._internal._core_metadata import CoreMetadataHandler, build_metadata_dict
+from whoop_pydantic_v2.color import Color
+from whoop_pydantic_v2.config import ConfigDict
+from whoop_pydantic_v2.dataclasses import dataclass
+from whoop_pydantic_v2.errors import PydanticInvalidForJsonSchema
+from whoop_pydantic_v2.json_schema import (
     DEFAULT_REF_TEMPLATE,
     Examples,
     GenerateJsonSchema,
@@ -72,9 +72,9 @@ from pydantic.json_schema import (
     model_json_schema,
     models_json_schema,
 )
-from pydantic.networks import AnyUrl, EmailStr, IPvAnyAddress, IPvAnyInterface, IPvAnyNetwork, MultiHostUrl, NameEmail
-from pydantic.type_adapter import TypeAdapter
-from pydantic.types import (
+from whoop_pydantic_v2.networks import AnyUrl, EmailStr, IPvAnyAddress, IPvAnyInterface, IPvAnyNetwork, MultiHostUrl, NameEmail
+from whoop_pydantic_v2.type_adapter import TypeAdapter
+from whoop_pydantic_v2.types import (
     UUID1,
     UUID3,
     UUID4,
@@ -2407,7 +2407,7 @@ def test_model_with_extra_ignore():
 
 
 def test_dataclass_with_extra_allow():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         __pydantic_config__ = ConfigDict(extra='allow')
         a: str
@@ -2422,7 +2422,7 @@ def test_dataclass_with_extra_allow():
 
 
 def test_dataclass_with_extra_ignore():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         __pydantic_config__ = ConfigDict(extra='ignore')
         a: str
@@ -2436,7 +2436,7 @@ def test_dataclass_with_extra_ignore():
 
 
 def test_dataclass_with_extra_forbid():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         __pydantic_config__ = ConfigDict(extra='ignore')
         a: str
@@ -2510,7 +2510,7 @@ def test_typeddict_with_extra_behavior_ignore():
 
 
 def test_typeddict_with_extra_forbid():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Model:
         __pydantic_config__ = ConfigDict(extra='forbid')
         a: str
@@ -2857,7 +2857,7 @@ def test_multiple_models_with_same_input_output(create_module):
     module = create_module(
         # language=Python
         """
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class ModelOne(BaseModel):
@@ -2921,7 +2921,7 @@ def test_multiple_models_with_same_name_different_input_output(create_module):
         """
 from decimal import Decimal
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class ModelOne(BaseModel):
@@ -2990,7 +2990,7 @@ def test_multiple_enums_with_same_name(create_module):
         """
 from enum import Enum
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class MyEnum(str, Enum):
@@ -3009,7 +3009,7 @@ class MyModel(BaseModel):
         """
 from enum import Enum
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class MyEnum(str, Enum):
@@ -5529,7 +5529,7 @@ def test_field_json_schema_metadata(annotation: Type[Any], expected: JsonSchemaV
 
 
 def test_multiple_models_with_same_qualname():
-    from pydantic import create_model
+    from whoop_pydantic_v2 import create_model
 
     model_a1 = create_model(
         'A',
@@ -5699,7 +5699,7 @@ def test_callable_json_schema_extra_dataclass():
     def pop_default(s):
         s.pop('default')
 
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyDataclass:
         # Note that a and b here have to come first since dataclasses requires annotation-only fields to come before
         # fields with defaults (for similar reasons to why function arguments with defaults must come later)
@@ -5732,7 +5732,7 @@ def test_model_rebuild_happens_even_with_parent_classes(create_module):
         # language=Python
         """
 from __future__ import annotations
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class MyBaseModel(BaseModel):
     pass
@@ -5886,7 +5886,7 @@ def test_module_with_colon_in_name(create_module):
     module = create_module(
         # language=Python
         """
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 class Foo(BaseModel):
     x: int
@@ -5909,11 +5909,11 @@ class Foo(BaseModel):
 
 
 def test_repeated_custom_type():
-    class Numeric(pydantic.BaseModel):
+    class Numeric(whoop_pydantic_v2.BaseModel):
         value: float
 
         @classmethod
-        def __get_pydantic_core_schema__(cls, source_type: Any, handler: pydantic.GetCoreSchemaHandler) -> CoreSchema:
+        def __get_pydantic_core_schema__(cls, source_type: Any, handler: whoop_pydantic_v2.GetCoreSchemaHandler) -> CoreSchema:
             return core_schema.no_info_before_validator_function(cls.validate, handler(source_type))
 
         @classmethod
@@ -5929,7 +5929,7 @@ def test_repeated_custom_type():
     def is_positive(value: Numeric):
         assert value.value > 0.0, 'Must be positive'
 
-    class OuterModel(pydantic.BaseModel):
+    class OuterModel(whoop_pydantic_v2.BaseModel):
         x: Numeric
         y: Numeric
         z: Annotated[Numeric, AfterValidator(is_positive)]
@@ -5978,7 +5978,7 @@ def test_recursive_json_schema_build() -> None:
 def test_json_schema_annotated_with_field() -> None:
     """Ensure field specified with Annotated in create_model call is still marked as required."""
 
-    from pydantic import create_model
+    from whoop_pydantic_v2 import create_model
 
     Model = create_model(
         'test_model',
@@ -5998,7 +5998,7 @@ def test_json_schema_annotated_with_field() -> None:
 def test_required_fields_in_annotated_with_create_model() -> None:
     """Ensure multiple field specified with Annotated in create_model call is still marked as required."""
 
-    from pydantic import create_model
+    from whoop_pydantic_v2 import create_model
 
     Model = create_model(
         'test_model',
@@ -6075,7 +6075,7 @@ def _generate_deprecated_classes():
         pass
 
     @deprecated('MyPydanticDataclass is deprecated')
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class MyPydanticDataclass:
         pass
 
@@ -6090,7 +6090,7 @@ def _generate_deprecated_classes():
 
     return [
         pytest.param(MyModel, id='BaseModel'),
-        pytest.param(MyPydanticDataclass, id='pydantic-dataclass'),
+        pytest.param(MyPydanticDataclass, id='whoop_pydantic_v2-dataclass'),
         pytest.param(MyBuiltinDataclass, id='builtin-dataclass'),
         pytest.param(MyTypedDict, id='TypedDict'),
     ]
@@ -6141,7 +6141,7 @@ class BuiltinDataclassParent:
     name: str
 
 
-@pydantic.dataclasses.dataclass
+@whoop_pydantic_v2.dataclasses.dataclass
 class PydanticDataclassParent:
     name: str
 
@@ -6193,7 +6193,7 @@ class ModelParent(BaseModel):
                 'title': 'child',
                 'type': 'object',
             },
-            id='pydantic-dataclass',
+            id='whoop_pydantic_v2-dataclass',
         ),
         pytest.param(
             TypedDictParent,

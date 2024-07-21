@@ -1,5 +1,5 @@
 """
-Check that all `Usage docs` tags in docstrings link to the latest version of pydantic.
+Check that all `Usage docs` tags in docstrings link to the latest version of whoop_pydantic_v2.
 """
 
 import re
@@ -7,7 +7,7 @@ import sys
 from pathlib import Path
 
 ROOT_DIR = Path(__file__).parent.parent
-PYDANTIC_DIR = ROOT_DIR / 'pydantic'
+PYDANTIC_DIR = ROOT_DIR / 'whoop_pydantic_v2'
 version_file = PYDANTIC_DIR / 'version.py'
 
 

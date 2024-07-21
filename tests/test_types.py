@@ -42,7 +42,7 @@ from dirty_equals import HasRepr, IsFloatNan, IsOneOf, IsStr
 from pydantic_core import CoreSchema, PydanticCustomError, SchemaError, core_schema
 from typing_extensions import Annotated, Literal, NotRequired, TypedDict, get_args
 
-from pydantic import (
+from whoop_pydantic_v2 import (
     UUID1,
     UUID3,
     UUID4,
@@ -116,7 +116,7 @@ from pydantic import (
     field_validator,
     validate_call,
 )
-from pydantic.dataclasses import dataclass as pydantic_dataclass
+from whoop_pydantic_v2.dataclasses import dataclass as pydantic_dataclass
 
 try:
     import email_validator
@@ -4188,7 +4188,7 @@ def test_compiled_pattern_in_field(use_field):
 def test_pattern_with_invalid_param():
     with pytest.raises(
         PydanticSchemaGenerationError,
-        match=re.escape('Unable to generate pydantic-core schema for typing.Pattern[int].'),
+        match=re.escape('Unable to generate whoop_pydantic_v2-core schema for typing.Pattern[int].'),
     ):
 
         class Foo(BaseModel):
@@ -6064,7 +6064,7 @@ def test_transform_schema_for_third_party_class():
 
     class _IntWrapperAnnotation:
         # This is an auxiliary class that, when used as the first annotation for DatetimeWrapper,
-        # ensures pydantic can produce a valid schema.
+        # ensures whoop_pydantic_v2 can produce a valid schema.
         @classmethod
         def __get_pydantic_core_schema__(
             cls,
@@ -6075,7 +6075,7 @@ def test_transform_schema_for_third_party_class():
             return core_schema.no_info_after_validator_function(IntWrapper, schema)
 
     # Giving a name to Annotated[IntWrapper, _IntWrapperAnnotation] makes it easier to use in code
-    # where I want a field of type `IntWrapper` that works as desired with pydantic.
+    # where I want a field of type `IntWrapper` that works as desired with whoop_pydantic_v2.
     PydanticDatetimeWrapper = Annotated[IntWrapper, _IntWrapperAnnotation]
 
     class Model(BaseModel):
@@ -6113,7 +6113,7 @@ def test_iterable_arbitrary_type():
 
     with pytest.raises(
         PydanticSchemaGenerationError,
-        match='Unable to generate pydantic-core schema for .*CustomIterable.*. Set `arbitrary_types_allowed=True`',
+        match='Unable to generate whoop_pydantic_v2-core schema for .*CustomIterable.*. Set `arbitrary_types_allowed=True`',
     ):
 
         class Model(BaseModel):

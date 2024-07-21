@@ -3,8 +3,8 @@ from typing import Generic, TypeVar
 
 from typing_extensions import Annotated, TypedDict
 
-from pydantic import BaseModel, ConfigDict, Field, TypeAdapter, create_model
-from pydantic.dataclasses import dataclass as pydantic_dataclass
+from whoop_pydantic_v2 import BaseModel, ConfigDict, Field, TypeAdapter, create_model
+from whoop_pydantic_v2.dataclasses import dataclass as pydantic_dataclass
 
 T = TypeVar('T')
 

@@ -1,7 +1,7 @@
 from typing import Any, Generic, List, Optional, Set, TypeVar, Union
 
-from pydantic import BaseModel, Extra, Field, field_validator
-from pydantic.dataclasses import dataclass
+from whoop_pydantic_v2 import BaseModel, Extra, Field, field_validator
+from whoop_pydantic_v2.dataclasses import dataclass
 
 
 class Model(BaseModel):
@@ -65,35 +65,35 @@ KwargsForbidExtraModel(x=1)
 
 class BadExtraModel(BaseModel):
     class Config:
-        extra = 1  # type: ignore[pydantic-config]
+        extra = 1  # type: ignore[whoop_pydantic_v2-config]
         extra = 1
-# MYPY: error: Invalid value for "Config.extra"  [pydantic-config]
+# MYPY: error: Invalid value for "Config.extra"  [whoop_pydantic_v2-config]
 
 
 class KwargsBadExtraModel(BaseModel, extra=1):
-# MYPY: error: Invalid value for "Config.extra"  [pydantic-config]
+# MYPY: error: Invalid value for "Config.extra"  [whoop_pydantic_v2-config]
     pass
 
 
 class BadConfig1(BaseModel):
     class Config:
         from_attributes: Any = {}  # not sensible, but should still be handled gracefully
-# MYPY: error: Invalid value for "Config.from_attributes"  [pydantic-config]
+# MYPY: error: Invalid value for "Config.from_attributes"  [whoop_pydantic_v2-config]
 
 
 class KwargsBadConfig1(BaseModel, from_attributes={}):
-# MYPY: error: Invalid value for "Config.from_attributes"  [pydantic-config]
+# MYPY: error: Invalid value for "Config.from_attributes"  [whoop_pydantic_v2-config]
     pass
 
 
 class BadConfig2(BaseModel):
     class Config:
         from_attributes = list  # not sensible, but should still be handled gracefully
-# MYPY: error: Invalid value for "Config.from_attributes"  [pydantic-config]
+# MYPY: error: Invalid value for "Config.from_attributes"  [whoop_pydantic_v2-config]
 
 
 class KwargsBadConfig2(BaseModel, from_attributes=list):
-# MYPY: error: Invalid value for "Config.from_attributes"  [pydantic-config]
+# MYPY: error: Invalid value for "Config.from_attributes"  [whoop_pydantic_v2-config]
     pass
 
 
@@ -114,7 +114,7 @@ class DefaultTestingModel(BaseModel):
     c: int = Field(...)
     d: Union[int, str]
     e = ...
-# MYPY: error: Untyped fields disallowed  [pydantic-field]
+# MYPY: error: Untyped fields disallowed  [whoop_pydantic_v2-field]
 
     # Not required
     f: Optional[int]
@@ -123,7 +123,7 @@ class DefaultTestingModel(BaseModel):
     i: int = Field(None)
 # MYPY: error: Incompatible types in assignment (expression has type "None", variable has type "int")  [assignment]
     j = 1
-# MYPY: error: Untyped fields disallowed  [pydantic-field]
+# MYPY: error: Untyped fields disallowed  [whoop_pydantic_v2-field]
 
 
 DefaultTestingModel()
@@ -187,7 +187,7 @@ x_alias = 'y'
 
 class DynamicAliasModel(BaseModel):
     x: str = Field(..., alias=x_alias)
-# MYPY: error: Required dynamic aliases disallowed  [pydantic-alias]
+# MYPY: error: Required dynamic aliases disallowed  [whoop_pydantic_v2-alias]
     z: int
 
 
@@ -219,11 +219,11 @@ KwargsDynamicAliasModel(x='y', z=1)
 
 
 class AliasGeneratorModel(BaseModel):
-# MYPY: error: Required dynamic aliases disallowed  [pydantic-alias]
+# MYPY: error: Required dynamic aliases disallowed  [whoop_pydantic_v2-alias]
     x: int
 
     class Config:
-# MYPY: error: Required dynamic aliases disallowed  [pydantic-alias]
+# MYPY: error: Required dynamic aliases disallowed  [whoop_pydantic_v2-alias]
         alias_generator = lambda x: x + '_'  # noqa E731
 
 
@@ -233,18 +233,18 @@ AliasGeneratorModel(z=1)
 
 
 class AliasGeneratorModel2(BaseModel):
-# MYPY: error: Required dynamic aliases disallowed  [pydantic-alias]
+# MYPY: error: Required dynamic aliases disallowed  [whoop_pydantic_v2-alias]
     x: int = Field(..., alias='y')
 
-    class Config:  # type: ignore[pydantic-alias]
+    class Config:  # type: ignore[whoop_pydantic_v2-alias]
         alias_generator = lambda x: x + '_'  # noqa E731
 
 
 class UntypedFieldModel(BaseModel):
     x: int = 1
     y = 2
-# MYPY: error: Untyped fields disallowed  [pydantic-field]
-    z = 2  # type: ignore[pydantic-field]
+# MYPY: error: Untyped fields disallowed  [whoop_pydantic_v2-field]
+    z = 2  # type: ignore[whoop_pydantic_v2-field]
 
 
 AliasGeneratorModel2(x=1)
@@ -254,9 +254,9 @@ AliasGeneratorModel2(y=1, z=1)
 
 
 class KwargsAliasGeneratorModel(BaseModel, alias_generator=lambda x: x + '_'):
-# MYPY: error: Required dynamic aliases disallowed  [pydantic-alias]
+# MYPY: error: Required dynamic aliases disallowed  [whoop_pydantic_v2-alias]
     x: int
-# MYPY: error: Required dynamic aliases disallowed  [pydantic-alias]
+# MYPY: error: Required dynamic aliases disallowed  [whoop_pydantic_v2-alias]
 
 
 KwargsAliasGeneratorModel(x=1)
@@ -265,9 +265,9 @@ KwargsAliasGeneratorModel(z=1)
 
 
 class KwargsAliasGeneratorModel2(BaseModel, alias_generator=lambda x: x + '_'):
-# MYPY: error: Required dynamic aliases disallowed  [pydantic-alias]
+# MYPY: error: Required dynamic aliases disallowed  [whoop_pydantic_v2-alias]
     x: int = Field(..., alias='y')
-# MYPY: error: Required dynamic aliases disallowed  [pydantic-alias]
+# MYPY: error: Required dynamic aliases disallowed  [whoop_pydantic_v2-alias]
 
 
 KwargsAliasGeneratorModel2(x=1)
@@ -345,7 +345,7 @@ class FieldDefaultTestingModel(BaseModel):
 
     # Default and default factory
     m: int = Field(default=1, default_factory=list)
-# MYPY: error: Field default and default_factory cannot be specified together  [pydantic-field]
+# MYPY: error: Field default and default_factory cannot be specified together  [whoop_pydantic_v2-field]
 
 
 class ModelWithAnnotatedValidator(BaseModel):

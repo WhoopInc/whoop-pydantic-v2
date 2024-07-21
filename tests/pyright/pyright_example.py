@@ -1,11 +1,11 @@
 """
-This file is used to test pyright's ability to check pydantic code.
+This file is used to test pyright's ability to check whoop_pydantic_v2 code.
 """
 
 from functools import cached_property
 from typing import List
 
-from pydantic import BaseModel, Field, computed_field
+from whoop_pydantic_v2 import BaseModel, Field, computed_field
 
 
 class MyModel(BaseModel):

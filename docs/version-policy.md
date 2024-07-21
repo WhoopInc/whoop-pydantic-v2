@@ -45,7 +45,7 @@ We use one of the following naming conventions to indicate that a feature is exp
 1. The feature is located in the `experimental` module. In this case, you can access the feature like this:
 
     ```python test="skip" lint="skip"
-    from pydantic.experimental import feature_name
+    from whoop_pydantic_v2.experimental import feature_name
     ```
 
 2. The feature is located in the main module, but prefixed with `experimental_`. This case occurs when we add a new field, argument, or method to an existing data structure already within the main `pydantic` module.
@@ -59,7 +59,7 @@ When you import an experimental feature from the `experimental` module, you'll s
 ```python
 import warnings
 
-from pydantic import PydanticExperimentalWarning
+from whoop_pydantic_v2 import PydanticExperimentalWarning
 
 warnings.filterwarnings('ignore', category=PydanticExperimentalWarning)
 ```

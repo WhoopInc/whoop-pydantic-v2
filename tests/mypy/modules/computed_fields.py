@@ -1,4 +1,4 @@
-from pydantic import BaseModel, computed_field
+from whoop_pydantic_v2 import BaseModel, computed_field
 
 
 class Square(BaseModel):

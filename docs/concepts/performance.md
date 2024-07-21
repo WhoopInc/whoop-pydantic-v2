@@ -64,7 +64,7 @@ If you don't need to validate a value, use `Any` to keep the value unchanged.
 ```py
 from typing import Any
 
-from pydantic import BaseModel
+from whoop_pydantic_v2 import BaseModel
 
 
 class Model(BaseModel):
@@ -105,7 +105,7 @@ from typing import Any
 
 from typing_extensions import Literal
 
-from pydantic import BaseModel, Field
+from whoop_pydantic_v2 import BaseModel, Field
 
 
 class DivModel(BaseModel):
@@ -200,7 +200,7 @@ from typing import List
 
 from typing_extensions import Annotated
 
-from pydantic import FailFast, TypeAdapter, ValidationError
+from whoop_pydantic_v2 import FailFast, TypeAdapter, ValidationError
 
 ta = TypeAdapter(Annotated[List[bool], FailFast()])
 try:

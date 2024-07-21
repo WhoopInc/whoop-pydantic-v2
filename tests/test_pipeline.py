@@ -16,11 +16,11 @@ from typing_extensions import Annotated
 if sys.version_info >= (3, 9):
     pass
 
-from pydantic import PydanticExperimentalWarning, TypeAdapter, ValidationError
+from whoop_pydantic_v2 import PydanticExperimentalWarning, TypeAdapter, ValidationError
 
 with warnings.catch_warnings():
     warnings.filterwarnings('ignore', category=PydanticExperimentalWarning)
-    from pydantic.experimental.pipeline import _Pipeline, transform, validate_as  # type: ignore
+    from whoop_pydantic_v2.experimental.pipeline import _Pipeline, transform, validate_as  # type: ignore
 
 
 @pytest.mark.parametrize('potato_variation', ['potato', ' potato ', ' potato', 'potato ', ' POTATO ', ' PoTatO '])

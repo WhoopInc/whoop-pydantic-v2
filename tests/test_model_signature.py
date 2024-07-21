@@ -5,8 +5,8 @@ from typing import Any, Generic, Iterable, Optional, TypeVar, Union
 import pytest
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, ConfigDict, Field, create_model
-from pydantic._internal._typing_extra import is_annotated
+from whoop_pydantic_v2 import BaseModel, ConfigDict, Field, create_model
+from whoop_pydantic_v2._internal._typing_extra import is_annotated
 
 
 def _equals(a: Union[str, Iterable[str]], b: Union[str, Iterable[str]]) -> bool:

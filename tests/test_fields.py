@@ -2,8 +2,8 @@ from typing import Union
 
 import pytest
 
-import pydantic.dataclasses
-from pydantic import BaseModel, ConfigDict, Field, PydanticUserError, RootModel, ValidationError, computed_field, fields
+import whoop_pydantic_v2.dataclasses
+from whoop_pydantic_v2 import BaseModel, ConfigDict, Field, PydanticUserError, RootModel, ValidationError, computed_field, fields
 
 
 def test_field_info_annotation_keyword_argument():
@@ -34,7 +34,7 @@ def test_field_info_annotated_attribute_name_clashing():
 
 
 def test_init_var_field():
-    @pydantic.dataclasses.dataclass
+    @whoop_pydantic_v2.dataclasses.dataclass
     class Foo:
         bar: str
         baz: str = Field(init_var=True)

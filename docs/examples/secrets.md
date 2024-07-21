@@ -10,7 +10,7 @@ You can use the [`field_serializer`][pydantic.functional_serializers.field_seria
 secret as plain-text when serializing to json.
 
 ```py
-from pydantic import BaseModel, SecretBytes, SecretStr, field_serializer
+from whoop_pydantic_v2 import BaseModel, SecretBytes, SecretStr, field_serializer
 
 
 class Model(BaseModel):
@@ -24,9 +24,9 @@ class Model(BaseModel):
 
 model = Model(password='IAmSensitive', password_bytes=b'IAmSensitiveBytes')
 print(model)
-#> password=SecretStr('**********') password_bytes=SecretBytes(b'**********')
+# > password=SecretStr('**********') password_bytes=SecretBytes(b'**********')
 print(model.password)
-#> **********
+# > **********
 print(model.model_dump())
 """
 {
@@ -35,7 +35,7 @@ print(model.model_dump())
 }
 """
 print(model.model_dump_json())
-#> {"password":"IAmSensitive","password_bytes":"IAmSensitiveBytes"}
+# > {"password":"IAmSensitive","password_bytes":"IAmSensitiveBytes"}
 ```
 
 ## Create your own Secret field
@@ -51,7 +51,7 @@ You can either directly parametrize `Secret`, or subclass from a parametrized `S
 ```py
 from datetime import date
 
-from pydantic import BaseModel, Secret
+from whoop_pydantic_v2 import BaseModel, Secret
 
 # Using the default representation
 SecretDate = Secret[date]
@@ -71,19 +71,19 @@ class Employee(BaseModel):
 employee = Employee(date_of_birth='1990-01-01', salary=42)
 
 print(employee)
-#> date_of_birth=Secret('**********') salary=SecretSalary('$****.**')
+# > date_of_birth=Secret('**********') salary=SecretSalary('$****.**')
 
 print(employee.salary)
-#> $****.**
+# > $****.**
 
 print(employee.salary.get_secret_value())
-#> 42.0
+# > 42.0
 
 print(employee.date_of_birth)
-#> **********
+# > **********
 
 print(employee.date_of_birth.get_secret_value())
-#> 1990-01-01
+# > 1990-01-01
 ```
 
 You can enforce constraints on the underlying type through annotations:
@@ -92,7 +92,7 @@ For example:
 ```py
 from typing_extensions import Annotated
 
-from pydantic import BaseModel, Field, Secret, ValidationError
+from whoop_pydantic_v2 import BaseModel, Field, Secret, ValidationError
 
 SecretPosInt = Secret[Annotated[int, Field(gt=0, strict=True)]]
 
